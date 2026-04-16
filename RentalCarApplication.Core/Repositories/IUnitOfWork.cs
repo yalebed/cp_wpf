@@ -9,6 +9,7 @@ namespace RentalCarApplication.Core.Repositories
         ICarRepository CarRepository { get; }
         IUserRepository UserRepository { get; }
         IOrderRepository OrderRepository { get; }
+        IReviewRepository ReviewRepository { get; }
 
         void Save();
     }

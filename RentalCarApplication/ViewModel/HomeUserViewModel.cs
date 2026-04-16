@@ -12,6 +12,7 @@ using RentalCarApplication.Commands;
 using RentalCarApplication.View.CustomMessageBox;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using Microsoft.Win32;
 
 namespace RentalCarApplication.ViewModel
 {
@@ -32,6 +33,7 @@ namespace RentalCarApplication.ViewModel
                 UserTelNumber = CurrentUser.TelNumber;
                 UserPassword = CurrentUser.Password;
             }
+            ReviewRating = 5;
             LogoutCommand = new NavigationCommand<LoginWindowViewModel>(navigator, () => new LoginWindowViewModel(navigator));
             AboutCommand = new RelayCommand(OnAboutCommandExecuted, CanAboutCommandExecute);
             //OrderTab
@@ -44,6 +46,7 @@ namespace RentalCarApplication.ViewModel
             SearchCarCommand = new RelayCommand(OnSearchCarExecuted, CanSearchCarExecute);
             ClearSearchFieldsCommand = new RelayCommand(OnClearSearchFieldsExecuted, CanClearSearchFieldsExecute);
             DisplayCars();
+            RefreshReviewsData();
 
             //CabinetTab
             ChangePasswordCommand = new RelayCommand(OnChangePasswordExecuted, CanChangePasswordExecute);
@@ -52,6 +55,13 @@ namespace RentalCarApplication.ViewModel
             RefreshOrdersCommand = new RelayCommand(OnRefreshOrdersExecuted, CanRefreshOrdersExecute);
             CancelOrderCommand = new RelayCommand(OnCancelOrderExecuted, CanCancelOrderExecute);
             DisplayOrders();
+
+            //Reviews
+            AddReviewPhotoCommand = new RelayCommand(OnAddReviewPhotoExecuted, CanAddReviewPhotoExecute);
+            RemoveReviewPhotoCommand = new RelayCommand(OnRemoveReviewPhotoExecuted, CanRemoveReviewPhotoExecute);
+            SetReviewRatingCommand = new RelayCommand(OnSetReviewRatingExecuted, CanSetReviewRatingExecute);
+            SubmitReviewCommand = new RelayCommand(OnSubmitReviewExecuted, CanSubmitReviewExecute);
+            RefreshReviewsCommand = new RelayCommand(OnRefreshReviewsExecuted, CanRefreshReviewsExecute);
         }
 
         #region PopupMenuCommands
@@ -216,6 +226,7 @@ namespace RentalCarApplication.ViewModel
                 CarModel = SelectedCar.Brand;
                 CarSeats = SelectedCar.Seats.ToString();
                 CarPrice = SelectedCar.Price.ToString();
+                SelectedReviewCar = SelectedCar;
             }
 
         }
@@ -232,6 +243,7 @@ namespace RentalCarApplication.ViewModel
         {
             List<string> temp = new List<string>();
             CarList = (List<Car>)unitOfWork.CarRepository.FindAll();
+            ReviewCarList = CarList.ToList();
             SearchBrandList = new List<string>();
            
             if(CarList.Count!=0)
@@ -803,6 +815,7 @@ namespace RentalCarApplication.ViewModel
         private void OnRefreshOrdersExecuted(object o)
         {
             DisplayOrders();
+            DisplayAvailableReviewOrders();
         }
         #endregion
 
@@ -824,6 +837,7 @@ namespace RentalCarApplication.ViewModel
                 unitOfWork.OrderRepository.Update(order.OrderId, order);
                 unitOfWork.Save();
                 DisplayOrders();
+                DisplayAvailableReviewOrders();
                 var res = new CustomMessageBox("Ваш заказ отменен и перемещен во вкладку \"Отмененные\" ",
                                      MessageType.Info,
                                      MessageButtons.Ok).ShowDialog();
@@ -832,6 +846,234 @@ namespace RentalCarApplication.ViewModel
         }
 
         #endregion
+
+        #endregion
+
+        #region ReviewsTab
+
+        private List<Car> _reviewCarList;
+        public List<Car> ReviewCarList
+        {
+            get => _reviewCarList;
+            set => Set(ref _reviewCarList, value);
+        }
+
+        private Car _selectedReviewCar;
+        public Car SelectedReviewCar
+        {
+            get => _selectedReviewCar;
+            set
+            {
+                Set(ref _selectedReviewCar, value);
+                DisplayReviewsForSelectedCar();
+            }
+        }
+
+        private List<Review> _reviewList;
+        public List<Review> ReviewList
+        {
+            get => _reviewList;
+            set => Set(ref _reviewList, value);
+        }
+
+        private List<Order> _availableReviewOrders;
+        public List<Order> AvailableReviewOrders
+        {
+            get => _availableReviewOrders;
+            set => Set(ref _availableReviewOrders, value);
+        }
+
+        private Order _selectedReviewOrder;
+        public Order SelectedReviewOrder
+        {
+            get => _selectedReviewOrder;
+            set
+            {
+                Set(ref _selectedReviewOrder, value);
+                if (value != null)
+                {
+                    SelectedReviewCar = ReviewCarList?.FirstOrDefault(x => x.CarId == value.CarId);
+                }
+            }
+        }
+
+        private string _reviewText;
+        public string ReviewText
+        {
+            get => _reviewText;
+            set => Set(ref _reviewText, value);
+        }
+
+        private string _reviewPhotoPath;
+        public string ReviewPhotoPath
+        {
+            get => _reviewPhotoPath;
+            set => Set(ref _reviewPhotoPath, value);
+        }
+
+        private int _reviewRating;
+        public int ReviewRating
+        {
+            get => _reviewRating;
+            set
+            {
+                Set(ref _reviewRating, value);
+                OnPropertyChanged(nameof(ReviewStar1));
+                OnPropertyChanged(nameof(ReviewStar2));
+                OnPropertyChanged(nameof(ReviewStar3));
+                OnPropertyChanged(nameof(ReviewStar4));
+                OnPropertyChanged(nameof(ReviewStar5));
+            }
+        }
+
+        public string ReviewStar1 => ReviewRating >= 1 ? "\u2605" : "\u2606";
+        public string ReviewStar2 => ReviewRating >= 2 ? "\u2605" : "\u2606";
+        public string ReviewStar3 => ReviewRating >= 3 ? "\u2605" : "\u2606";
+        public string ReviewStar4 => ReviewRating >= 4 ? "\u2605" : "\u2606";
+        public string ReviewStar5 => ReviewRating >= 5 ? "\u2605" : "\u2606";
+
+        public ICommand AddReviewPhotoCommand { get; }
+        public ICommand RemoveReviewPhotoCommand { get; }
+        public ICommand SetReviewRatingCommand { get; }
+        public ICommand SubmitReviewCommand { get; }
+        public ICommand RefreshReviewsCommand { get; }
+
+        private void RefreshReviewsData()
+        {
+            ReviewCarList = (List<Car>)unitOfWork.CarRepository.FindAll();
+            DisplayAvailableReviewOrders();
+
+            if (SelectedReviewCar == null && ReviewCarList != null && ReviewCarList.Count > 0)
+            {
+                SelectedReviewCar = ReviewCarList.First();
+            }
+            else
+            {
+                DisplayReviewsForSelectedCar();
+            }
+        }
+
+        private void DisplayAvailableReviewOrders()
+        {
+            var allOrders = (List<Order>)unitOfWork.OrderRepository.FindAll();
+            AvailableReviewOrders = allOrders
+                .Where(x => x.Email == CurrentUser.Email && x.Status == true && x.ReturnDate.Date <= DateTime.Today)
+                .Where(x => !unitOfWork.ReviewRepository.ExistsForOrder(x.OrderId))
+                .OrderByDescending(x => x.ReturnDate)
+                .ToList();
+        }
+
+        private void DisplayReviewsForSelectedCar()
+        {
+            if (SelectedReviewCar == null)
+            {
+                ReviewList = new List<Review>();
+                return;
+            }
+
+            ReviewList = unitOfWork.ReviewRepository.FindByCarId(SelectedReviewCar.CarId).ToList();
+        }
+
+        private bool CanAddReviewPhotoExecute(object o) => true;
+        private void OnAddReviewPhotoExecuted(object o)
+        {
+            try
+            {
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Filter = "Image files|*.bmp;*.jpg;*.jpeg;*.gif;*.png;*.tif";
+                dialog.FilterIndex = 1;
+
+                if (dialog.ShowDialog() == true)
+                {
+                    ReviewPhotoPath = dialog.FileName;
+                }
+            }
+            catch (Exception ex)
+            {
+                var result = new CustomMessageBox(ex.Message,
+                                    MessageType.Error,
+                                    MessageButtons.Ok).ShowDialog();
+            }
+        }
+
+        private bool CanRemoveReviewPhotoExecute(object o) => true;
+        private void OnRemoveReviewPhotoExecuted(object o)
+        {
+            ReviewPhotoPath = string.Empty;
+        }
+
+        private bool CanSetReviewRatingExecute(object o) => true;
+        private void OnSetReviewRatingExecuted(object o)
+        {
+            if (o == null)
+            {
+                return;
+            }
+
+            if (int.TryParse(o.ToString(), out int rating))
+            {
+                ReviewRating = rating;
+            }
+        }
+
+        private bool CanSubmitReviewExecute(object o) => true;
+        private void OnSubmitReviewExecuted(object o)
+        {
+            try
+            {
+                if (SelectedReviewOrder == null)
+                {
+                    throw new Exception("Выберите завершенный заказ для отзыва");
+                }
+
+                if (SelectedReviewOrder.Status != true || SelectedReviewOrder.ReturnDate.Date > DateTime.Today)
+                {
+                    throw new Exception("Оставить отзыв можно только после завершения подтвержденной аренды");
+                }
+
+                if (unitOfWork.ReviewRepository.ExistsForOrder(SelectedReviewOrder.OrderId))
+                {
+                    throw new Exception("Для выбранного заказа отзыв уже существует");
+                }
+
+                Review review = new Review
+                {
+                    OrderId = SelectedReviewOrder.OrderId,
+                    CarId = SelectedReviewOrder.CarId,
+                    Email = CurrentUser.Email,
+                    Text = ReviewText,
+                    Rating = ReviewRating,
+                    PhotoPath = ReviewPhotoPath,
+                    CreatedAt = DateTime.Now
+                };
+
+                if (Validation.CheckValid(review))
+                {
+                    unitOfWork.ReviewRepository.Create(review);
+                    unitOfWork.Save();
+                    ReviewText = string.Empty;
+                    ReviewRating = 5;
+                    ReviewPhotoPath = string.Empty;
+                    SelectedReviewOrder = null;
+                    RefreshReviewsData();
+                    var result = new CustomMessageBox("Отзыв успешно опубликован",
+                                        MessageType.Success,
+                                        MessageButtons.Ok).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                var result = new CustomMessageBox(ex.Message,
+                                    MessageType.Error,
+                                    MessageButtons.Ok).ShowDialog();
+            }
+        }
+
+        private bool CanRefreshReviewsExecute(object o) => true;
+        private void OnRefreshReviewsExecuted(object o)
+        {
+            RefreshReviewsData();
+        }
 
         #endregion
 

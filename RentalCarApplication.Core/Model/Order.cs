@@ -25,6 +25,8 @@ namespace RentalCarApplication.Core.Model
         public string Email { get; set; }
         public User User { get; set; }
 
+        public virtual ICollection<Review> Reviews { get; set; }
+
     }
 
 }

@@ -9,6 +9,7 @@ namespace RentalCarApplication.EntityFramework
         public DbSet<User> Users { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         public ApplicationContext()
         {
@@ -21,6 +22,7 @@ namespace RentalCarApplication.EntityFramework
         {
             modelBuilder.ApplyConfiguration(new CarConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new ReviewConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
 
         }

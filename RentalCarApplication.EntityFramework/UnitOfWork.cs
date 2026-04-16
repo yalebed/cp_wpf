@@ -13,10 +13,12 @@ namespace RentalCarApplication.EntityFramework
         private IUserRepository _userRepository;
         private IOrderRepository _orderRepository;
         private ICarRepository _carRepository;
+        private IReviewRepository _reviewRepository;
 
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_db);
         public ICarRepository CarRepository => _carRepository ??= new CarRepository(_db);
         public IOrderRepository OrderRepository => _orderRepository ??= new OrderRepository(_db);
+        public IReviewRepository ReviewRepository => _reviewRepository ??= new ReviewRepository(_db);
         public void Save()
         {
             _db.SaveChanges();
