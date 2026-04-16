@@ -356,6 +356,10 @@ namespace RentalCarApplication.ViewModel
                 {
                     throw new Exception("Выберите автомобиль");
                 }
+                if (ReturnDate <= RentDate)
+                {
+                    throw new Exception("Дата возврата должна быть позже даты аренды");
+                }
                 order.CarId = Convert.ToInt32(CarNumber);
                 order.Email = CurrentUser.Email;
                 order.City = OrderCity;
@@ -369,6 +373,10 @@ namespace RentalCarApplication.ViewModel
                     if(WaitingOrders.Where(x=>x.Email == CurrentUser.Email && x.Status == null).Any())
                     {
                         throw new Exception("Дождитесь пока администратор обработает ваш предыдущий заказ");
+                    }
+                    if (unitOfWork.OrderRepository.HasOverlappingOrder(order.CarId, order.RentDate, order.ReturnDate))
+                    {
+                        throw new Exception("Автомобиль уже занят на выбранный период");
                     }
                     unitOfWork.OrderRepository.Create(order);
                     unitOfWork.Save();

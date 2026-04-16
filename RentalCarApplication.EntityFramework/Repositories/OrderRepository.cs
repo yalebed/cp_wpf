@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System;
 
 namespace RentalCarApplication.EntityFramework.Repositories
 {
@@ -38,6 +39,16 @@ namespace RentalCarApplication.EntityFramework.Repositories
                 return false;
             else
                 return true;
+        }
+
+        public bool HasOverlappingOrder(int carId, DateTime rentDate, DateTime returnDate, int? excludeOrderId = null)
+        {
+            return _context.Set<Order>().Any(e =>
+                e.CarId == carId &&
+                e.Status != false &&
+                (!excludeOrderId.HasValue || e.OrderId != excludeOrderId.Value) &&
+                rentDate < e.ReturnDate &&
+                returnDate > e.RentDate);
         }
 
         public Order Find(int id)

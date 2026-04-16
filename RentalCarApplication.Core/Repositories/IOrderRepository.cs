@@ -8,5 +8,6 @@ namespace RentalCarApplication.Core.Repositories
     public interface IOrderRepository : IRepository<Order,int>
     {
         bool CheckUserOrders(string email);
+        bool HasOverlappingOrder(int carId, DateTime rentDate, DateTime returnDate, int? excludeOrderId = null);
     }
 }

@@ -537,6 +537,14 @@ namespace RentalCarApplication.ViewModel
                 if (result == true)
                 {
                     Order order = SelectedOrder;
+                    if (order == null)
+                    {
+                        throw new Exception("Выберите заказ");
+                    }
+                    if (unitOfWork.OrderRepository.HasOverlappingOrder(order.CarId, order.RentDate, order.ReturnDate, order.OrderId))
+                    {
+                        throw new Exception("Этот автомобиль уже занят на выбранный период другим заказом");
+                    }
                     order.Status = true;
                     unitOfWork.OrderRepository.Update(order.OrderId, order);
                     unitOfWork.Save();
