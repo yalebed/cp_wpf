@@ -585,16 +585,37 @@
                                         </Grid>
 
                                         <TextBlock Text="Завершенный заказ" FontSize="16" FontWeight="Medium" Margin="0 20 0 5"/>
-                                        <ComboBox ItemsSource="{Binding AvailableReviewOrders}" SelectedItem="{Binding SelectedReviewOrder}" Style="{StaticResource MaterialDesignOutlinedComboBox}" materialDesign:HintAssist.Hint="Выберите завершенный заказ">
+                                        <ComboBox ItemsSource="{Binding AvailableReviewOrders}"
+                                                  SelectedItem="{Binding SelectedReviewOrderOption}"
+                                                  MinHeight="42"
+                                                  MaxDropDownHeight="260"
+                                                  FontSize="15"
+                                                  Background="White"
+                                                  Foreground="Black"
+                                                  BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                                  BorderThickness="1"
+                                                  Padding="10 4"
+                                                  ScrollViewer.VerticalScrollBarVisibility="Auto">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding OrderId, StringFormat=Заказ №{0}}" />
+                                                    <TextBlock Text="{Binding Title}"
+                                                               Foreground="Black"
+                                                               Padding="8 6"
+                                                               TextTrimming="CharacterEllipsis"/>
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
+                                            <ComboBox.ItemContainerStyle>
+                                                <Style TargetType="ComboBoxItem">
+                                                    <Setter Property="MinHeight" Value="34"/>
+                                                    <Setter Property="Foreground" Value="Black"/>
+                                                    <Setter Property="Background" Value="White"/>
+                                                </Style>
+                                            </ComboBox.ItemContainerStyle>
                                         </ComboBox>
 
-                                        <TextBlock Text="Автомобиль" FontSize="16" FontWeight="Medium" Margin="0 15 0 5"/>
-                                        <TextBox Text="{Binding SelectedReviewCar.Brand}" IsReadOnly="True" FontSize="16"/>
+                                        <Border Background="#12008080" BorderBrush="#33008080" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0 8 0 0">
+                                            <TextBlock Text="{Binding SelectedReviewOrderInfo}" TextWrapping="Wrap" FontSize="13" Foreground="DimGray"/>
+                                        </Border>
 
                                         <TextBlock Text="Оценка" FontSize="16" FontWeight="Medium" Margin="0 15 0 5"/>
                                         <StackPanel Orientation="Horizontal">

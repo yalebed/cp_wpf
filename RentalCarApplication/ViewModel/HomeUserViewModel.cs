@@ -876,11 +876,29 @@ namespace RentalCarApplication.ViewModel
             set => Set(ref _reviewList, value);
         }
 
-        private List<Order> _availableReviewOrders;
-        public List<Order> AvailableReviewOrders
+        private List<ReviewOrderOption> _availableReviewOrders;
+        public List<ReviewOrderOption> AvailableReviewOrders
         {
             get => _availableReviewOrders;
             set => Set(ref _availableReviewOrders, value);
+        }
+
+        private bool _hasAvailableReviewOrders;
+        public bool HasAvailableReviewOrders
+        {
+            get => _hasAvailableReviewOrders;
+            set => Set(ref _hasAvailableReviewOrders, value);
+        }
+
+        private ReviewOrderOption _selectedReviewOrderOption;
+        public ReviewOrderOption SelectedReviewOrderOption
+        {
+            get => _selectedReviewOrderOption;
+            set
+            {
+                Set(ref _selectedReviewOrderOption, value);
+                SelectedReviewOrder = value?.Order;
+            }
         }
 
         private Order _selectedReviewOrder;
@@ -890,10 +908,31 @@ namespace RentalCarApplication.ViewModel
             set
             {
                 Set(ref _selectedReviewOrder, value);
+                OnPropertyChanged(nameof(SelectedReviewOrderInfo));
                 if (value != null)
                 {
                     SelectedReviewCar = ReviewCarList?.FirstOrDefault(x => x.CarId == value.CarId);
                 }
+            }
+        }
+
+        public string SelectedReviewOrderInfo
+        {
+            get
+            {
+                if (SelectedReviewOrderOption != null)
+                {
+                    return SelectedReviewOrderOption.Details;
+                }
+
+                if (SelectedReviewOrder == null)
+                {
+                    return "Выберите завершенный заказ, чтобы увидеть подробности";
+                }
+
+                var car = ReviewCarList?.FirstOrDefault(x => x.CarId == SelectedReviewOrder.CarId);
+                var brand = car?.Brand ?? $"Авто #{SelectedReviewOrder.CarId}";
+                return $"{brand}; заказ №{SelectedReviewOrder.OrderId}; период: {SelectedReviewOrder.RentDate:dd.MM.yyyy} - {SelectedReviewOrder.ReturnDate:dd.MM.yyyy}; адрес: {SelectedReviewOrder.City}; сумма: {SelectedReviewOrder.Price}$";
             }
         }
 
@@ -956,11 +995,46 @@ namespace RentalCarApplication.ViewModel
         private void DisplayAvailableReviewOrders()
         {
             var allOrders = (List<Order>)unitOfWork.OrderRepository.FindAll();
-            AvailableReviewOrders = allOrders
+            var availableOrders = allOrders
                 .Where(x => x.Email == CurrentUser.Email && x.Status == true && x.ReturnDate.Date <= DateTime.Today)
-                .Where(x => !unitOfWork.ReviewRepository.ExistsForOrder(x.OrderId))
                 .OrderByDescending(x => x.ReturnDate)
                 .ToList();
+
+            foreach (var order in availableOrders)
+            {
+                order.Car = ReviewCarList?.FirstOrDefault(x => x.CarId == order.CarId);
+            }
+
+            AvailableReviewOrders = availableOrders
+                .Select(order =>
+                {
+                    var car = order.Car ?? ReviewCarList?.FirstOrDefault(x => x.CarId == order.CarId);
+                    var brand = car?.Brand ?? $"Авто #{order.CarId}";
+                    var hasReview = unitOfWork.ReviewRepository.ExistsForOrder(order.OrderId);
+                    var reviewStatus = hasReview ? "; отзыв уже оставлен" : "";
+                    return new ReviewOrderOption
+                    {
+                        Order = order,
+                        Title = $"{brand}, заказ №{order.OrderId}, {order.RentDate:dd.MM} - {order.ReturnDate:dd.MM}",
+                        Details = $"{brand}; заказ №{order.OrderId}; период: {order.RentDate:dd.MM.yyyy} - {order.ReturnDate:dd.MM.yyyy}; адрес: {order.City}; сумма: {order.Price}${reviewStatus}"
+                    };
+                })
+                .ToList();
+
+            if (AvailableReviewOrders.Count == 0)
+            {
+                HasAvailableReviewOrders = false;
+                SelectedReviewOrderOption = null;
+                SelectedReviewOrder = null;
+                return;
+            }
+
+            HasAvailableReviewOrders = true;
+
+            if (SelectedReviewOrderOption == null || !AvailableReviewOrders.Any(x => x.Order.OrderId == SelectedReviewOrderOption.Order.OrderId))
+            {
+                SelectedReviewOrderOption = AvailableReviewOrders.First();
+            }
         }
 
         private void DisplayReviewsForSelectedCar()
@@ -1077,6 +1151,13 @@ namespace RentalCarApplication.ViewModel
 
         #endregion
 
+    }
+
+    public class ReviewOrderOption
+    {
+        public Order Order { get; set; }
+        public string Title { get; set; }
+        public string Details { get; set; }
     }
 
 }
