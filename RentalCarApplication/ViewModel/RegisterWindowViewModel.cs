@@ -44,20 +44,6 @@ namespace RentalCarApplication.ViewModel
             set => Set(ref _surname, value);
         }
 
-        private string _passport;
-        public string Passport
-        {
-            get => _passport;
-            set => Set(ref _passport, value);
-        }
-
-        private string _driverLicense;
-        public string DriverLicense
-        {
-            get => _driverLicense;
-            set => Set(ref _driverLicense, value);
-        }
-
         private string _telNumber;
         public string TelNumber
         {
@@ -105,21 +91,15 @@ namespace RentalCarApplication.ViewModel
                 {
                     throw new Exception("Пользователь с такой почтой уже существует");
                 }
-                if (unitOfWork.UserRepository.CheckPassportAndLicense(Passport,DriverLicense)!=true)
-                {
-                    throw new Exception("Пользователь с такими паспортными данными уже существует");
-                }
-
                 User user = new User()
                 {
                     Email = this.Email,
                     Password = this.Password,
                     Name = this.Name,
                     Surname = this.Surname,
-                    Passport = this.Passport,
-                    DriverLicense = this.DriverLicense,
                     TelNumber = this.TelNumber,
-                    IsAdmin = false
+                    IsAdmin = false,
+                    IsDocumentsVerified = false
                 };
 
                 if(Validation.CheckValid(user))

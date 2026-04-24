@@ -50,21 +50,18 @@
 
                     <materialDesign:PackIcon Grid.Column="0" Grid.Row="0" Kind="PersonAdd" Width="20" Height="30" Margin="0 20 5 0"/>
                     <materialDesign:PackIcon Grid.Column="0" Grid.Row="1" Kind="PersonAdd" Width="20" Height="30" Margin="0 20 5 0"/>
-                    <materialDesign:PackIcon Grid.Column="0" Grid.Row="2" Kind="Passport" Width="20" Height="30" Margin="0 20 5 0"/>
-                    <materialDesign:PackIcon Grid.Column="0" Grid.Row="3" Kind="PassportElectronic" Width="20" Height="30" Margin="0 20 5 0"/>
-                    <materialDesign:PackIcon Grid.Column="0" Grid.Row="4" Kind="Telephone" Width="20" Height="30" Margin="0 20 5 0"/>
-                    <materialDesign:PackIcon Grid.Column="0" Grid.Row="5" Kind="Email" Width="20" Height="30" Margin="0 20 5 0"/>
-                    <materialDesign:PackIcon Grid.Column="0" Grid.Row="6" Kind="Key" Width="20" Height="30" Margin="0 20 5 0"/>
-                    <materialDesign:PackIcon Grid.Column="0" Grid.Row="7" Kind="KeyChange" Width="20" Height="30" Margin="0 20 5 0"/>
+                    <materialDesign:PackIcon Grid.Column="0" Grid.Row="2" Kind="Telephone" Width="20" Height="30" Margin="0 20 5 0"/>
+                    <materialDesign:PackIcon Grid.Column="0" Grid.Row="3" Kind="Email" Width="20" Height="30" Margin="0 20 5 0"/>
+                    <materialDesign:PackIcon Grid.Column="0" Grid.Row="4" Kind="Key" Width="20" Height="30" Margin="0 20 5 0"/>
+                    <materialDesign:PackIcon Grid.Column="0" Grid.Row="5" Kind="KeyChange" Width="20" Height="30" Margin="0 20 5 0"/>
 
                     <TextBox Text="{Binding Name}"  Grid.Column="1" Grid.Row="0" materialDesign:HintAssist.Hint="Введите Имя"   Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="18"/>
                     <TextBox Text="{Binding Surname}" Grid.Column="1" Grid.Row="1" materialDesign:HintAssist.Hint="Введите Фамилию"  Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="18"/>
-                    <TextBox Text="{Binding Passport}" MaxLength="9" Grid.Column="1" Grid.Row="2" materialDesign:HintAssist.Hint="Введите данные паспорта"  materialDesign:HintAssist.HelperText="ABXXXXXXX" Margin="0 0 0 15" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="18"/>
-                    <TextBox Text="{Binding DriverLicense}" MaxLength="9" Grid.Column="1" Grid.Row="3" materialDesign:HintAssist.Hint="Введите номер водительского удостоверения"  materialDesign:HintAssist.HelperText="AАXXXXXXX" Margin="0 0 0 15" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="18"/>
-                    <TextBox Text="{Binding TelNumber}" MaxLength="13" Grid.Column="1" Grid.Row="4" materialDesign:HintAssist.Hint="Введите номер мобильного телефона"  materialDesign:HintAssist.HelperText="+375XXXXXXXXX" Margin="0 0 0 15" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="18"/>
-                    <TextBox Text="{Binding Email}" Grid.Column="1" Grid.Row="5" materialDesign:HintAssist.Hint="Введите логин (Email)"  Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="18" />
-                    <PasswordBox x:Name="regPassword" PasswordChanged="regPassword_PasswordChanged"           Grid.Column="1" Grid.Row="6" materialDesign:HintAssist.Hint="Введите пароль"  Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"  FontSize="18"/>
-                    <PasswordBox x:Name="regPasswordCheck" PasswordChanged="regPasswordCheck_PasswordChanged" Grid.Column="1" Grid.Row="7" materialDesign:HintAssist.Hint="Подтвердите пароль"  Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"  FontSize="18"/>
+                    <TextBox Text="{Binding TelNumber}" MaxLength="13" Grid.Column="1" Grid.Row="2" materialDesign:HintAssist.Hint="Введите номер мобильного телефона"  materialDesign:HintAssist.HelperText="+375XXXXXXXXX" Margin="0 0 0 15" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="18"/>
+                    <TextBox Text="{Binding Email}" Grid.Column="1" Grid.Row="3" materialDesign:HintAssist.Hint="Введите логин (Email)"  Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="18" />
+                    <PasswordBox x:Name="regPassword" PasswordChanged="regPassword_PasswordChanged"           Grid.Column="1" Grid.Row="4" materialDesign:HintAssist.Hint="Введите пароль"  Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"  FontSize="18"/>
+                    <PasswordBox x:Name="regPasswordCheck" PasswordChanged="regPasswordCheck_PasswordChanged" Grid.Column="1" Grid.Row="5" materialDesign:HintAssist.Hint="Подтвердите пароль"  Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"  FontSize="18"/>
+                    <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" Text="Документы можно добавить позже в личном кабинете." Foreground="DimGray" Margin="0 5 0 0" HorizontalAlignment="Center"/>
                     <Button Command="{Binding RegistrationUserCommand}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="Зарегистрироваться" FontSize="18" Margin="15 15 0 10" />
                 </Grid>
             </StackPanel>

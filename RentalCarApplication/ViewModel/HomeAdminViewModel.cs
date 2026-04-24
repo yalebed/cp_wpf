@@ -56,6 +56,10 @@ namespace RentalCarApplication.ViewModel
             FindUserByEmailCommand = new RelayCommand(OnFindUserByEmailExecuted, CanFindUserByEmailExecute);
             ChangeSelectedUserRoleCommand = new RelayCommand(OnChangeSelectedUserRoleExecuted, CanChangeSelectedUserRoleExecute);
             DeleteSelectedUserCommand = new RelayCommand(OnDeleteSelectedUserExecuted, CanDeleteSelectedUserExecute);
+            RefreshUsersCommand = new RelayCommand(OnRefreshUsersExecuted, CanRefreshUsersExecute);
+            OpenPassportPhotoCommand = new RelayCommand(OnOpenPassportPhotoExecuted, CanOpenPassportPhotoExecute);
+            OpenIdentitySelfiePhotoCommand = new RelayCommand(OnOpenIdentitySelfiePhotoExecuted, CanOpenIdentitySelfiePhotoExecute);
+            OpenDriverLicensePhotoCommand = new RelayCommand(OnOpenDriverLicensePhotoExecuted, CanOpenDriverLicensePhotoExecute);
             DisplayUsers();
         }
 
@@ -541,6 +545,30 @@ namespace RentalCarApplication.ViewModel
                     {
                         throw new Exception("Выберите заказ");
                     }
+
+                    User user = unitOfWork.UserRepository.Find(order.Email);
+                    if (user == null)
+                    {
+                        throw new Exception("Пользователь заказа не найден");
+                    }
+                    if (!user.HasRequiredDocuments)
+                    {
+                        throw new Exception("У пользователя не заполнены обязательные документы");
+                    }
+                    if (!user.IsDocumentsVerified)
+                    {
+                        var verifyDocumentsResult = new CustomMessageBox("Документы пользователя еще не подтверждены. Подтвердить документы и заказ?",
+                                                MessageType.Confirmation,
+                                                MessageButtons.YesNo).ShowDialog();
+                        if (verifyDocumentsResult != true)
+                        {
+                            return;
+                        }
+
+                        user.IsDocumentsVerified = true;
+                        unitOfWork.UserRepository.Update(user.Email, user);
+                    }
+
                     if (unitOfWork.OrderRepository.HasOverlappingOrder(order.CarId, order.RentDate, order.ReturnDate, order.OrderId))
                     {
                         throw new Exception("Этот автомобиль уже занят на выбранный период другим заказом");
@@ -549,6 +577,7 @@ namespace RentalCarApplication.ViewModel
                     unitOfWork.OrderRepository.Update(order.OrderId, order);
                     unitOfWork.Save();
                     DisplayOrders();
+                    DisplayUsers();
                     var res = new CustomMessageBox("Заказ принят и перемещен во вкладку \"Подтвержденные\" ",
                                          MessageType.Info,
                                          MessageButtons.Ok).ShowDialog();
@@ -722,6 +751,10 @@ namespace RentalCarApplication.ViewModel
         #region ChangeRole
 
         public ICommand ChangeSelectedUserRoleCommand { get; }
+        public ICommand RefreshUsersCommand { get; }
+        public ICommand OpenPassportPhotoCommand { get; }
+        public ICommand OpenIdentitySelfiePhotoCommand { get; }
+        public ICommand OpenDriverLicensePhotoCommand { get; }
 
         private bool CanChangeSelectedUserRoleExecute(object o) => true;
         private void OnChangeSelectedUserRoleExecuted(object o)
@@ -839,6 +872,80 @@ namespace RentalCarApplication.ViewModel
         }
 
         #endregion
+
+        #endregion
+
+        #region UserDocuments
+
+        private bool CanRefreshUsersExecute(object o) => true;
+        private void OnRefreshUsersExecuted(object o)
+        {
+            DisplayUsers();
+        }
+
+        private void OpenUserDocument(string path, string documentName)
+        {
+            if (SelectedUser == null)
+            {
+                throw new Exception("Выберите пользователя");
+            }
+
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new Exception($"У пользователя не загружен файл: {documentName}");
+            }
+
+            if (!File.Exists(path))
+            {
+                throw new Exception($"Файл не найден: {path}");
+            }
+
+            var process = new Process();
+            process.StartInfo = new ProcessStartInfo(path)
+            {
+                UseShellExecute = true
+            };
+            process.Start();
+        }
+
+        private bool CanOpenPassportPhotoExecute(object o) => true;
+        private void OnOpenPassportPhotoExecuted(object o)
+        {
+            try
+            {
+                OpenUserDocument(SelectedUser?.PassportPhotoPath, "паспорт");
+            }
+            catch (Exception ex)
+            {
+                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
+            }
+        }
+
+        private bool CanOpenIdentitySelfiePhotoExecute(object o) => true;
+        private void OnOpenIdentitySelfiePhotoExecuted(object o)
+        {
+            try
+            {
+                OpenUserDocument(SelectedUser?.IdentitySelfiePhotoPath, "селфи с удостоверением");
+            }
+            catch (Exception ex)
+            {
+                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
+            }
+        }
+
+        private bool CanOpenDriverLicensePhotoExecute(object o) => true;
+        private void OnOpenDriverLicensePhotoExecuted(object o)
+        {
+            try
+            {
+                OpenUserDocument(SelectedUser?.DriverLicensePhotoPath, "водительское удостоверение");
+            }
+            catch (Exception ex)
+            {
+                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
+            }
+        }
 
         #endregion
 

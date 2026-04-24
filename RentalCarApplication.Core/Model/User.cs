@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace RentalCarApplication.Core.Model
@@ -24,21 +25,30 @@ namespace RentalCarApplication.Core.Model
         [RegularExpression(@"^([a-zA-Zа-яА-ЯёЁ]{2,20}(\-[a-zA-Zа-яА-ЯёЁ]{2,20})?)$", ErrorMessage = "Фамилия | Формат неверный. \n")]
         public string Surname { get; set; }
 
-        [Required(ErrorMessage = "Паспорт | Введите номер паспорта\n")]
         [RegularExpression(@"^([A-Z][A-Z][0-9]{7})$", ErrorMessage = "Паспорт | Формат неверный. \n")]
         public string Passport { get; set; }
 
-        [Required(ErrorMessage = "Водительское удостоверение | Введите номер водительского удостоверения\n")]
         [RegularExpression(@"^([A-Z][A-Z]([0-9]){7})$", ErrorMessage = "Водительское удостоверение | Формат неверный.\n")]
         public string DriverLicense { get; set; }
+
+        public string PassportPhotoPath { get; set; }
+        public string IdentitySelfiePhotoPath { get; set; }
+        public string DriverLicensePhotoPath { get; set; }
 
         [Required(ErrorMessage = "Телефон | Введите номер телефона \n")]
         [RegularExpression(@"^\+375(29|33|44|25|17)[0-9]{7}$", ErrorMessage = "Телефон | Формат неверный.\n")]
         public string TelNumber { get; set; }
 
         public bool IsAdmin { get; set; }
+        public bool IsDocumentsVerified { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
+
+        [NotMapped]
+        public bool HasRequiredDocuments =>
+            !string.IsNullOrWhiteSpace(Passport) &&
+            !string.IsNullOrWhiteSpace(DriverLicense) &&
+            !string.IsNullOrWhiteSpace(IdentitySelfiePhotoPath);
 
     }
 }

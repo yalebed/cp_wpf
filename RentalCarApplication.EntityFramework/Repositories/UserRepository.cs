@@ -50,12 +50,18 @@ namespace RentalCarApplication.EntityFramework.Repositories
             return entities;
         }
 
-        public bool CheckPassportAndLicense(string passport, string license)
+        public bool CheckPassportAndLicense(string passport, string license, string excludeEmail = null)
         {
-            if (_context.Set<User>().FirstOrDefault(e => e.Passport == passport) != null)
+            if (!string.IsNullOrWhiteSpace(passport) &&
+                _context.Set<User>().FirstOrDefault(e => e.Passport == passport && e.Email != excludeEmail) != null)
+            {
                 return false;
-            if (_context.Set<User>().FirstOrDefault(e => e.DriverLicense == license) != null)
+            }
+            if (!string.IsNullOrWhiteSpace(license) &&
+                _context.Set<User>().FirstOrDefault(e => e.DriverLicense == license && e.Email != excludeEmail) != null)
+            {
                 return false;
+            }
             return true;
         }
 

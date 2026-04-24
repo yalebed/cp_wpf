@@ -30,6 +30,9 @@ namespace RentalCarApplication.ViewModel
                 UserEmail = CurrentUser.Email;
                 UserDriverLicense = CurrentUser.DriverLicense;
                 UserPassport = CurrentUser.Passport;
+                UserPassportPhotoPath = CurrentUser.PassportPhotoPath;
+                UserIdentitySelfiePhotoPath = CurrentUser.IdentitySelfiePhotoPath;
+                UserDriverLicensePhotoPath = CurrentUser.DriverLicensePhotoPath;
                 UserTelNumber = CurrentUser.TelNumber;
                 UserPassword = CurrentUser.Password;
             }
@@ -50,6 +53,14 @@ namespace RentalCarApplication.ViewModel
 
             //CabinetTab
             ChangePasswordCommand = new RelayCommand(OnChangePasswordExecuted, CanChangePasswordExecute);
+            UploadPassportPhotoCommand = new RelayCommand(OnUploadPassportPhotoExecuted, CanUploadPassportPhotoExecute);
+            UploadIdentitySelfiePhotoCommand = new RelayCommand(OnUploadIdentitySelfiePhotoExecuted, CanUploadIdentitySelfiePhotoExecute);
+            UploadDriverLicensePhotoCommand = new RelayCommand(OnUploadDriverLicensePhotoExecuted, CanUploadDriverLicensePhotoExecute);
+            SaveDocumentsCommand = new RelayCommand(OnSaveDocumentsExecuted, CanSaveDocumentsExecute);
+            ClearPassportPhotoCommand = new RelayCommand(OnClearPassportPhotoExecuted, CanClearPassportPhotoExecute);
+            ClearIdentitySelfiePhotoCommand = new RelayCommand(OnClearIdentitySelfiePhotoExecuted, CanClearIdentitySelfiePhotoExecute);
+            ClearDriverLicensePhotoCommand = new RelayCommand(OnClearDriverLicensePhotoExecuted, CanClearDriverLicensePhotoExecute);
+            RefreshDocumentsStatus();
 
             //OrdersBasket
             RefreshOrdersCommand = new RelayCommand(OnRefreshOrdersExecuted, CanRefreshOrdersExecute);
@@ -372,6 +383,10 @@ namespace RentalCarApplication.ViewModel
                 {
                     throw new Exception("Дата возврата должна быть позже даты аренды");
                 }
+                if (!HasCompletedDocuments())
+                {
+                    throw new Exception("Перед оформлением заказа заполните документы в личном кабинете");
+                }
                 order.CarId = Convert.ToInt32(CarNumber);
                 order.Email = CurrentUser.Email;
                 order.City = OrderCity;
@@ -661,6 +676,34 @@ namespace RentalCarApplication.ViewModel
             set => Set(ref _userDriverLicense, value);
         }
 
+        private string _userPassportPhotoPath;
+        public string UserPassportPhotoPath
+        {
+            get => _userPassportPhotoPath;
+            set => Set(ref _userPassportPhotoPath, value);
+        }
+
+        private string _userIdentitySelfiePhotoPath;
+        public string UserIdentitySelfiePhotoPath
+        {
+            get => _userIdentitySelfiePhotoPath;
+            set => Set(ref _userIdentitySelfiePhotoPath, value);
+        }
+
+        private string _userDriverLicensePhotoPath;
+        public string UserDriverLicensePhotoPath
+        {
+            get => _userDriverLicensePhotoPath;
+            set => Set(ref _userDriverLicensePhotoPath, value);
+        }
+
+        private string _documentsStatusText;
+        public string DocumentsStatusText
+        {
+            get => _documentsStatusText;
+            set => Set(ref _documentsStatusText, value);
+        }
+
         private string _userTelNumber;
         public string UserTelNumber
         {
@@ -714,6 +757,200 @@ namespace RentalCarApplication.ViewModel
         #endregion
 
         public ICommand ChangePasswordCommand { get; }
+        public ICommand UploadPassportPhotoCommand { get; }
+        public ICommand UploadIdentitySelfiePhotoCommand { get; }
+        public ICommand UploadDriverLicensePhotoCommand { get; }
+        public ICommand SaveDocumentsCommand { get; }
+        public ICommand ClearPassportPhotoCommand { get; }
+        public ICommand ClearIdentitySelfiePhotoCommand { get; }
+        public ICommand ClearDriverLicensePhotoCommand { get; }
+
+        private void RefreshDocumentsStatus()
+        {
+            if (CurrentUser == null)
+            {
+                DocumentsStatusText = "Документы не загружены";
+                return;
+            }
+
+            if (!CurrentUser.HasRequiredDocuments)
+            {
+                DocumentsStatusText = "Документы не заполнены";
+                return;
+            }
+
+            DocumentsStatusText = CurrentUser.IsDocumentsVerified
+                ? "Документы подтверждены администратором"
+                : "Документы загружены и ожидают проверки администратора";
+        }
+
+        private bool HasCompletedDocuments()
+        {
+            return !string.IsNullOrWhiteSpace(UserPassport) &&
+                   !string.IsNullOrWhiteSpace(UserDriverLicense) &&
+                   !string.IsNullOrWhiteSpace(UserIdentitySelfiePhotoPath);
+        }
+
+        private void ValidateDocuments()
+        {
+            if (string.IsNullOrWhiteSpace(UserPassport))
+            {
+                throw new Exception("Введите номер паспорта");
+            }
+
+            if (!Regex.IsMatch(UserPassport, @"^([A-Z][A-Z][0-9]{7})$"))
+            {
+                throw new Exception("Паспорт | Формат неверный.");
+            }
+
+            if (string.IsNullOrWhiteSpace(UserDriverLicense))
+            {
+                throw new Exception("Введите номер водительского удостоверения");
+            }
+
+            if (!Regex.IsMatch(UserDriverLicense, @"^([A-Z][A-Z]([0-9]){7})$"))
+            {
+                throw new Exception("Водительское удостоверение | Формат неверный.");
+            }
+
+            if (string.IsNullOrWhiteSpace(UserIdentitySelfiePhotoPath))
+            {
+                throw new Exception("Добавьте селфи с удостоверением личности");
+            }
+        }
+
+        private string PickImageFile()
+        {
+            OpenFileDialog dialog = new OpenFileDialog
+            {
+                Filter = "Image files|*.bmp;*.jpg;*.jpeg;*.gif;*.png;*.tif",
+                FilterIndex = 1
+            };
+
+            return dialog.ShowDialog() == true ? dialog.FileName : null;
+        }
+
+        private bool CanUploadPassportPhotoExecute(object o) => true;
+        private void OnUploadPassportPhotoExecuted(object o)
+        {
+            try
+            {
+                var fileName = PickImageFile();
+                if (!string.IsNullOrWhiteSpace(fileName))
+                {
+                    UserPassportPhotoPath = fileName;
+                }
+            }
+            catch (Exception ex)
+            {
+                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
+            }
+        }
+
+        private bool CanUploadIdentitySelfiePhotoExecute(object o) => true;
+        private void OnUploadIdentitySelfiePhotoExecuted(object o)
+        {
+            try
+            {
+                var fileName = PickImageFile();
+                if (!string.IsNullOrWhiteSpace(fileName))
+                {
+                    UserIdentitySelfiePhotoPath = fileName;
+                }
+            }
+            catch (Exception ex)
+            {
+                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
+            }
+        }
+
+        private bool CanUploadDriverLicensePhotoExecute(object o) => true;
+        private void OnUploadDriverLicensePhotoExecuted(object o)
+        {
+            try
+            {
+                var fileName = PickImageFile();
+                if (!string.IsNullOrWhiteSpace(fileName))
+                {
+                    UserDriverLicensePhotoPath = fileName;
+                }
+            }
+            catch (Exception ex)
+            {
+                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
+            }
+        }
+
+        private bool CanClearPassportPhotoExecute(object o) => true;
+        private void OnClearPassportPhotoExecuted(object o)
+        {
+            UserPassportPhotoPath = string.Empty;
+        }
+
+        private bool CanClearIdentitySelfiePhotoExecute(object o) => true;
+        private void OnClearIdentitySelfiePhotoExecuted(object o)
+        {
+            UserIdentitySelfiePhotoPath = string.Empty;
+        }
+
+        private bool CanClearDriverLicensePhotoExecute(object o) => true;
+        private void OnClearDriverLicensePhotoExecuted(object o)
+        {
+            UserDriverLicensePhotoPath = string.Empty;
+        }
+
+        private bool CanSaveDocumentsExecute(object o) => true;
+        private void OnSaveDocumentsExecuted(object o)
+        {
+            try
+            {
+                User user = unitOfWork.UserRepository.Find(CurrentUser.Email);
+                if (user == null)
+                {
+                    throw new Exception("Пользователь не найден");
+                }
+
+                if (!unitOfWork.UserRepository.CheckPassportAndLicense(UserPassport, UserDriverLicense, CurrentUser.Email))
+                {
+                    throw new Exception("Пользователь с такими паспортными данными уже существует");
+                }
+
+                user.Passport = UserPassport;
+                user.DriverLicense = UserDriverLicense;
+                user.PassportPhotoPath = UserPassportPhotoPath;
+                user.IdentitySelfiePhotoPath = UserIdentitySelfiePhotoPath;
+                user.DriverLicensePhotoPath = UserDriverLicensePhotoPath;
+
+                ValidateDocuments();
+
+                bool isVerifiedBeforeUpdate = CurrentUser.IsDocumentsVerified;
+                bool documentsChanged = CurrentUser.Passport != user.Passport ||
+                                        CurrentUser.DriverLicense != user.DriverLicense ||
+                                        CurrentUser.PassportPhotoPath != user.PassportPhotoPath ||
+                                        CurrentUser.IdentitySelfiePhotoPath != user.IdentitySelfiePhotoPath ||
+                                        CurrentUser.DriverLicensePhotoPath != user.DriverLicensePhotoPath;
+
+                user.IsDocumentsVerified = documentsChanged ? false : isVerifiedBeforeUpdate;
+
+                unitOfWork.UserRepository.Update(user.Email, user);
+                unitOfWork.Save();
+
+                CurrentUser = user;
+                LoginWindowViewModel.CurrentUser = user;
+                UserPassport = user.Passport;
+                UserDriverLicense = user.DriverLicense;
+                UserPassportPhotoPath = user.PassportPhotoPath;
+                UserIdentitySelfiePhotoPath = user.IdentitySelfiePhotoPath;
+                UserDriverLicensePhotoPath = user.DriverLicensePhotoPath;
+                RefreshDocumentsStatus();
+
+                new CustomMessageBox("Документы сохранены", MessageType.Success, MessageButtons.Ok).ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
+            }
+        }
 
         private bool CanChangePasswordExecute(object o) => true;
         private void OnChangePasswordExecuted(object o)

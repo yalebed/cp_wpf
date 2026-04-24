@@ -473,7 +473,25 @@
                                         <TextBlock Text="Удалить" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Button>
-                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding RefreshOrdersCommand}" Width="150"  Margin="0" >
+                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding OpenPassportPhotoCommand}" Width="180" Margin="0 0 0 15" >
+                                    <StackPanel Orientation="Horizontal" >
+                                        <materialDesign:PackIcon Kind="CardAccountDetails" Margin="0 0 5 0"  HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                        <TextBlock Text="Паспорт" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding OpenIdentitySelfiePhotoCommand}" Width="180" Margin="0 0 0 15" >
+                                    <StackPanel Orientation="Horizontal" >
+                                        <materialDesign:PackIcon Kind="CameraAccount" Margin="0 0 5 0"  HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                        <TextBlock Text="Селфи с ID" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding OpenDriverLicensePhotoCommand}" Width="180" Margin="0 0 0 15" >
+                                    <StackPanel Orientation="Horizontal" >
+                                        <materialDesign:PackIcon Kind="CardAccountDetailsOutline" Margin="0 0 5 0"  HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                        <TextBlock Text="Права" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding RefreshUsersCommand}" Width="150"  Margin="0" >
                                     <StackPanel Orientation="Horizontal" >
                                         <materialDesign:PackIcon Kind="Refresh" Margin="0 0 5 0"  HorizontalAlignment="Left" VerticalAlignment="Center" />
                                         <TextBlock Text="Обновить" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -488,6 +506,8 @@
                                     <DataGridTextColumn Header="Пасспорт" Width="0.7*" Binding="{Binding Passport}" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="Удостоверение" Width="*" Binding="{Binding DriverLicense}" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="Телефон" Width="*" Binding="{Binding TelNumber}" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Документы" Width="0.8*" Binding="{Binding HasRequiredDocuments}" IsReadOnly="True" />
+                                    <DataGridTextColumn Header="Проверены" Width="0.8*" Binding="{Binding IsDocumentsVerified}" IsReadOnly="True" />
                                     <DataGridTextColumn Header="Админ" Width="0.7*" Binding="{Binding IsAdmin}" IsReadOnly="True" />
                                 </DataGrid.Columns>
                             </DataGrid>

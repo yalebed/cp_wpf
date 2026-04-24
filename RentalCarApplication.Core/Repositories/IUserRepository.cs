@@ -7,7 +7,7 @@ namespace RentalCarApplication.Core.Repositories
 {
     public interface IUserRepository : IRepository<User,string>
     {
-        bool CheckPassportAndLicense(string passport, string license);
+        bool CheckPassportAndLicense(string passport, string license, string excludeEmail = null);
         
     }
 }
