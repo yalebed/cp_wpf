@@ -60,6 +60,7 @@ namespace RentalCarApplication.ViewModel
             OpenPassportPhotoCommand = new RelayCommand(OnOpenPassportPhotoExecuted, CanOpenPassportPhotoExecute);
             OpenIdentitySelfiePhotoCommand = new RelayCommand(OnOpenIdentitySelfiePhotoExecuted, CanOpenIdentitySelfiePhotoExecute);
             OpenDriverLicensePhotoCommand = new RelayCommand(OnOpenDriverLicensePhotoExecuted, CanOpenDriverLicensePhotoExecute);
+            GoToOrderUserCommand = new RelayCommand(OnGoToOrderUserExecuted, CanGoToOrderUserExecute);
             DisplayUsers();
         }
 
@@ -77,6 +78,13 @@ namespace RentalCarApplication.ViewModel
         {
             get => _currentUserSurname;
             set => Set(ref _currentUserSurname, value);
+        }
+
+        private int _selectedMainTabIndex;
+        public int SelectedMainTabIndex
+        {
+            get => _selectedMainTabIndex;
+            set => Set(ref _selectedMainTabIndex, value);
         }
         #endregion
 
@@ -755,6 +763,7 @@ namespace RentalCarApplication.ViewModel
         public ICommand OpenPassportPhotoCommand { get; }
         public ICommand OpenIdentitySelfiePhotoCommand { get; }
         public ICommand OpenDriverLicensePhotoCommand { get; }
+        public ICommand GoToOrderUserCommand { get; }
 
         private bool CanChangeSelectedUserRoleExecute(object o) => true;
         private void OnChangeSelectedUserRoleExecuted(object o)
@@ -940,6 +949,28 @@ namespace RentalCarApplication.ViewModel
             try
             {
                 OpenUserDocument(SelectedUser?.DriverLicensePhotoPath, "водительское удостоверение");
+            }
+            catch (Exception ex)
+            {
+                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
+            }
+        }
+
+        private bool CanGoToOrderUserExecute(object o) => true;
+        private void OnGoToOrderUserExecuted(object o)
+        {
+            try
+            {
+                string email = o?.ToString();
+                if (string.IsNullOrWhiteSpace(email))
+                {
+                    throw new Exception("Не удалось определить пользователя заказа");
+                }
+
+                DisplayUsers();
+                FindingUserEmail = email;
+                SelectedUser = UserList?.FirstOrDefault(x => x.Email == email);
+                SelectedMainTabIndex = 2;
             }
             catch (Exception ex)
             {

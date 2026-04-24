@@ -65,7 +65,7 @@
             </Grid>
 
             <!--Pages-->
-            <TabControl Style="{StaticResource MaterialDesignAppBarTabControl}" Background="{DynamicResource PrimaryHueDarkBrush}">
+            <TabControl Style="{StaticResource MaterialDesignAppBarTabControl}" Background="{DynamicResource PrimaryHueDarkBrush}" SelectedIndex="{Binding SelectedMainTabIndex}">
 
                 <!--Cars-->
                 <TabItem>
@@ -317,7 +317,20 @@
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Заказ" Width="0.5*" Binding="{Binding OrderId}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Авто" Width="0.5*" Binding="{Binding CarId}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="Клиент" Width="*" Binding="{Binding Email}" IsReadOnly="True"/>
+                                            <DataGridTemplateColumn Header="Клиент" Width="*">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Content="{Binding Email}"
+                                                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.GoToOrderUserCommand}"
+                                                                CommandParameter="{Binding Email}"
+                                                                Style="{StaticResource MaterialDesignFlatButton}"
+                                                                HorizontalAlignment="Stretch"
+                                                                HorizontalContentAlignment="Center"
+                                                                Padding="0"
+                                                                Margin="0"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
                                             <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
@@ -357,7 +370,20 @@
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Заказ" Width="0.5*" Binding="{Binding OrderId}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Авто" Width="0.5*" Binding="{Binding CarId}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="Клиент" Width="*" Binding="{Binding Email}" IsReadOnly="True"/>
+                                            <DataGridTemplateColumn Header="Клиент" Width="*">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Content="{Binding Email}"
+                                                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.GoToOrderUserCommand}"
+                                                                CommandParameter="{Binding Email}"
+                                                                Style="{StaticResource MaterialDesignFlatButton}"
+                                                                HorizontalAlignment="Stretch"
+                                                                HorizontalContentAlignment="Center"
+                                                                Padding="0"
+                                                                Margin="0"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
                                             <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
@@ -397,7 +423,20 @@
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Заказ" Width="0.7*" Binding="{Binding OrderId}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Авто" Width="0.8*" Binding="{Binding CarId}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="Клиент" Width="*" Binding="{Binding Email}" IsReadOnly="True"/>
+                                            <DataGridTemplateColumn Header="Клиент" Width="*">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Content="{Binding Email}"
+                                                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.GoToOrderUserCommand}"
+                                                                CommandParameter="{Binding Email}"
+                                                                Style="{StaticResource MaterialDesignFlatButton}"
+                                                                HorizontalAlignment="Stretch"
+                                                                HorizontalContentAlignment="Center"
+                                                                Padding="0"
+                                                                Margin="0"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
                                             <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
@@ -461,13 +500,13 @@
                                     <ComboBoxItem Content="Админ"/>
                                     <ComboBoxItem Content="Клиент"/>
                                 </ComboBox>-->
-                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding ChangeSelectedUserRoleCommand}" Background="{DynamicResource PrimaryHueDarkBrush}" Margin="15" Width="160" >
+                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding ChangeSelectedUserRoleCommand}" Background="{DynamicResource PrimaryHueDarkBrush}" Margin="15" Width="180" >
                                     <StackPanel Orientation="Horizontal" >
                                         <materialDesign:PackIcon Kind="AccountConvert" Margin="0 0 5 0"  HorizontalAlignment="Left" VerticalAlignment="Center" />
                                         <TextBlock Text="Изменить роль" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Button>
-                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding DeleteSelectedUserCommand}" Width="150"  Margin="0 0 0 15" >
+                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding DeleteSelectedUserCommand}" Width="180"  Margin="0 0 0 15" >
                                     <StackPanel Orientation="Horizontal" >
                                         <materialDesign:PackIcon Kind="AccountCancel" Margin="0 0 5 0"  HorizontalAlignment="Left" VerticalAlignment="Center" />
                                         <TextBlock Text="Удалить" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -491,7 +530,7 @@
                                         <TextBlock Text="Права" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Button>
-                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding RefreshUsersCommand}" Width="150"  Margin="0" >
+                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding RefreshUsersCommand}" Width="180"  Margin="0" >
                                     <StackPanel Orientation="Horizontal" >
                                         <materialDesign:PackIcon Kind="Refresh" Margin="0 0 5 0"  HorizontalAlignment="Left" VerticalAlignment="Center" />
                                         <TextBlock Text="Обновить" HorizontalAlignment="Center" VerticalAlignment="Center"/>
