@@ -19,9 +19,11 @@ namespace RentalCarApplication.ViewModel
     public class HomeUserViewModel : ViewModelBase
     {
         UnitOfWork unitOfWork;
+        private readonly EmailNotificationService emailNotificationService;
         public HomeUserViewModel(Navigator navigator)
         {
             unitOfWork = new UnitOfWork();
+            emailNotificationService = new EmailNotificationService();
             CurrentUser = LoginWindowViewModel.CurrentUser;
             if (CurrentUser != null)
             {
@@ -1073,6 +1075,9 @@ namespace RentalCarApplication.ViewModel
                 order.Status = false;
                 unitOfWork.OrderRepository.Update(order.OrderId, order);
                 unitOfWork.Save();
+                var car = unitOfWork.CarRepository.Find(order.CarId);
+                TrySendOrderEmail(() => emailNotificationService.SendOrderStatusNotification(order, car, "заказ отменён пользователем"),
+                    "Уведомление об отмене заказа не отправлено на почту.");
                 DisplayOrders();
                 DisplayAvailableReviewOrders();
                 var res = new CustomMessageBox("Ваш заказ отменен и перемещен во вкладку \"Отмененные\" ",
@@ -1085,6 +1090,18 @@ namespace RentalCarApplication.ViewModel
         #endregion
 
         #endregion
+
+        private void TrySendOrderEmail(Action sendAction, string warningMessage)
+        {
+            try
+            {
+                sendAction?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                new CustomMessageBox($"{warningMessage}\n{ex.Message}", MessageType.Info, MessageButtons.Ok).ShowDialog();
+            }
+        }
 
         #region ReviewsTab
 

@@ -1,0 +1,9 @@
+{
+  "Enabled": true,
+  "Host": "smtp.gmail.com",
+  "Port": 587,
+  "UseSsl": true,
+  "SenderEmail": "qawalena@gmail.com",
+  "SenderName": "RentalCarApplication",
+  "SenderPassword": "sfki lsvt ysau rmhs"
+}
