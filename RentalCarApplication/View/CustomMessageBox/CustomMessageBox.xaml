@@ -110,12 +110,22 @@
                                   VerticalScrollBarVisibility="Auto"
                                   HorizontalScrollBarVisibility="Disabled"
                                   MaxHeight="260">
-                        <TextBlock x:Name="txtMessage"
-                                   MaxWidth="400"
-                                   Margin="0,0,0,8"
-                                   FontSize="18"
-                                   TextWrapping="Wrap"
-                                   VerticalAlignment="Center" />
+                        <StackPanel>
+                            <TextBlock x:Name="txtMessage"
+                                       MaxWidth="400"
+                                       Margin="0,0,0,8"
+                                       FontSize="18"
+                                       TextWrapping="Wrap"
+                                       VerticalAlignment="Center" />
+                            <TextBlock x:Name="txtActionLink"
+                                       Visibility="Collapsed"
+                                       Margin="0,4,0,0"
+                                       Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                       FontSize="15"
+                                       TextDecorations="Underline"
+                                       Cursor="Hand"
+                                       MouseLeftButtonUp="txtActionLink_MouseLeftButtonUp" />
+                        </StackPanel>
                     </ScrollViewer>
                 </Grid>
 
@@ -126,7 +136,6 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-
                     <Button x:Name="btnOk"
                             Click="btnOk_Click"
                             Grid.Column="1"

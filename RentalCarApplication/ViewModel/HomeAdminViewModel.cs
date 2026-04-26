@@ -567,16 +567,30 @@ namespace RentalCarApplication.ViewModel
                     }
                     if (!user.IsDocumentsVerified)
                     {
-                        var verifyDocumentsResult = new CustomMessageBox("Документы пользователя еще не подтверждены. Подтвердить документы и заказ?",
-                                                MessageType.Confirmation,
-                                                MessageButtons.YesNo).ShowDialog();
-                        if (verifyDocumentsResult != true)
+                        while (!user.IsDocumentsVerified)
                         {
-                            return;
-                        }
+                            var verifyDocumentsDialog = new CustomMessageBox(
+                                "Документы пользователя еще не подтверждены. Вы можете сначала открыть их и проверить, а затем сразу принять или отклонить заказ.",
+                                MessageType.Confirmation,
+                                MessageButtons.YesNo,
+                                "Посмотреть документы",
+                                null);
+                            var verifyDocumentsResult = verifyDocumentsDialog.ShowDialog();
 
-                        user.IsDocumentsVerified = true;
-                        unitOfWork.UserRepository.Update(user.Email, user);
+                            if (verifyDocumentsDialog.ActionRequested)
+                            {
+                                ShowUserDocumentsPreview(user);
+                                continue;
+                            }
+
+                            if (verifyDocumentsResult != true)
+                            {
+                                return;
+                            }
+
+                            user.IsDocumentsVerified = true;
+                            unitOfWork.UserRepository.Update(user.Email, user);
+                        }
                     }
 
                     if (unitOfWork.OrderRepository.HasOverlappingOrder(order.CarId, order.RentDate, order.ReturnDate, order.OrderId))
@@ -910,6 +924,17 @@ namespace RentalCarApplication.ViewModel
         private void OnRefreshUsersExecuted(object o)
         {
             DisplayUsers();
+        }
+
+        private void ShowUserDocumentsPreview(User user)
+        {
+            if (user == null)
+            {
+                throw new Exception("Пользователь не найден");
+            }
+
+            UserDocumentsPreviewWindow previewWindow = new UserDocumentsPreviewWindow(user);
+            previewWindow.ShowDialog();
         }
 
         private void OpenUserDocument(string path, string documentName)

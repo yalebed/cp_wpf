@@ -17,6 +17,8 @@ namespace RentalCarApplication.View.CustomMessageBox
     /// </summary>
     public partial class CustomMessageBox : Window
     {
+        public bool ActionRequested { get; private set; }
+
         public CustomMessageBox(string Message, MessageType Type, MessageButtons Buttons)
         {
             InitializeComponent();
@@ -74,6 +76,16 @@ namespace RentalCarApplication.View.CustomMessageBox
             }
         }
 
+        public CustomMessageBox(string message, MessageType type, MessageButtons buttons, string actionButtonText, Action extraAction)
+            : this(message, type, buttons)
+        {
+            if (!string.IsNullOrWhiteSpace(actionButtonText))
+            {
+                txtActionLink.Text = actionButtonText;
+                txtActionLink.Visibility = Visibility.Visible;
+            }
+        }
+
         private void btnYes_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
@@ -102,6 +114,13 @@ namespace RentalCarApplication.View.CustomMessageBox
         {
             this.DialogResult = false;
             this.Close();
+        }
+
+        private void txtActionLink_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ActionRequested = true;
+            DialogResult = false;
+            Close();
         }
     }
     public enum MessageType
