@@ -99,15 +99,18 @@ namespace RentalCarApplication.ViewModel
         {
             try
             {
+                string aboutDocumentPath = FindAboutDocumentPath();
+                if (string.IsNullOrWhiteSpace(aboutDocumentPath))
+                {
+                    throw new Exception("Файл пояснительной записки не найден. Поместите poyasnzap.docx в папку проекта.");
+                }
 
                 var p = new Process();
-                p.StartInfo = new ProcessStartInfo(@"D:\Учеба\2 семестр\OOP\Курсач\Пояснительная_записка_(Писарик).docx")
+                p.StartInfo = new ProcessStartInfo(aboutDocumentPath)
                 {
                     UseShellExecute = true
                 };
                 p.Start();
-
-
             }
             catch (Exception ex)
             {
@@ -115,6 +118,25 @@ namespace RentalCarApplication.ViewModel
                                     MessageType.Error,
                                     MessageButtons.Ok).ShowDialog();
             }
+        }
+
+        private string FindAboutDocumentPath()
+        {
+            const string fileName = "poyasnzap.docx";
+            DirectoryInfo currentDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+
+            while (currentDirectory != null)
+            {
+                string candidate = Path.Combine(currentDirectory.FullName, fileName);
+                if (File.Exists(candidate))
+                {
+                    return candidate;
+                }
+
+                currentDirectory = currentDirectory.Parent;
+            }
+
+            return null;
         }
         #endregion
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RentalCarApplication.Base;
 using RentalCarApplication.ViewModel;
+using RentalCarApplication.View;
 using System.Windows;
 using System.Windows.Input;
 using RentalCarApplication.Infrastructure;
@@ -13,6 +14,7 @@ using RentalCarApplication.View.CustomMessageBox;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using Microsoft.Win32;
+using System.IO;
 
 namespace RentalCarApplication.ViewModel
 {
@@ -48,6 +50,7 @@ namespace RentalCarApplication.ViewModel
             ReturnEndDate = CurrentEndDate.AddMonths(1);
             PlaceOrderCommand = new RelayCommand(OnPlaceOrderExecuted, CanPlaceOrderExecute);
             RefreshOrderTabCommand = new RelayCommand(OnRefreshOrderTabExecuted, CanRefreshOrderTabExecute);
+            OpenCarAvailabilityCalendarCommand = new RelayCommand(OnOpenCarAvailabilityCalendarExecuted, CanOpenCarAvailabilityCalendarExecute);
             SearchCarCommand = new RelayCommand(OnSearchCarExecuted, CanSearchCarExecute);
             ClearSearchFieldsCommand = new RelayCommand(OnClearSearchFieldsExecuted, CanClearSearchFieldsExecute);
             DisplayCars();
@@ -86,15 +89,18 @@ namespace RentalCarApplication.ViewModel
         {
             try
             {
+                string aboutDocumentPath = FindAboutDocumentPath();
+                if (string.IsNullOrWhiteSpace(aboutDocumentPath))
+                {
+                    throw new Exception("Файл пояснительной записки не найден. Поместите poyasnzap.docx в папку проекта.");
+                }
 
                 var p = new Process();
-                p.StartInfo = new ProcessStartInfo(@"D:\Учеба\2 семестр\OOP\Курсач\Пояснительная_записка_(Писарик).docx")
+                p.StartInfo = new ProcessStartInfo(aboutDocumentPath)
                 {
                     UseShellExecute = true
                 };
                 p.Start();
-
-
             }
             catch (Exception ex)
             {
@@ -102,6 +108,25 @@ namespace RentalCarApplication.ViewModel
                                     MessageType.Error,
                                     MessageButtons.Ok).ShowDialog();
             }
+        }
+
+        private string FindAboutDocumentPath()
+        {
+            const string fileName = "poyasnzap.docx";
+            DirectoryInfo currentDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+
+            while (currentDirectory != null)
+            {
+                string candidate = Path.Combine(currentDirectory.FullName, fileName);
+                if (File.Exists(candidate))
+                {
+                    return candidate;
+                }
+
+                currentDirectory = currentDirectory.Parent;
+            }
+
+            return null;
         }
         #endregion
 
@@ -366,6 +391,7 @@ namespace RentalCarApplication.ViewModel
 
         #region PlaceOrder
         public ICommand PlaceOrderCommand { get; }
+        public ICommand OpenCarAvailabilityCalendarCommand { get; }
         private bool CanPlaceOrderExecute(object o) => true;
         private void OnPlaceOrderExecuted(object o)
         {
@@ -429,6 +455,40 @@ namespace RentalCarApplication.ViewModel
         }
         #endregion
 
+        #region CarAvailabilityCalendar
+        private bool CanOpenCarAvailabilityCalendarExecute(object o) => true;
+        private void OnOpenCarAvailabilityCalendarExecuted(object o)
+        {
+            try
+            {
+                if (SelectedCar == null)
+                {
+                    throw new Exception("Выберите автомобиль");
+                }
+
+                var periods = ((List<Order>)unitOfWork.OrderRepository.FindAll())
+                    .Where(x => x.CarId == SelectedCar.CarId && x.Status != false)
+                    .OrderBy(x => x.RentDate)
+                    .Select(x => new CarAvailabilityPeriod
+                    {
+                        RentDate = x.RentDate,
+                        ReturnDate = x.ReturnDate,
+                        StatusText = x.Status == true ? "Подтвержден" : "Ожидает подтверждения"
+                    })
+                    .ToList();
+
+                CarAvailabilityCalendarWindow calendarWindow = new CarAvailabilityCalendarWindow(SelectedCar, periods);
+                calendarWindow.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                var result = new CustomMessageBox(ex.Message,
+                                    MessageType.Error,
+                                    MessageButtons.Ok).ShowDialog();
+            }
+        }
+        #endregion
+
         #region SearchCar
 
         #region SearchCarCommand
@@ -438,107 +498,64 @@ namespace RentalCarApplication.ViewModel
         {
             try
             {
-                //List<Car> _carList = new List<Car>();
-                List<Car> _tempCarList = new List<Car>();
-                List<Car> _tempList = new List<Car>();
+                var filteredCars = ((List<Car>)unitOfWork.CarRepository.FindAll()).AsEnumerable();
 
-                //_carList.AddRange(CarList);
-                _tempCarList = (List<Car>)unitOfWork.CarRepository.FindAll();
                 if (!String.IsNullOrEmpty(SearchBrand))
                 {
-                    _tempList.Clear();
-                    foreach (var n in _tempCarList)
-                    {
-                        if (Regex.IsMatch(n.Brand, SearchBrand, RegexOptions.IgnoreCase))
-                        {
-                            _tempList.Add(n);
-                        }
-                    }
-                    _tempCarList.Clear();
-                    _tempCarList.AddRange(_tempList);
+                    filteredCars = filteredCars.Where(n => Regex.IsMatch(n.Brand, SearchBrand, RegexOptions.IgnoreCase));
                 }
 
                 if (!String.IsNullOrEmpty(SearchBodyType))
                 {
-                    _tempList.Clear();
-                    foreach (var n in _tempCarList)
-                    {
-                        if (Regex.IsMatch(n.BodyType, SearchBodyType, RegexOptions.IgnoreCase))
-                        {
-                            _tempList.Add(n);
-                        }
-                    }
-                    _tempCarList.Clear();
-                    _tempCarList.AddRange(_tempList);
+                    filteredCars = filteredCars.Where(n => Regex.IsMatch(n.BodyType, SearchBodyType, RegexOptions.IgnoreCase));
                 }
 
                 if (!String.IsNullOrEmpty(SearchSeats))
                 {
-                    _tempList.Clear();
-                    foreach (var n in _tempCarList)
-                    {
-                        if (Regex.IsMatch(n.Seats.ToString(), SearchSeats, RegexOptions.IgnoreCase))
-                        {
-                            _tempList.Add(n);
-                        }
-                    }
-                    _tempCarList.Clear();
-                    _tempCarList.AddRange(_tempList);
+                    filteredCars = filteredCars.Where(n => Regex.IsMatch(n.Seats.ToString(), SearchSeats, RegexOptions.IgnoreCase));
                 }
 
                 if (!String.IsNullOrEmpty(SearchGearBox))
                 {
-                    _tempList.Clear();
-                    foreach (var n in _tempCarList)
-                    {
-                        if (Regex.IsMatch(n.GearBox, SearchGearBox, RegexOptions.IgnoreCase))
-                        {
-                            _tempList.Add(n);
-                        }
-                    }
-                    _tempCarList.Clear();
-                    _tempCarList.AddRange(_tempList);
+                    filteredCars = filteredCars.Where(n => Regex.IsMatch(n.GearBox, SearchGearBox, RegexOptions.IgnoreCase));
                 }
 
                 if (!String.IsNullOrEmpty(SearchPriceFrom))
                 {
-                    _tempList.Clear();
-                    foreach (var n in _tempCarList)
-                    {
-                        if ((n.Price >= Convert.ToDouble(SearchPriceFrom)))
-                        {
-                            _tempList.Add(n);
-                        }
-                    }
-                    _tempCarList.Clear();
-                    _tempCarList.AddRange(_tempList);
+                    filteredCars = filteredCars.Where(n => n.Price >= Convert.ToDouble(SearchPriceFrom));
                 }
 
                 if (!String.IsNullOrEmpty(SearchPriceTo))
                 {
-                    _tempList.Clear();
-                    foreach (var n in _tempCarList)
+                    filteredCars = filteredCars.Where(n => n.Price <= Convert.ToDouble(SearchPriceTo));
+                }
+
+                if (SearchOnlyAvailableCars)
+                {
+                    if (ReturnDate <= RentDate)
                     {
-                        if ((n.Price <= Convert.ToDouble(SearchPriceTo)))
-                        {
-                            _tempList.Add(n);
-                        }
+                        throw new Exception("Укажите корректные даты аренды для проверки доступности");
                     }
-                    _tempCarList.Clear();
-                    _tempCarList.AddRange(_tempList);
-                }
-                _tempCarList.Clear();
-                _tempCarList.AddRange(_tempList);
 
-                if (_tempCarList.Count == 0)
-                {
-                    throw new Exception("Автомобилей с такими параметрами не найдено");
-                }
-                else
-                {
-                    CarList = _tempCarList;
+                    var busyCarIds = ((List<Order>)unitOfWork.OrderRepository.FindAll())
+                        .Where(n => n.Status != false && RentDate < n.ReturnDate && ReturnDate > n.RentDate)
+                        .Select(n => n.CarId)
+                        .Distinct()
+                        .ToHashSet();
+
+                    filteredCars = filteredCars.Where(n => !busyCarIds.Contains(n.CarId));
                 }
 
+                var resultCars = filteredCars.ToList();
+
+                if (resultCars.Count == 0)
+                {
+                    throw new Exception(SearchOnlyAvailableCars
+                        ? "Автомобилей с такими параметрами на выбранные даты не найдено"
+                        : "Автомобилей с такими параметрами не найдено");
+                }
+
+                CarList = resultCars;
             }
             catch (Exception ex)
             {
@@ -625,6 +642,13 @@ namespace RentalCarApplication.ViewModel
             set => Set(ref _searchPriceTo, value);
         }
 
+        private bool _searchOnlyAvailableCars;
+        public bool SearchOnlyAvailableCars
+        {
+            get => _searchOnlyAvailableCars;
+            set => Set(ref _searchOnlyAvailableCars, value);
+        }
+
         #endregion
 
         #region ClearSearchFields
@@ -638,6 +662,7 @@ namespace RentalCarApplication.ViewModel
             SearchBodyType = "";
             SearchPriceFrom = "";
             SearchPriceTo = "";
+            SearchOnlyAvailableCars = false;
             //SearchBrandList.Clear();
             DisplayCars();
         }
@@ -1412,6 +1437,14 @@ namespace RentalCarApplication.ViewModel
         public Order Order { get; set; }
         public string Title { get; set; }
         public string Details { get; set; }
+    }
+
+    public class CarAvailabilityPeriod
+    {
+        public DateTime RentDate { get; set; }
+        public DateTime ReturnDate { get; set; }
+        public string StatusText { get; set; }
+        public string PeriodText => $"{RentDate:dd.MM.yyyy} - {ReturnDate:dd.MM.yyyy}";
     }
 
 }
