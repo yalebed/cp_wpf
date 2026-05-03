@@ -292,20 +292,23 @@
 
                     <TabItem.Content>
                         <TabControl Style="{StaticResource MaterialDesignAppBarTabControl}" Background="{DynamicResource PrimaryHueMidBrush}" >
-                            <TabItem >
+                            <TabItem>
                                 <TabItem.Header>
-                                    <TextBlock Text="Ожидающие Подтверждения" Foreground="White" FontSize="15" />
+                                    <StackPanel Orientation="Horizontal" Width="300" HorizontalAlignment="Center">
+                                        <materialDesign:PackIcon Kind="Clock" Width="20" Height="20" Margin="0 0 10 0" Foreground="White"/>
+                                        <TextBlock Text="Ожидающие подтверждения" Foreground="White" FontSize="15" />
+                                    </StackPanel>
                                 </TabItem.Header>
                                 <DockPanel LastChildFill="True" Background="{DynamicResource PrimaryHueMidBrush}">
-                                    <StackPanel  Margin="30 10 10 0" Grid.Column="0" Grid.Row="0" Orientation="Horizontal" DockPanel.Dock="Top">
+                                    <StackPanel Margin="30 10 10 0" Grid.Column="0" Grid.Row="0" Orientation="Horizontal" DockPanel.Dock="Top">
                                         <Border CornerRadius="15" Background="WhiteSmoke" Padding="15 0 0 0" HorizontalAlignment="Left">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="6*"></ColumnDefinition>
                                                     <ColumnDefinition></ColumnDefinition>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBox Grid.Column="0" FontSize="15" Text="{Binding FindingOrderNumber}"  Width="400" materialDesign:HintAssist.Hint="Введите номер заказа"/>
-                                                <Button Grid.Column="1"  Style="{StaticResource MaterialDesignIconForegroundButton}" Command="{Binding FindOrderByNumberCommand}" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="MaterialDesignIconForegroundButton">
+                                                <TextBox Grid.Column="0" FontSize="15" Text="{Binding FindingOrderNumber}" Width="400" materialDesign:HintAssist.Hint="Введите номер заказа"/>
+                                                <Button Grid.Column="1" Style="{StaticResource MaterialDesignIconForegroundButton}" Command="{Binding FindOrderByNumberCommand}" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center">
                                                     <materialDesign:PackIcon Kind="Magnify" />
                                                 </Button>
                                             </Grid>
@@ -339,16 +342,16 @@
                                             <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Цена($)" Width="0.5*" Binding="{Binding Price}" IsReadOnly="True"/>
-                                            <DataGridTemplateColumn >
+                                            <DataGridTemplateColumn>
                                                 <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate >
+                                                    <DataTemplate>
                                                         <Button Content="{materialDesign:PackIcon Kind=CheckBold,Size=20}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.ConfirmOrderCommand}" Foreground="{StaticResource PrimaryHueDarkBrush}" Style="{StaticResource MaterialDesignIconForegroundButton}"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
                                             <DataGridTemplateColumn>
                                                 <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate >
+                                                    <DataTemplate>
                                                         <Button Content="{materialDesign:PackIcon Kind=ClearBold,Size=20}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.CancelOrderCommand}" Foreground="DarkRed" Style="{StaticResource MaterialDesignIconForegroundButton}"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -357,62 +360,126 @@
                                     </DataGrid>
                                 </DockPanel>
                             </TabItem>
+
                             <TabItem >
                                 <TabItem.Header>
-                                    <TextBlock Text="Подтвержденные" Foreground="White" FontSize="14" />
+                                    <StackPanel Orientation="Horizontal" Width="300" HorizontalAlignment="Center">
+                                        <materialDesign:PackIcon Kind="Check" Width="20" Height="20" Margin="0 0 10 0" Foreground="White"/>
+                                        <TextBlock Text="Подтвержденные" Foreground="White" FontSize="15" />
+                                    </StackPanel>
                                 </TabItem.Header>
-                                <DockPanel LastChildFill="True" Background="{DynamicResource PrimaryHueMidBrush}">
-                                        <StackPanel DockPanel.Dock="Right" Width="150">
-                                            <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding RefreshOrdersCommand}" Width="120" materialDesign:ButtonAssist.CornerRadius="10" Margin="15" >
-                                                <StackPanel Orientation="Horizontal" >
-                                                    <materialDesign:PackIcon Kind="Refresh" Margin="0 0 5 0"  HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                                    <TextBlock Text="Обновить" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                </StackPanel>
-                                            </Button>
-                                        </StackPanel>
-                                    <DataGrid x:Name="carGrid1" Style="{StaticResource CustomDataGrid}" ItemsSource="{Binding ConfirmedOrders}" RowHeight="30" Margin="5">
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Заказ" Width="0.5*" Binding="{Binding OrderId}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="Авто" Width="0.5*" Binding="{Binding CarId}" IsReadOnly="True"/>
-                                            <DataGridTemplateColumn Header="Клиент" Width="*">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <Button Content="{Binding Email}"
-                                                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.GoToOrderUserCommand}"
-                                                                CommandParameter="{Binding Email}"
-                                                                Style="{StaticResource MaterialDesignFlatButton}"
-                                                                HorizontalAlignment="Stretch"
-                                                                HorizontalContentAlignment="Center"
-                                                                Padding="0"
-                                                                Margin="0"/>
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
-                                            <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="Цена($)" Width="*" Binding="{Binding Price}" IsReadOnly="True"/>
-                                            <!--<DataGridTemplateColumn >
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate >
-                                                        <Button Content="{materialDesign:PackIcon Kind=CheckBold,Size=20}" Foreground="{StaticResource PrimaryHueDarkBrush}" Style="{StaticResource MaterialDesignIconForegroundButton}"/>
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>-->
-                                            <!--<DataGridTemplateColumn>
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate >
-                                                        <Button Content="{materialDesign:PackIcon Kind=ClearBold,Size=20}" Foreground="DarkRed" Style="{StaticResource MaterialDesignIconForegroundButton}"/>
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>-->
-                                        </DataGrid.Columns>
-                                    </DataGrid>
-                                </DockPanel>
+                                <TabControl Style="{StaticResource MaterialDesignAppBarTabControl}" Background="#1AA79E">
+                                    <TabItem>
+                                        <TabItem.Header>
+                                            <StackPanel Orientation="Horizontal" Width="240" HorizontalAlignment="Center">
+                                                <materialDesign:PackIcon Kind="Check" Width="18" Height="18" Margin="0 0 8 0" Foreground="White"/>
+                                                <TextBlock Text="Подтвержденные" Foreground="White" FontSize="14" />
+                                            </StackPanel>
+                                        </TabItem.Header>
+                                        <DockPanel LastChildFill="True" Background="#1AA79E">
+                                            <StackPanel DockPanel.Dock="Right" Width="150">
+                                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding RefreshOrdersCommand}" Width="120" materialDesign:ButtonAssist.CornerRadius="10" Margin="15" >
+                                                    <StackPanel Orientation="Horizontal" >
+                                                        <materialDesign:PackIcon Kind="Refresh" Margin="0 0 5 0"  HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                                        <TextBlock Text="Обновить" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                            <DataGrid x:Name="carGrid1" Style="{StaticResource CustomDataGrid}" ItemsSource="{Binding ConfirmedOrders}" RowHeight="30" Margin="5">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="Заказ" Width="0.5*" Binding="{Binding OrderId}" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Авто" Width="0.5*" Binding="{Binding CarId}" IsReadOnly="True"/>
+                                                    <DataGridTemplateColumn Header="Клиент" Width="*">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Button Content="{Binding Email}"
+                                                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.GoToOrderUserCommand}"
+                                                                        CommandParameter="{Binding Email}"
+                                                                        Style="{StaticResource MaterialDesignFlatButton}"
+                                                                        HorizontalAlignment="Stretch"
+                                                                        HorizontalContentAlignment="Center"
+                                                                        Padding="0"
+                                                                        Margin="0"/>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                    <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Цена($)" Width="*" Binding="{Binding Price}" IsReadOnly="True"/>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </DockPanel>
+                                    </TabItem>
+                                    <TabItem>
+                                        <TabItem.Header>
+                                            <StackPanel Orientation="Horizontal" Width="240" HorizontalAlignment="Center">
+                                                <materialDesign:PackIcon Kind="ArchiveCheck" Width="18" Height="18" Margin="0 0 8 0" Foreground="White"/>
+                                                <TextBlock Text="Завершенные" Foreground="White" FontSize="14" />
+                                            </StackPanel>
+                                        </TabItem.Header>
+                                        <DockPanel LastChildFill="True" Background="#1AA79E">
+                                            <StackPanel DockPanel.Dock="Right" Width="150">
+                                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding RefreshOrdersCommand}" Width="120" materialDesign:ButtonAssist.CornerRadius="10" Margin="15" >
+                                                    <StackPanel Orientation="Horizontal" >
+                                                        <materialDesign:PackIcon Kind="Refresh" Margin="0 0 5 0"  HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                                        <TextBlock Text="Обновить" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                            <DataGrid Style="{StaticResource CustomDataGrid}" ItemsSource="{Binding CompletedOrders}" RowHeight="34" Margin="5">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="Заказ" Width="0.5*" Binding="{Binding OrderId}" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Авто" Width="0.5*" Binding="{Binding CarId}" IsReadOnly="True"/>
+                                                    <DataGridTemplateColumn Header="Клиент" Width="*">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Button Content="{Binding Email}"
+                                                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.GoToOrderUserCommand}"
+                                                                        CommandParameter="{Binding Email}"
+                                                                        Style="{StaticResource MaterialDesignFlatButton}"
+                                                                        HorizontalAlignment="Stretch"
+                                                                        HorizontalContentAlignment="Center"
+                                                                        Padding="0"
+                                                                        Margin="0"/>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                    <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Завершен" Width="*" Binding="{Binding CompletedAt}" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Цена($)" Width="0.8*" Binding="{Binding Price}" IsReadOnly="True"/>
+                                                    <DataGridTemplateColumn Header="Фото" Width="0.55*">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Button Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.OpenCompletedOrderPhotosCommand}"
+                                                                        CommandParameter="{Binding}"
+                                                                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                                        materialDesign:ButtonAssist.CornerRadius="8"
+                                                                        Width="44"
+                                                                        Height="26"
+                                                                        Padding="0"
+                                                                        Margin="2"
+                                                                        ToolTip="Открыть фото">
+                                                                    <materialDesign:PackIcon Kind="ImageMultiple" Width="18" Height="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                                </Button>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </DockPanel>
+                                    </TabItem>
+                                </TabControl>
                             </TabItem>
+
                             <TabItem >
                                 <TabItem.Header>
-                                    <TextBlock Text="Отмененные" Foreground="White" FontSize="14" />
+                                    <StackPanel Orientation="Horizontal" Width="300" HorizontalAlignment="Center">
+                                        <materialDesign:PackIcon Kind="Cancel" Width="20" Height="20" Margin="0 0 10 0" Foreground="White"/>
+                                        <TextBlock Text="Отмененные" Foreground="White" FontSize="15" />
+                                    </StackPanel>
                                 </TabItem.Header>
                                 <DockPanel LastChildFill="True" Background="{DynamicResource PrimaryHueMidBrush}">
                                     <StackPanel DockPanel.Dock="Right" Width="150">
@@ -445,20 +512,6 @@
                                             <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Цена($)" Width="*" Binding="{Binding Price}" IsReadOnly="True"/>
-                                            <!--<DataGridTemplateColumn >
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate >
-                                                        <Button Content="{materialDesign:PackIcon Kind=CheckBold,Size=20}" Foreground="{StaticResource PrimaryHueDarkBrush}" Style="{StaticResource MaterialDesignIconForegroundButton}"/>
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
-                                            <DataGridTemplateColumn>
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate >
-                                                        <Button Content="{materialDesign:PackIcon Kind=ClearBold,Size=20}" Foreground="DarkRed" Style="{StaticResource MaterialDesignIconForegroundButton}"/>
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>-->
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </DockPanel>

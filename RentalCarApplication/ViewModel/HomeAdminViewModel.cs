@@ -52,6 +52,7 @@ namespace RentalCarApplication.ViewModel
             CancelOrderCommand = new RelayCommand(OnCancelOrderExecuted, CanCancelOrderExecute);
             RefreshOrdersCommand = new RelayCommand(OnRefreshOrdersExecuted, CanRefreshOrdersExecute);
             FindOrderByNumberCommand = new RelayCommand(OnFindOrderByNumberExecuted, CanFindOrderByNumberExecute);
+            OpenCompletedOrderPhotosCommand = new RelayCommand(OnOpenCompletedOrderPhotosExecuted, CanOpenCompletedOrderPhotosExecute);
             DisplayOrders();
 
             //Users
@@ -540,6 +541,13 @@ namespace RentalCarApplication.ViewModel
             set => Set(ref _canceledOrders, value);
         }
 
+        private List<Order> _completedOrders;
+        public List<Order> CompletedOrders
+        {
+            get => _completedOrders;
+            set => Set(ref _completedOrders, value);
+        }
+
         private Order _selectedOrder;
         public Order SelectedOrder
         {
@@ -553,7 +561,8 @@ namespace RentalCarApplication.ViewModel
         {
             AllOrders = (List<Order>)unitOfWork.OrderRepository.FindAll();
             WaitingOrders = AllOrders.Where(x => x.Status == null).ToList();
-            ConfirmedOrders = AllOrders.Where(x => x.Status == true).ToList();
+            ConfirmedOrders = AllOrders.Where(x => x.Status == true && x.CompletedAt == null).ToList();
+            CompletedOrders = AllOrders.Where(x => x.Status == true && x.CompletedAt != null).ToList();
             CanceledOrders = AllOrders.Where(x => x.Status == false).ToList();
         }
 
@@ -645,6 +654,7 @@ namespace RentalCarApplication.ViewModel
         #region CancelOrder
 
         public ICommand CancelOrderCommand { get; }
+        public ICommand OpenCompletedOrderPhotosCommand { get; }
 
         private bool CanCancelOrderExecute(object o) => true;
         private void OnCancelOrderExecuted(object o)
@@ -671,6 +681,35 @@ namespace RentalCarApplication.ViewModel
         }
 
         #endregion
+
+        private bool CanOpenCompletedOrderPhotosExecute(object o) => true;
+        private void OnOpenCompletedOrderPhotosExecuted(object o)
+        {
+            try
+            {
+                var order = o as Order ?? SelectedOrder;
+                if (order == null)
+                {
+                    throw new Exception("Выберите завершенный заказ");
+                }
+
+                if (string.IsNullOrWhiteSpace(order.FrontPhotoPath) &&
+                    string.IsNullOrWhiteSpace(order.RearPhotoPath) &&
+                    string.IsNullOrWhiteSpace(order.SidePhotoPath))
+                {
+                    throw new Exception("К этому заказу не прикреплены фотографии завершения");
+                }
+
+                CompletedOrderPhotosWindow photosWindow = new CompletedOrderPhotosWindow(order);
+                photosWindow.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                var result = new CustomMessageBox(ex.Message,
+                                    MessageType.Error,
+                                    MessageButtons.Ok).ShowDialog();
+            }
+        }
 
         #region RefreshOrders
         public ICommand RefreshOrdersCommand { get; }

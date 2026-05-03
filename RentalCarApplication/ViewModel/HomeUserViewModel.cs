@@ -70,6 +70,7 @@ namespace RentalCarApplication.ViewModel
             //OrdersBasket
             RefreshOrdersCommand = new RelayCommand(OnRefreshOrdersExecuted, CanRefreshOrdersExecute);
             CancelOrderCommand = new RelayCommand(OnCancelOrderExecuted, CanCancelOrderExecute);
+            CompleteOrderCommand = new RelayCommand(OnCompleteOrderExecuted, CanCompleteOrderExecute);
             DisplayOrders();
 
             //Reviews
@@ -146,6 +147,7 @@ namespace RentalCarApplication.ViewModel
             get => _currentUserSurname;
             set => Set(ref _currentUserSurname, value);
         }
+
         #endregion
 
         #region OrderTab
@@ -472,8 +474,8 @@ namespace RentalCarApplication.ViewModel
                     .Select(x => new CarAvailabilityPeriod
                     {
                         RentDate = x.RentDate,
-                        ReturnDate = x.ReturnDate,
-                        StatusText = x.Status == true ? "Подтвержден" : "Ожидает подтверждения"
+                        ReturnDate = GetOrderBusyUntil(x),
+                        StatusText = x.IsCompleted ? "Завершен" : x.Status == true ? "Подтвержден" : "Ожидает подтверждения"
                     })
                     .ToList();
 
@@ -538,7 +540,7 @@ namespace RentalCarApplication.ViewModel
                     }
 
                     var busyCarIds = ((List<Order>)unitOfWork.OrderRepository.FindAll())
-                        .Where(n => n.Status != false && RentDate < n.ReturnDate && ReturnDate > n.RentDate)
+                        .Where(n => n.Status != false && RentDate < GetOrderBusyUntil(n) && ReturnDate > n.RentDate)
                         .Select(n => n.CarId)
                         .Distinct()
                         .ToHashSet();
@@ -1044,6 +1046,20 @@ namespace RentalCarApplication.ViewModel
             set => Set(ref _confirmedOrders, value);
         }
 
+        private List<Order> _activeOrders;
+        public List<Order> ActiveOrders
+        {
+            get => _activeOrders;
+            set => Set(ref _activeOrders, value);
+        }
+
+        private List<Order> _completedOrders;
+        public List<Order> CompletedOrders
+        {
+            get => _completedOrders;
+            set => Set(ref _completedOrders, value);
+        }
+
         private List<Order> _canceledOrders;
         public List<Order> CanceledOrders
         {
@@ -1065,7 +1081,9 @@ namespace RentalCarApplication.ViewModel
         {
             AllOrders = (List<Order>)unitOfWork.OrderRepository.FindAll();
             WaitingOrders = AllOrders.Where(x => x.Email == CurrentUser.Email && x.Status == null).ToList();
-            ConfirmedOrders = AllOrders.Where(x => x.Email == CurrentUser.Email && x.Status == true).ToList();
+            ConfirmedOrders = AllOrders.Where(x => x.Email == CurrentUser.Email && x.IsUpcomingConfirmed).ToList();
+            ActiveOrders = AllOrders.Where(x => x.Email == CurrentUser.Email && x.IsActive).ToList();
+            CompletedOrders = AllOrders.Where(x => x.Email == CurrentUser.Email && x.IsCompleted).ToList();
             CanceledOrders = AllOrders.Where(x => x.Email == CurrentUser.Email && x.Status == false).ToList();
 
         }
@@ -1086,6 +1104,7 @@ namespace RentalCarApplication.ViewModel
         #region CancelOrder
         
         public ICommand CancelOrderCommand { get; }
+        public ICommand CompleteOrderCommand { get; }
 
         private bool CanCancelOrderExecute(object o) => true;
         private void OnCancelOrderExecuted(object o)
@@ -1096,7 +1115,7 @@ namespace RentalCarApplication.ViewModel
                                      MessageButtons.YesNo).ShowDialog();
             if(result == true)
             {
-                Order order = SelectedOrder;
+                Order order = GetOrderFromCommandParameter(o) ?? SelectedOrder;
                 order.Status = false;
                 unitOfWork.OrderRepository.Update(order.OrderId, order);
                 unitOfWork.Save();
@@ -1110,6 +1129,52 @@ namespace RentalCarApplication.ViewModel
                                      MessageButtons.Ok).ShowDialog();
             }
             
+        }
+
+        private bool CanCompleteOrderExecute(object o) => true;
+        private void OnCompleteOrderExecuted(object o)
+        {
+            try
+            {
+                var order = GetOrderFromCommandParameter(o) ?? SelectedOrder;
+                if (order == null)
+                {
+                    throw new Exception("Выберите активный заказ");
+                }
+
+                if (!order.IsActive)
+                {
+                    throw new Exception("Завершить можно только активный заказ");
+                }
+
+                var completionWindow = new CompleteOrderWindow(order);
+                var dialogResult = completionWindow.ShowDialog();
+                if (dialogResult != true)
+                {
+                    return;
+                }
+
+                order.FrontPhotoPath = completionWindow.FrontPhotoPath;
+                order.RearPhotoPath = completionWindow.RearPhotoPath;
+                order.SidePhotoPath = completionWindow.SidePhotoPath;
+                order.CompletedAt = DateTime.Now;
+
+                unitOfWork.OrderRepository.Update(order.OrderId, order);
+                unitOfWork.Save();
+
+                DisplayOrders();
+                DisplayAvailableReviewOrders();
+
+                new CustomMessageBox("Заказ завершен и перемещен во вкладку \"Завершенные\"",
+                    MessageType.Success,
+                    MessageButtons.Ok).ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                new CustomMessageBox(ex.Message,
+                    MessageType.Error,
+                    MessageButtons.Ok).ShowDialog();
+            }
         }
 
         #endregion
@@ -1275,8 +1340,8 @@ namespace RentalCarApplication.ViewModel
         {
             var allOrders = (List<Order>)unitOfWork.OrderRepository.FindAll();
             var availableOrders = allOrders
-                .Where(x => x.Email == CurrentUser.Email && x.Status == true && x.ReturnDate.Date <= DateTime.Today)
-                .OrderByDescending(x => x.ReturnDate)
+                .Where(x => x.Email == CurrentUser.Email && x.IsCompleted)
+                .OrderByDescending(x => x.CompletedAt ?? x.ReturnDate)
                 .ToList();
 
             foreach (var order in availableOrders)
@@ -1379,9 +1444,9 @@ namespace RentalCarApplication.ViewModel
                     throw new Exception("Выберите завершенный заказ для отзыва");
                 }
 
-                if (SelectedReviewOrder.Status != true || SelectedReviewOrder.ReturnDate.Date > DateTime.Today)
+                if (!SelectedReviewOrder.IsCompleted)
                 {
-                    throw new Exception("Оставить отзыв можно только после завершения подтвержденной аренды");
+                    throw new Exception("Оставить отзыв можно только после завершения аренды");
                 }
 
                 if (unitOfWork.ReviewRepository.ExistsForOrder(SelectedReviewOrder.OrderId))
@@ -1429,6 +1494,16 @@ namespace RentalCarApplication.ViewModel
         }
 
         #endregion
+
+        private Order GetOrderFromCommandParameter(object parameter)
+        {
+            return parameter as Order;
+        }
+
+        private DateTime GetOrderBusyUntil(Order order)
+        {
+            return order.CompletedAt ?? order.ReturnDate;
+        }
 
     }
 
