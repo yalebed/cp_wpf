@@ -1276,7 +1276,7 @@ namespace RentalCarApplication.ViewModel
 
                 var car = ReviewCarList?.FirstOrDefault(x => x.CarId == SelectedReviewOrder.CarId);
                 var brand = car?.Brand ?? $"Авто #{SelectedReviewOrder.CarId}";
-                return $"{brand}; заказ №{SelectedReviewOrder.OrderId}; период: {SelectedReviewOrder.RentDate:dd.MM.yyyy} - {SelectedReviewOrder.ReturnDate:dd.MM.yyyy}; адрес: {SelectedReviewOrder.City}; сумма: {SelectedReviewOrder.Price}$";
+                return $"{brand}; заказ №{SelectedReviewOrder.OrderId}; период: {SelectedReviewOrder.RentDate:dd.MM.yyyy} - {SelectedReviewOrder.ReturnDate:dd.MM.yyyy}; адрес: {SelectedReviewOrder.City}; сумма: {SelectedReviewOrder.Price} BYN";
             }
         }
 
@@ -1360,7 +1360,7 @@ namespace RentalCarApplication.ViewModel
                     {
                         Order = order,
                         Title = $"{brand}, заказ №{order.OrderId}, {order.RentDate:dd.MM} - {order.ReturnDate:dd.MM}",
-                        Details = $"{brand}; заказ №{order.OrderId}; период: {order.RentDate:dd.MM.yyyy} - {order.ReturnDate:dd.MM.yyyy}; адрес: {order.City}; сумма: {order.Price}${reviewStatus}"
+                        Details = $"{brand}; заказ №{order.OrderId}; период: {order.RentDate:dd.MM.yyyy} - {order.ReturnDate:dd.MM.yyyy}; адрес: {order.City}; сумма: {order.Price} BYN{reviewStatus}"
                     };
                 })
                 .ToList();

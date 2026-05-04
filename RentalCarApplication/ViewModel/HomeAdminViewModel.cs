@@ -64,7 +64,12 @@ namespace RentalCarApplication.ViewModel
             OpenIdentitySelfiePhotoCommand = new RelayCommand(OnOpenIdentitySelfiePhotoExecuted, CanOpenIdentitySelfiePhotoExecute);
             OpenDriverLicensePhotoCommand = new RelayCommand(OnOpenDriverLicensePhotoExecuted, CanOpenDriverLicensePhotoExecute);
             GoToOrderUserCommand = new RelayCommand(OnGoToOrderUserExecuted, CanGoToOrderUserExecute);
+            RefreshReviewsCommand = new RelayCommand(OnRefreshReviewsExecuted, CanRefreshReviewsExecute);
+            DeleteReviewCommand = new RelayCommand(OnDeleteReviewExecuted, CanDeleteReviewExecute);
+            OpenReviewPhotoCommand = new RelayCommand(OnOpenReviewPhotoExecuted, CanOpenReviewPhotoExecute);
+            OpenReviewDetailsCommand = new RelayCommand(OnOpenReviewDetailsExecuted, CanOpenReviewDetailsExecute);
             DisplayUsers();
+            DisplayReviews();
         }
 
         #region CurrentUser
@@ -1077,6 +1082,127 @@ namespace RentalCarApplication.ViewModel
                 FindingUserEmail = email;
                 SelectedUser = UserList?.FirstOrDefault(x => x.Email == email);
                 SelectedMainTabIndex = 2;
+            }
+            catch (Exception ex)
+            {
+                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
+            }
+        }
+
+        #endregion
+
+        #region ReviewsTab
+
+        private List<Review> _reviewList;
+        public List<Review> ReviewList
+        {
+            get => _reviewList;
+            set => Set(ref _reviewList, value);
+        }
+
+        private Review _selectedReview;
+        public Review SelectedReview
+        {
+            get => _selectedReview;
+            set => Set(ref _selectedReview, value);
+        }
+
+        public ICommand RefreshReviewsCommand { get; }
+        public ICommand DeleteReviewCommand { get; }
+        public ICommand OpenReviewPhotoCommand { get; }
+        public ICommand OpenReviewDetailsCommand { get; }
+
+        private void DisplayReviews()
+        {
+            ReviewList = ((List<Review>)unitOfWork.ReviewRepository.FindAll())
+                .OrderByDescending(x => x.CreatedAt)
+                .ToList();
+        }
+
+        private bool CanRefreshReviewsExecute(object o) => true;
+        private void OnRefreshReviewsExecuted(object o)
+        {
+            DisplayReviews();
+        }
+
+        private bool CanDeleteReviewExecute(object o) => true;
+        private void OnDeleteReviewExecuted(object o)
+        {
+            try
+            {
+                Review review = o as Review ?? SelectedReview;
+                if (review == null)
+                {
+                    throw new Exception("Выберите отзыв");
+                }
+
+                var result = new CustomMessageBox("Вы уверены, что хотите удалить выбранный отзыв?",
+                                MessageType.Confirmation,
+                                MessageButtons.YesNo).ShowDialog();
+                if (result != true)
+                {
+                    return;
+                }
+
+                unitOfWork.ReviewRepository.Delete(review.ReviewId);
+                unitOfWork.Save();
+                SelectedReview = null;
+                DisplayReviews();
+                new CustomMessageBox("Отзыв удалён", MessageType.Info, MessageButtons.Ok).ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
+            }
+        }
+
+        private bool CanOpenReviewPhotoExecute(object o) => true;
+        private void OnOpenReviewPhotoExecuted(object o)
+        {
+            try
+            {
+                Review review = o as Review ?? SelectedReview;
+                if (review == null)
+                {
+                    throw new Exception("Выберите отзыв");
+                }
+
+                if (string.IsNullOrWhiteSpace(review.PhotoPath))
+                {
+                    throw new Exception("К этому отзыву не прикреплено фото");
+                }
+
+                if (!File.Exists(review.PhotoPath))
+                {
+                    throw new Exception($"Файл не найден: {review.PhotoPath}");
+                }
+
+                var process = new Process();
+                process.StartInfo = new ProcessStartInfo(review.PhotoPath)
+                {
+                    UseShellExecute = true
+                };
+                process.Start();
+            }
+            catch (Exception ex)
+            {
+                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
+            }
+        }
+
+        private bool CanOpenReviewDetailsExecute(object o) => true;
+        private void OnOpenReviewDetailsExecuted(object o)
+        {
+            try
+            {
+                Review review = o as Review ?? SelectedReview;
+                if (review == null)
+                {
+                    throw new Exception("Выберите отзыв");
+                }
+
+                ReviewDetailsWindow detailsWindow = new ReviewDetailsWindow(review);
+                detailsWindow.ShowDialog();
             }
             catch (Exception ex)
             {

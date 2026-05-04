@@ -96,7 +96,7 @@ $@"Здравствуйте!
 Дата аренды: {order.RentDate:dd.MM.yyyy}
 Дата возврата: {order.ReturnDate:dd.MM.yyyy}
 Адрес получения: {order.City}
-Стоимость: {order.Price}$";
+Стоимость: {order.Price} BYN";
         }
 
         private static string GetFriendlySmtpMessage(SmtpException ex)

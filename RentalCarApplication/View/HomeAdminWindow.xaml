@@ -71,8 +71,8 @@
                 <TabItem>
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal" >
+                            <materialDesign:PackIcon Kind="CarSaloon" Width="30" Height="30" Margin="0 0 10 0" Foreground="WhiteSmoke" />
                             <TextBlock Text="Автомобили" FontSize="18" Visibility="visible" Margin="0 1 0 0"  Foreground="White" />
-                            <materialDesign:PackIcon Kind="CarSaloon" Width="30" Height="30" Margin="7 0 0 0" Foreground="WhiteSmoke" />
                         </StackPanel>
                     </TabItem.Header>
                     <TabItem.Content>
@@ -164,7 +164,7 @@
                                                         <TextBlock FontSize="16" Grid.Row="0" Grid.Column="0" Text="КПП:" Margin="0 5 10 0" />
                                                         <TextBlock FontSize="16" Grid.Row="1" Grid.Column="0" Text="Объем:" Margin="0 5 10 0" />
                                                         <TextBlock FontSize="16" Grid.Row="2" Grid.Column="0" Text="Расход:" Margin="0 5 10 0" />
-                                                        <TextBlock FontSize="16" Grid.Row="3" Grid.Column="0" Text="Цена($):" Margin="0 5 10 0" FontWeight="Bold"/>
+                                                        <TextBlock FontSize="16" Grid.Row="3" Grid.Column="0" Text="Цена(BYN):" Margin="0 5 10 0" FontWeight="Bold"/>
 
                                                         <TextBlock FontSize="15" Grid.Row="0" Grid.Column="1" Text="{Binding GearBox}" FontWeight="Medium" Margin="0 7 0 0" TextWrapping="Wrap"/>
                                                         <TextBlock FontSize="15" Grid.Row="1" Grid.Column="1" Text="{Binding EngineCapacity}" FontWeight="Medium" Margin="0 7 0 0" TextWrapping="Wrap"/>
@@ -232,7 +232,7 @@
                                                     <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.HelperText="x,x" Text="{Binding CarConsumption}" Margin="0 0 10 0" Width="150" VerticalAlignment="Top" FontSize="15"   materialDesign:HintAssist.Hint="Расход топлива"/>
                                                 </DockPanel>
                                                 <DockPanel LastChildFill="true" Margin="0 0 10 12">
-                                                    <materialDesign:PackIcon Kind="Dollar" Width="30" Height="30" Margin="0 10 0 0" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="BYN" Width="30" Margin="0 10 0 0" FontSize="16" FontWeight="SemiBold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding CarPrice}" Margin="0 0 10 0" Width="150" VerticalAlignment="Top" FontSize="15"   materialDesign:HintAssist.Hint="Цена"/>
                                                 </DockPanel>
                                                 <DockPanel LastChildFill="true" Margin="0 0 10 12">
@@ -285,8 +285,8 @@
                 <TabItem>
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal" >
+                            <materialDesign:PackIcon Kind="OrderBoolDescendingVariant" Width="30" Height="30" Margin="0 0 10 0" Foreground="White"/>
                             <TextBlock Text="Заказы" FontSize="18" Foreground="White"/>
-                            <materialDesign:PackIcon Kind="OrderBoolDescendingVariant" Width="30" Height="30" Margin="10 0 0 0" Foreground="White"/>
                         </StackPanel>
                     </TabItem.Header>
 
@@ -294,7 +294,7 @@
                         <TabControl Style="{StaticResource MaterialDesignAppBarTabControl}" Background="{DynamicResource PrimaryHueMidBrush}" >
                             <TabItem>
                                 <TabItem.Header>
-                                    <StackPanel Orientation="Horizontal" Width="300" HorizontalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" Width="235" HorizontalAlignment="Center">
                                         <materialDesign:PackIcon Kind="Clock" Width="20" Height="20" Margin="0 0 10 0" Foreground="White"/>
                                         <TextBlock Text="Ожидающие подтверждения" Foreground="White" FontSize="15" />
                                     </StackPanel>
@@ -341,7 +341,7 @@
                                             <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="Цена($)" Width="0.5*" Binding="{Binding Price}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="Цена(BYN)" Width="0.5*" Binding="{Binding Price}" IsReadOnly="True"/>
                                             <DataGridTemplateColumn>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
@@ -363,7 +363,7 @@
 
                             <TabItem >
                                 <TabItem.Header>
-                                    <StackPanel Orientation="Horizontal" Width="300" HorizontalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" Width="235" HorizontalAlignment="Center">
                                         <materialDesign:PackIcon Kind="Check" Width="20" Height="20" Margin="0 0 10 0" Foreground="White"/>
                                         <TextBlock Text="Подтвержденные" Foreground="White" FontSize="15" />
                                     </StackPanel>
@@ -371,7 +371,7 @@
                                 <TabControl Style="{StaticResource MaterialDesignAppBarTabControl}" Background="#1AA79E">
                                     <TabItem>
                                         <TabItem.Header>
-                                            <StackPanel Orientation="Horizontal" Width="240" HorizontalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal" Width="235" HorizontalAlignment="Center">
                                                 <materialDesign:PackIcon Kind="Check" Width="18" Height="18" Margin="0 0 8 0" Foreground="White"/>
                                                 <TextBlock Text="Подтвержденные" Foreground="White" FontSize="14" />
                                             </StackPanel>
@@ -406,14 +406,14 @@
                                                     <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
-                                                    <DataGridTextColumn Header="Цена($)" Width="*" Binding="{Binding Price}" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Цена(BYN)" Width="*" Binding="{Binding Price}" IsReadOnly="True"/>
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                         </DockPanel>
                                     </TabItem>
                                     <TabItem>
                                         <TabItem.Header>
-                                            <StackPanel Orientation="Horizontal" Width="240" HorizontalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal" Width="235" HorizontalAlignment="Center">
                                                 <materialDesign:PackIcon Kind="ArchiveCheck" Width="18" Height="18" Margin="0 0 8 0" Foreground="White"/>
                                                 <TextBlock Text="Завершенные" Foreground="White" FontSize="14" />
                                             </StackPanel>
@@ -449,7 +449,7 @@
                                                     <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Завершен" Width="*" Binding="{Binding CompletedAt}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
-                                                    <DataGridTextColumn Header="Цена($)" Width="0.8*" Binding="{Binding Price}" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Цена(BYN)" Width="0.8*" Binding="{Binding Price}" IsReadOnly="True"/>
                                                     <DataGridTemplateColumn Header="Фото" Width="0.55*">
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
@@ -476,7 +476,7 @@
 
                             <TabItem >
                                 <TabItem.Header>
-                                    <StackPanel Orientation="Horizontal" Width="300" HorizontalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" Width="235" HorizontalAlignment="Center">
                                         <materialDesign:PackIcon Kind="Cancel" Width="20" Height="20" Margin="0 0 10 0" Foreground="White"/>
                                         <TextBlock Text="Отмененные" Foreground="White" FontSize="15" />
                                     </StackPanel>
@@ -511,7 +511,7 @@
                                             <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="Цена($)" Width="*" Binding="{Binding Price}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="Цена(BYN)" Width="*" Binding="{Binding Price}" IsReadOnly="True"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </DockPanel>
@@ -524,8 +524,8 @@
                 <TabItem>
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal" >
+                            <materialDesign:PackIcon Kind="Person" Width="30" Height="30" Margin="0 0 10 0" Foreground="White"/>
                             <TextBlock Text="Пользователи" FontSize="18" Foreground="White"/>
-                            <materialDesign:PackIcon Kind="Person" Width="30" Height="30" Margin="10 0 0 0" Foreground="White"/>
                         </StackPanel>
                     </TabItem.Header>
                     <TabItem.Content>
@@ -605,6 +605,101 @@
                                     <DataGridTextColumn Header="Документы" Width="0.8*" Binding="{Binding HasRequiredDocuments}" IsReadOnly="True" />
                                     <DataGridTextColumn Header="Проверены" Width="0.8*" Binding="{Binding IsDocumentsVerified}" IsReadOnly="True" />
                                     <DataGridTextColumn Header="Админ" Width="0.7*" Binding="{Binding IsAdmin}" IsReadOnly="True" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DockPanel>
+                    </TabItem.Content>
+                </TabItem>
+
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="CommentTextMultiple" Width="30" Height="30" Margin="0 0 10 0" Foreground="White"/>
+                            <TextBlock Text="Отзывы" FontSize="18" Foreground="White"/>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <TabItem.Content>
+                        <DockPanel LastChildFill="True" Background="{DynamicResource PrimaryHueMidBrush}">
+                            <StackPanel DockPanel.Dock="Right" Width="220">
+                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding OpenReviewPhotoCommand}" Width="180" Margin="15 15 15 10">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Image" Margin="0 0 5 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                        <TextBlock Text="Открыть фото" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding DeleteReviewCommand}" Width="180" Margin="15 0 15 10">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Delete" Margin="0 0 5 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                        <TextBlock Text="Удалить отзыв" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding RefreshReviewsCommand}" Width="180" Margin="15 0 15 0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Refresh" Margin="0 0 5 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                        <TextBlock Text="Обновить" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <DataGrid Style="{StaticResource CustomDataGrid}" ItemsSource="{Binding ReviewList}" SelectedItem="{Binding SelectedReview}" RowHeight="38" Margin="5">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Width="0.45*" Binding="{Binding ReviewId}" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Авто" Width="0.8*" Binding="{Binding Car.Brand}" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Клиент" Width="1.1*" Binding="{Binding Email}" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Оценка" Width="0.7*" Binding="{Binding RatingStars}" IsReadOnly="True"/>
+                                    <DataGridTemplateColumn Header="Отзыв" Width="2.2*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.OpenReviewDetailsCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource MaterialDesignFlatButton}"
+                                                        HorizontalAlignment="Stretch"
+                                                        HorizontalContentAlignment="Left"
+                                                        Padding="6 2"
+                                                        Margin="0">
+                                                    <TextBlock Text="{Binding Text}"
+                                                               TextWrapping="Wrap"
+                                                               TextTrimming="CharacterEllipsis"
+                                                               MaxHeight="38"
+                                                               VerticalAlignment="Center"/>
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Дата" Width="0.9*" Binding="{Binding CreatedAt}" IsReadOnly="True"/>
+                                    <DataGridTemplateColumn Header="Фото" Width="0.55*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.OpenReviewPhotoCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                        materialDesign:ButtonAssist.CornerRadius="8"
+                                                        Width="44"
+                                                        Height="26"
+                                                        Padding="0"
+                                                        Margin="2"
+                                                        ToolTip="Открыть фото">
+                                                    <materialDesign:PackIcon Kind="Image" Width="18" Height="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Удалить" Width="0.65*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.DeleteReviewCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                        materialDesign:ButtonAssist.CornerRadius="8"
+                                                        Width="44"
+                                                        Height="26"
+                                                        Padding="0"
+                                                        Margin="2"
+                                                        ToolTip="Удалить отзыв">
+                                                    <materialDesign:PackIcon Kind="Delete" Width="18" Height="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </DockPanel>
