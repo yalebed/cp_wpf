@@ -148,10 +148,15 @@
                             </StackPanel>
 
                             <Border Grid.Column="1"  Margin="0 5 0 5" Padding="3 10 3 10" BorderBrush="Gainsboro" Background="WhiteSmoke" BorderThickness="1" >
-                                <ListBox ItemsSource="{Binding CarList}" SelectedItem="{Binding SelectedCar, Mode=TwoWay}" HorizontalContentAlignment="Stretch">
+                                <ListBox ItemsSource="{Binding CarList}"
+                                         SelectedItem="{Binding SelectedCar, Mode=TwoWay}"
+                                         HorizontalContentAlignment="Stretch"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                         ScrollViewer.CanContentScroll="False">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Height="170" Margin="0 0 10 10" Background="#D8D8D8" Padding="10">
+                                            <Border Height="170" Width="670" Margin="0 0 10 10" Background="#D8D8D8" Padding="10">
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="220"/>
