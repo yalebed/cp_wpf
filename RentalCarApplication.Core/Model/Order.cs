@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using System.Windows.Input;
 
 namespace RentalCarApplication.Core.Model
 {
@@ -11,13 +9,12 @@ namespace RentalCarApplication.Core.Model
     {
         public int OrderId { get; set; }
 
-        [Required(ErrorMessage = "Введите адресс заказа")]
-        public string City { get; set; }
         [Required(ErrorMessage = "Выберите дату заказа")]
         public DateTime RentDate { get; set; }
 
         [Required(ErrorMessage = "Выберите дату возврата")]
         public DateTime ReturnDate { get; set; }
+
         public bool? Status { get; set; }
         public double Price { get; set; }
         public string FrontPhotoPath { get; set; }
@@ -49,7 +46,5 @@ namespace RentalCarApplication.Core.Model
 
         [NotMapped]
         public DateTime CompletionDate => CompletedAt ?? ReturnDate;
-
     }
-
 }

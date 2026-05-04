@@ -340,7 +340,6 @@
                                             </DataGridTemplateColumn>
                                             <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Цена(BYN)" Width="0.5*" Binding="{Binding Price}" IsReadOnly="True"/>
                                             <DataGridTemplateColumn>
                                                 <DataGridTemplateColumn.CellTemplate>
@@ -405,7 +404,6 @@
                                                     </DataGridTemplateColumn>
                                                     <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
-                                                    <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Цена(BYN)" Width="*" Binding="{Binding Price}" IsReadOnly="True"/>
                                                 </DataGrid.Columns>
                                             </DataGrid>
@@ -448,7 +446,6 @@
                                                     <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Завершен" Width="*" Binding="{Binding CompletedAt}" IsReadOnly="True"/>
-                                                    <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Цена(BYN)" Width="0.8*" Binding="{Binding Price}" IsReadOnly="True"/>
                                                     <DataGridTemplateColumn Header="Фото" Width="0.55*">
                                                         <DataGridTemplateColumn.CellTemplate>
@@ -510,7 +507,6 @@
                                             </DataGridTemplateColumn>
                                             <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Цена(BYN)" Width="*" Binding="{Binding Price}" IsReadOnly="True"/>
                                         </DataGrid.Columns>
                                     </DataGrid>

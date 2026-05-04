@@ -15,6 +15,7 @@ namespace RentalCarApplication.EntityFramework
         {
             EnsureOrderStatusCompatibility();
             EnsureOrderCompletionCompatibility();
+            EnsureOrderCityCompatibility();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -121,6 +122,28 @@ end
             }
             catch
             {
+            }
+        }
+
+        private void EnsureOrderCityCompatibility()
+        {
+            try
+            {
+                Database.ExecuteSqlRaw(@"
+if exists (
+    select 1
+    from sys.columns
+    where object_id = object_id('Orders')
+      and name = 'City'
+)
+begin
+    alter table Orders drop column City
+end
+");
+            }
+            catch
+            {
+                // Best-effort compatibility patch for local existing databases.
             }
         }
     }

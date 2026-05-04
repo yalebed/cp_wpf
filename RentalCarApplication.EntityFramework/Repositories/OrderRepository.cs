@@ -4,6 +4,7 @@ using RentalCarApplication.Core.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,20 +21,36 @@ namespace RentalCarApplication.EntityFramework.Repositories
 
         public Order Create(Order entity)
         {
-            var order = _context.Set<Order>().Add(entity).Entity;
-            return order;
+            ExecuteOrderCommand(command =>
+            {
+                bool statusIsString = IsStatusStringColumn(command.Connection);
+                command.CommandText = statusIsString
+                    ? @"
+INSERT INTO Orders
+    (RentDate, ReturnDate, Status, Price, FrontPhotoPath, RearPhotoPath, SidePhotoPath, CompletedAt, CarId, Email)
+VALUES
+    (@RentDate, @ReturnDate, @StatusText, @Price, @FrontPhotoPath, @RearPhotoPath, @SidePhotoPath, @CompletedAt, @CarId, @Email)"
+                    : @"
+INSERT INTO Orders
+    (RentDate, ReturnDate, Status, Price, FrontPhotoPath, RearPhotoPath, SidePhotoPath, CompletedAt, CarId, Email)
+VALUES
+    (@RentDate, @ReturnDate, @StatusBit, @Price, @FrontPhotoPath, @RearPhotoPath, @SidePhotoPath, @CompletedAt, @CarId, @Email)";
+
+                AddCommonOrderParameters(command, entity, statusIsString);
+                command.ExecuteNonQuery();
+            });
+
+            return entity;
         }
 
         public bool Delete(int id)
         {
-            var entity = _context.Set<Order>().Find(id);
-            if (entity != null)
+            return ExecuteOrderCommand(command =>
             {
-                _context.Set<Order>().Remove(entity);
-                return true;
-            }
-
-            return false;
+                command.CommandText = "DELETE FROM Orders WHERE OrderId = @OrderId";
+                AddParameter(command, "@OrderId", id);
+                return command.ExecuteNonQuery() > 0;
+            });
         }
 
         public bool CheckUserOrders(string email)
@@ -74,7 +91,6 @@ namespace RentalCarApplication.EntityFramework.Repositories
                 command.CommandText = @"
 SELECT
     OrderId,
-    City,
     RentDate,
     ReturnDate,
     Status,
@@ -93,7 +109,6 @@ FROM Orders";
                     result.Add(new Order
                     {
                         OrderId = reader.GetInt32(reader.GetOrdinal("OrderId")),
-                        City = reader.IsDBNull(reader.GetOrdinal("City")) ? string.Empty : reader.GetString(reader.GetOrdinal("City")),
                         RentDate = reader.GetDateTime(reader.GetOrdinal("RentDate")),
                         ReturnDate = reader.GetDateTime(reader.GetOrdinal("ReturnDate")),
                         Status = ConvertLegacyStatus(reader["Status"]),
@@ -130,8 +145,144 @@ FROM Orders";
 
         public Order Update(int id, Order entity)
         {
-            _context.Set<Order>().Update(entity);
+            ExecuteOrderCommand(command =>
+            {
+                bool statusIsString = IsStatusStringColumn(command.Connection);
+                command.CommandText = statusIsString
+                    ? @"
+UPDATE Orders SET
+    RentDate = @RentDate,
+    ReturnDate = @ReturnDate,
+    Status = @StatusText,
+    Price = @Price,
+    FrontPhotoPath = @FrontPhotoPath,
+    RearPhotoPath = @RearPhotoPath,
+    SidePhotoPath = @SidePhotoPath,
+    CompletedAt = @CompletedAt,
+    CarId = @CarId,
+    Email = @Email
+WHERE OrderId = @OrderId"
+                    : @"
+UPDATE Orders SET
+    RentDate = @RentDate,
+    ReturnDate = @ReturnDate,
+    Status = @StatusBit,
+    Price = @Price,
+    FrontPhotoPath = @FrontPhotoPath,
+    RearPhotoPath = @RearPhotoPath,
+    SidePhotoPath = @SidePhotoPath,
+    CompletedAt = @CompletedAt,
+    CarId = @CarId,
+    Email = @Email
+WHERE OrderId = @OrderId";
+
+                AddParameter(command, "@OrderId", id);
+                AddCommonOrderParameters(command, entity, statusIsString);
+                command.ExecuteNonQuery();
+            });
+
             return entity;
+        }
+
+        private void AddCommonOrderParameters(DbCommand command, Order entity, bool statusIsString)
+        {
+            AddParameter(command, "@RentDate", entity.RentDate);
+            AddParameter(command, "@ReturnDate", entity.ReturnDate);
+            if (statusIsString)
+            {
+                AddParameter(command, "@StatusText", ConvertStatusToString(entity.Status));
+            }
+            else
+            {
+                AddParameter(command, "@StatusBit", entity.Status.HasValue ? entity.Status.Value : DBNull.Value);
+            }
+            AddParameter(command, "@Price", entity.Price);
+            AddParameter(command, "@FrontPhotoPath", string.IsNullOrWhiteSpace(entity.FrontPhotoPath) ? DBNull.Value : entity.FrontPhotoPath);
+            AddParameter(command, "@RearPhotoPath", string.IsNullOrWhiteSpace(entity.RearPhotoPath) ? DBNull.Value : entity.RearPhotoPath);
+            AddParameter(command, "@SidePhotoPath", string.IsNullOrWhiteSpace(entity.SidePhotoPath) ? DBNull.Value : entity.SidePhotoPath);
+            AddParameter(command, "@CompletedAt", entity.CompletedAt.HasValue ? entity.CompletedAt.Value : DBNull.Value);
+            AddParameter(command, "@CarId", entity.CarId);
+            AddParameter(command, "@Email", string.IsNullOrWhiteSpace(entity.Email) ? DBNull.Value : entity.Email);
+        }
+
+        private static string ConvertStatusToString(bool? status)
+        {
+            return status switch
+            {
+                true => "Approved",
+                false => "Canceled",
+                null => "Pending"
+            };
+        }
+
+        private static bool IsStatusStringColumn(DbConnection connection)
+        {
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+SELECT TOP 1 t.name
+FROM sys.columns c
+JOIN sys.types t ON c.user_type_id = t.user_type_id
+WHERE c.object_id = OBJECT_ID('Orders')
+  AND c.name = 'Status'";
+
+            var result = command.ExecuteScalar()?.ToString();
+            return result == "nvarchar" || result == "varchar" || result == "nchar" || result == "char";
+        }
+
+        private static void AddParameter(DbCommand command, string name, object value)
+        {
+            var parameter = command.CreateParameter();
+            parameter.ParameterName = name;
+            parameter.Value = value ?? DBNull.Value;
+            command.Parameters.Add(parameter);
+        }
+
+        private void ExecuteOrderCommand(Action<DbCommand> action)
+        {
+            var connection = _context.Database.GetDbConnection();
+            var shouldClose = connection.State != ConnectionState.Open;
+
+            try
+            {
+                if (shouldClose)
+                {
+                    connection.Open();
+                }
+
+                using var command = connection.CreateCommand();
+                action(command);
+            }
+            finally
+            {
+                if (shouldClose && connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
+        }
+
+        private T ExecuteOrderCommand<T>(Func<DbCommand, T> action)
+        {
+            var connection = _context.Database.GetDbConnection();
+            var shouldClose = connection.State != ConnectionState.Open;
+
+            try
+            {
+                if (shouldClose)
+                {
+                    connection.Open();
+                }
+
+                using var command = connection.CreateCommand();
+                return action(command);
+            }
+            finally
+            {
+                if (shouldClose && connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
         }
 
         private static bool? ConvertLegacyStatus(object statusValue)

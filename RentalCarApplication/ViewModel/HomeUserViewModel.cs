@@ -105,7 +105,8 @@ namespace RentalCarApplication.ViewModel
             }
             catch (Exception ex)
             {
-                var result = new CustomMessageBox(ex.Message,
+                var message = ex.InnerException?.Message ?? ex.Message;
+                var result = new CustomMessageBox(message,
                                     MessageType.Error,
                                     MessageButtons.Ok).ShowDialog();
             }
@@ -345,12 +346,7 @@ namespace RentalCarApplication.ViewModel
 
         }
 
-        private string _orderCity;
-        public string OrderCity
-        {
-            get => _orderCity;
-            set => Set(ref _orderCity, value);
-        }
+        public string PickupAddress => "г. Минск, ул. Белорусская, д. 21";
 
         private string _orderPrice;
         public string OrderPrice
@@ -385,7 +381,6 @@ namespace RentalCarApplication.ViewModel
             CarPrice = null;
             SelectedCar = null;
             RentDate = DateTime.Today;
-            OrderCity = "";
             OrderPrice = "";
 
         }
@@ -419,7 +414,6 @@ namespace RentalCarApplication.ViewModel
                 }
                 order.CarId = Convert.ToInt32(CarNumber);
                 order.Email = CurrentUser.Email;
-                order.City = OrderCity;
                 order.RentDate = RentDate;
                 order.ReturnDate = ReturnDate;
                 order.Price = Convert.ToDouble(OrderPrice);
@@ -1276,7 +1270,7 @@ namespace RentalCarApplication.ViewModel
 
                 var car = ReviewCarList?.FirstOrDefault(x => x.CarId == SelectedReviewOrder.CarId);
                 var brand = car?.Brand ?? $"Авто #{SelectedReviewOrder.CarId}";
-                return $"{brand}; заказ №{SelectedReviewOrder.OrderId}; период: {SelectedReviewOrder.RentDate:dd.MM.yyyy} - {SelectedReviewOrder.ReturnDate:dd.MM.yyyy}; адрес: {SelectedReviewOrder.City}; сумма: {SelectedReviewOrder.Price} BYN";
+                return $"{brand}; заказ №{SelectedReviewOrder.OrderId}; период: {SelectedReviewOrder.RentDate:dd.MM.yyyy} - {SelectedReviewOrder.ReturnDate:dd.MM.yyyy}; сумма: {SelectedReviewOrder.Price} BYN";
             }
         }
 
@@ -1360,7 +1354,7 @@ namespace RentalCarApplication.ViewModel
                     {
                         Order = order,
                         Title = $"{brand}, заказ №{order.OrderId}, {order.RentDate:dd.MM} - {order.ReturnDate:dd.MM}",
-                        Details = $"{brand}; заказ №{order.OrderId}; период: {order.RentDate:dd.MM.yyyy} - {order.ReturnDate:dd.MM.yyyy}; адрес: {order.City}; сумма: {order.Price} BYN{reviewStatus}"
+                        Details = $"{brand}; заказ №{order.OrderId}; период: {order.RentDate:dd.MM.yyyy} - {order.ReturnDate:dd.MM.yyyy}; сумма: {order.Price} BYN{reviewStatus}"
                     };
                 })
                 .ToList();

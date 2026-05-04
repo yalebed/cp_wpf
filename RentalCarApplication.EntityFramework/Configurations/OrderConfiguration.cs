@@ -11,7 +11,6 @@ namespace RentalCarApplication.EntityFramework.Configurations
             builder.HasKey(x => x.OrderId);
             builder.Property(x => x.OrderId).ValueGeneratedOnAdd();
 
-            builder.Property(x => x.City).IsRequired();
             builder.Property(x => x.RentDate).IsRequired();
             builder.Property(x => x.ReturnDate).IsRequired();
             builder.Property(x => x.Status).HasDefaultValue(null);

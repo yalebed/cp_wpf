@@ -297,19 +297,8 @@
                                             <DatePicker Grid.Column="2" Grid.Row="1" FontSize="13" Focusable="False" SelectedDate="{Binding ReturnDate}" materialDesign:HintAssist.Hint="Выберите дату" Margin="5 5 5 10" DisplayDateStart="{Binding ReturnStartDate}" DisplayDateEnd="{Binding ReturnEndDate}" />
 
                                         </Grid>
-                                        <TextBlock Text="Город"  FontSize="17" FontWeight="Medium"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-                                        <ComboBox FontSize="12" Text="{Binding OrderCity}"  Style="{StaticResource MaterialDesignOutlinedComboBox}" Margin="5" Width="200"  >
-                                            <ComboBoxItem Content="Брест"></ComboBoxItem>
-                                            <ComboBoxItem Content="Витебск"></ComboBoxItem>
-                                            <ComboBoxItem Content="Гродно"></ComboBoxItem>
-                                            <ComboBoxItem Content="Гомель"></ComboBoxItem>
-                                            <ComboBoxItem Content="Минск"></ComboBoxItem>
-                                            <ComboBoxItem Content="Могилев"></ComboBoxItem>
-                                            <ComboBoxItem Content="Малорита"></ComboBoxItem>
-                                            <ComboBoxItem Content="Каменец"></ComboBoxItem>
-                                            <ComboBoxItem Content="Лида"></ComboBoxItem>
-                                            <ComboBoxItem Content="Слуцк"></ComboBoxItem>
-                                        </ComboBox>
+                                        <TextBlock Text="Адрес выдачи" FontSize="17" FontWeight="Medium" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                                        <TextBlock Text="{Binding PickupAddress}" TextWrapping="Wrap" FontSize="15" Foreground="DimGray" TextAlignment="Center" Margin="5 0 5 10"/>
                                         <TextBlock Text="Цена"  FontSize="17" FontWeight="Medium"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20 0 0 0">
                                             <TextBox Width="100" FontSize="17" TextAlignment="Center" IsReadOnly="True" Text="{Binding OrderPrice}" />
@@ -539,7 +528,6 @@
                                             <DataGridTextColumn Header="Авто" Width="*" Binding="{Binding CarId}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Цена(BYN)" Width="*" Binding="{Binding Price}" IsReadOnly="True"/>
                                             <!--<DataGridTextColumn Header="Статус" Width="0.7*" Binding="{Binding CustomerEmail}" IsReadOnly="True"/>-->
                                             <DataGridTemplateColumn Width="*">
@@ -588,7 +576,6 @@
                                                     <DataGridTextColumn Header="Авто" Width="*" Binding="{Binding CarId}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
-                                                    <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Цена(BYN)" Width="0.7*" Binding="{Binding Price}" IsReadOnly="True"/>
                                                 </DataGrid.Columns>
                                             </DataGrid>
@@ -616,7 +603,6 @@
                                                     <DataGridTextColumn Header="Авто" Width="*" Binding="{Binding CarId}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
-                                                    <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Цена(BYN)" Width="0.7*" Binding="{Binding Price}" IsReadOnly="True"/>
                                                     <DataGridTemplateColumn Width="1.4*">
                                                         <DataGridTemplateColumn.CellTemplate>
@@ -664,7 +650,6 @@
                                                     <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Завершен" Width="*" Binding="{Binding CompletionDate}" IsReadOnly="True"/>
-                                                    <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
                                                     <DataGridTextColumn Header="Цена(BYN)" Width="0.7*" Binding="{Binding Price}" IsReadOnly="True"/>
                                                 </DataGrid.Columns>
                                             </DataGrid>
@@ -694,7 +679,6 @@
                                             <DataGridTextColumn Header="Авто" Width="0.8*" Binding="{Binding CarId}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Дата заказа" Width="*" Binding="{Binding RentDate}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Дата возврата" Width="*" Binding="{Binding ReturnDate}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="Адрес" Width="*" Binding="{Binding City}" IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Цена(BYN)" Width="*" Binding="{Binding Price}" IsReadOnly="True"/>
                                         </DataGrid.Columns>
                                     </DataGrid>

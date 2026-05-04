@@ -95,7 +95,6 @@ $@"Здравствуйте!
 Автомобиль: {carName}
 Дата аренды: {order.RentDate:dd.MM.yyyy}
 Дата возврата: {order.ReturnDate:dd.MM.yyyy}
-Адрес получения: {order.City}
 Стоимость: {order.Price} BYN";
         }
 
