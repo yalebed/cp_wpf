@@ -16,6 +16,7 @@ namespace RentalCarApplication.EntityFramework
             EnsureOrderStatusCompatibility();
             EnsureOrderCompletionCompatibility();
             EnsureOrderCityCompatibility();
+            EnsureUserOptionalDocumentPhotoCompatibility();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -138,6 +139,38 @@ if exists (
 )
 begin
     alter table Orders drop column City
+end
+");
+            }
+            catch
+            {
+                // Best-effort compatibility patch for local existing databases.
+            }
+        }
+
+        private void EnsureUserOptionalDocumentPhotoCompatibility()
+        {
+            try
+            {
+                Database.ExecuteSqlRaw(@"
+if exists (
+    select 1
+    from sys.columns
+    where object_id = object_id('Users')
+      and name = 'PassportPhotoPath'
+)
+begin
+    alter table Users drop column PassportPhotoPath
+end
+
+if exists (
+    select 1
+    from sys.columns
+    where object_id = object_id('Users')
+      and name = 'DriverLicensePhotoPath'
+)
+begin
+    alter table Users drop column DriverLicensePhotoPath
 end
 ");
             }

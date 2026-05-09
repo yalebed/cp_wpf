@@ -14,9 +14,7 @@ namespace RentalCarApplication.EntityFramework.Configurations
             builder.Property(x => x.Password).IsRequired();
             builder.Property(x => x.Passport).HasMaxLength(450).IsRequired(false);
             builder.Property(x => x.DriverLicense).HasMaxLength(450).IsRequired(false);
-            builder.Property(x => x.PassportPhotoPath).IsRequired(false);
             builder.Property(x => x.IdentitySelfiePhotoPath).IsRequired(false);
-            builder.Property(x => x.DriverLicensePhotoPath).IsRequired(false);
             builder.Property(x => x.TelNumber).IsRequired();
             builder.Property(x => x.IsAdmin).HasDefaultValue(false);
             builder.Property(x => x.IsDocumentsVerified).HasDefaultValue(false);

@@ -8,7 +8,7 @@ namespace RentalCarApplication.View
 {
     public partial class UserDocumentsPreviewWindow : Window
     {
-        public UserDocumentsPreviewWindow(User user)
+        public UserDocumentsPreviewWindow(User user, bool canVerifyDocuments)
         {
             InitializeComponent();
 
@@ -37,6 +37,18 @@ namespace RentalCarApplication.View
             {
                 txtNoImage.Visibility = Visibility.Visible;
             }
+
+            btnVerify.IsEnabled = canVerifyDocuments;
+            btnVerify.Opacity = canVerifyDocuments ? 1 : 0.6;
+
+            if (user?.IsDocumentsVerified == true)
+            {
+                txtVerifyButton.Text = "Уже подтверждены";
+            }
+            else if (!canVerifyDocuments)
+            {
+                txtVerifyButton.Text = "Нельзя подтвердить";
+            }
         }
 
         private void HeaderBorder_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -49,6 +61,12 @@ namespace RentalCarApplication.View
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            Close();
+        }
+
+        private void VerifyButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
             Close();
         }
     }

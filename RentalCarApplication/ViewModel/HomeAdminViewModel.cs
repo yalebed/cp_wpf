@@ -60,9 +60,7 @@ namespace RentalCarApplication.ViewModel
             ChangeSelectedUserRoleCommand = new RelayCommand(OnChangeSelectedUserRoleExecuted, CanChangeSelectedUserRoleExecute);
             DeleteSelectedUserCommand = new RelayCommand(OnDeleteSelectedUserExecuted, CanDeleteSelectedUserExecute);
             RefreshUsersCommand = new RelayCommand(OnRefreshUsersExecuted, CanRefreshUsersExecute);
-            OpenPassportPhotoCommand = new RelayCommand(OnOpenPassportPhotoExecuted, CanOpenPassportPhotoExecute);
-            OpenIdentitySelfiePhotoCommand = new RelayCommand(OnOpenIdentitySelfiePhotoExecuted, CanOpenIdentitySelfiePhotoExecute);
-            OpenDriverLicensePhotoCommand = new RelayCommand(OnOpenDriverLicensePhotoExecuted, CanOpenDriverLicensePhotoExecute);
+            OpenUserDocumentsPreviewCommand = new RelayCommand(OnOpenUserDocumentsPreviewExecuted, CanOpenUserDocumentsPreviewExecute);
             GoToOrderUserCommand = new RelayCommand(OnGoToOrderUserExecuted, CanGoToOrderUserExecute);
             RefreshReviewsCommand = new RelayCommand(OnRefreshReviewsExecuted, CanRefreshReviewsExecute);
             DeleteReviewCommand = new RelayCommand(OnDeleteReviewExecuted, CanDeleteReviewExecute);
@@ -615,7 +613,11 @@ namespace RentalCarApplication.ViewModel
 
                             if (verifyDocumentsDialog.ActionRequested)
                             {
-                                ShowUserDocumentsPreview(user);
+                                if (ShowUserDocumentsPreview(user))
+                                {
+                                    VerifyUserDocuments(user);
+                                    user = unitOfWork.UserRepository.Find(order.Email);
+                                }
                                 continue;
                             }
 
@@ -848,9 +850,7 @@ namespace RentalCarApplication.ViewModel
 
         public ICommand ChangeSelectedUserRoleCommand { get; }
         public ICommand RefreshUsersCommand { get; }
-        public ICommand OpenPassportPhotoCommand { get; }
-        public ICommand OpenIdentitySelfiePhotoCommand { get; }
-        public ICommand OpenDriverLicensePhotoCommand { get; }
+        public ICommand OpenUserDocumentsPreviewCommand { get; }
         public ICommand GoToOrderUserCommand { get; }
 
         private bool CanChangeSelectedUserRoleExecute(object o) => true;
@@ -995,79 +995,68 @@ namespace RentalCarApplication.ViewModel
             DisplayUsers();
         }
 
-        private void ShowUserDocumentsPreview(User user)
+        private bool CanOpenUserDocumentsPreviewExecute(object o) => true;
+        private void OnOpenUserDocumentsPreviewExecuted(object o)
+        {
+            try
+            {
+                if (SelectedUser == null)
+                {
+                    throw new Exception("Выберите пользователя");
+                }
+
+                if (ShowUserDocumentsPreview(SelectedUser))
+                {
+                    VerifyUserDocuments(SelectedUser);
+                    new CustomMessageBox("Документы подтверждены",
+                        MessageType.Success,
+                        MessageButtons.Ok).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
+            }
+        }
+
+        private bool ShowUserDocumentsPreview(User user)
         {
             if (user == null)
             {
                 throw new Exception("Пользователь не найден");
             }
 
-            UserDocumentsPreviewWindow previewWindow = new UserDocumentsPreviewWindow(user);
-            previewWindow.ShowDialog();
+            UserDocumentsPreviewWindow previewWindow = new UserDocumentsPreviewWindow(user, !user.IsDocumentsVerified && user.HasRequiredDocuments);
+            return previewWindow.ShowDialog() == true;
         }
 
-        private void OpenUserDocument(string path, string documentName)
+        private void VerifyUserDocuments(User user)
         {
-            if (SelectedUser == null)
+            if (user == null)
             {
-                throw new Exception("Выберите пользователя");
+                throw new Exception("Пользователь не найден");
             }
 
-            if (string.IsNullOrWhiteSpace(path))
+            if (!user.HasRequiredDocuments)
             {
-                throw new Exception($"У пользователя не загружен файл: {documentName}");
+                throw new Exception("У пользователя не заполнены обязательные документы");
             }
 
-            if (!File.Exists(path))
+            if (user.IsDocumentsVerified)
             {
-                throw new Exception($"Файл не найден: {path}");
+                throw new Exception("Документы пользователя уже подтверждены");
             }
 
-            var process = new Process();
-            process.StartInfo = new ProcessStartInfo(path)
-            {
-                UseShellExecute = true
-            };
-            process.Start();
-        }
+            user.IsDocumentsVerified = true;
+            unitOfWork.UserRepository.Update(user.Email, user);
+            unitOfWork.Save();
 
-        private bool CanOpenPassportPhotoExecute(object o) => true;
-        private void OnOpenPassportPhotoExecuted(object o)
-        {
-            try
+            if (SelectedUser != null && SelectedUser.Email == user.Email)
             {
-                OpenUserDocument(SelectedUser?.PassportPhotoPath, "паспорт");
+                SelectedUser = unitOfWork.UserRepository.Find(user.Email);
             }
-            catch (Exception ex)
-            {
-                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
-            }
-        }
 
-        private bool CanOpenIdentitySelfiePhotoExecute(object o) => true;
-        private void OnOpenIdentitySelfiePhotoExecuted(object o)
-        {
-            try
-            {
-                OpenUserDocument(SelectedUser?.IdentitySelfiePhotoPath, "селфи с удостоверением");
-            }
-            catch (Exception ex)
-            {
-                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
-            }
-        }
-
-        private bool CanOpenDriverLicensePhotoExecute(object o) => true;
-        private void OnOpenDriverLicensePhotoExecuted(object o)
-        {
-            try
-            {
-                OpenUserDocument(SelectedUser?.DriverLicensePhotoPath, "водительское удостоверение");
-            }
-            catch (Exception ex)
-            {
-                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
-            }
+            DisplayUsers();
         }
 
         private bool CanGoToOrderUserExecute(object o) => true;

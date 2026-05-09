@@ -421,6 +421,17 @@
                                                 <TextBlock Text="Изменить пароль"/>
                                             </StackPanel>
                                         </Button>
+                                        <Button Margin="0 0 0 10"
+                                                Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                Command="{Binding DeleteAccountCommand}"
+                                                materialDesign:ButtonAssist.CornerRadius="10"
+                                                Height="42"
+                                                Background="#B04747">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="AccountRemove" Margin="0 0 5 0"/>
+                                                <TextBlock Text="Удалить аккаунт"/>
+                                            </StackPanel>
+                                        </Button>
                                     </StackPanel>
                                 </Border>
                                 <Border Background="WhiteSmoke" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="20 0 20 20" CornerRadius="30">

@@ -13,8 +13,8 @@ namespace RentalCarApplication.Core.Model
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Пароль | Введите пароль \n")]
-        [RegularExpression(@"^([a-zA-Z0-9]*)$", ErrorMessage = "Пароль | Формат неверный. \n")]
-        [StringLength(100, MinimumLength = 4, ErrorMessage = "Пароль | Минимальная длина 4 символа, максимальная 15 \n")]
+        [RegularExpression(@"^(?=.*[A-Z])(?=.*\d)[a-zA-Z0-9]*$", ErrorMessage = "Пароль | Должен содержать хотя бы одну заглавную букву и одну цифру. \n")]
+        [StringLength(100, MinimumLength = 8, ErrorMessage = "Пароль | Минимальная длина 8 символов. \n")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Имя | Введите ваше Имя\n")]
@@ -31,9 +31,7 @@ namespace RentalCarApplication.Core.Model
         [RegularExpression(@"^([A-Z][A-Z]([0-9]){7})$", ErrorMessage = "Водительское удостоверение | Формат неверный.\n")]
         public string DriverLicense { get; set; }
 
-        public string PassportPhotoPath { get; set; }
         public string IdentitySelfiePhotoPath { get; set; }
-        public string DriverLicensePhotoPath { get; set; }
 
         [Required(ErrorMessage = "Телефон | Введите номер телефона \n")]
         [RegularExpression(@"^\+375(29|33|44|25|17)[0-9]{7}$", ErrorMessage = "Телефон | Формат неверный.\n")]

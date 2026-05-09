@@ -378,7 +378,7 @@
                                                 <TextBlock Text="Подтвержденные" Foreground="White" FontSize="14" />
                                             </StackPanel>
                                         </TabItem.Header>
-                                        <DockPanel LastChildFill="True" Background="#6B78A6">
+                                        <DockPanel LastChildFill="True" Background="{DynamicResource PrimaryHueMidBrush}">
                                             <StackPanel DockPanel.Dock="Right" Width="150">
                                                 <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding RefreshOrdersCommand}" Width="120" materialDesign:ButtonAssist.CornerRadius="10" Margin="15" >
                                                     <StackPanel Orientation="Horizontal" >
@@ -419,7 +419,7 @@
                                                 <TextBlock Text="Завершенные" Foreground="White" FontSize="14" />
                                             </StackPanel>
                                         </TabItem.Header>
-                                        <DockPanel LastChildFill="True" Background="#6B78A6">
+                                        <DockPanel LastChildFill="True" Background="{DynamicResource PrimaryHueMidBrush}">
                                             <StackPanel DockPanel.Dock="Right" Width="150">
                                                 <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding RefreshOrdersCommand}" Width="120" materialDesign:ButtonAssist.CornerRadius="10" Margin="15" >
                                                     <StackPanel Orientation="Horizontal" >
@@ -568,22 +568,10 @@
                                         <TextBlock Text="Удалить" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Button>
-                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding OpenPassportPhotoCommand}" Width="180" Margin="0 0 0 15" >
+                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding OpenUserDocumentsPreviewCommand}" Width="180" Margin="0 0 0 15" >
                                     <StackPanel Orientation="Horizontal" >
-                                        <materialDesign:PackIcon Kind="CardAccountDetails" Margin="0 0 5 0"  HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                        <TextBlock Text="Паспорт" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding OpenIdentitySelfiePhotoCommand}" Width="180" Margin="0 0 0 15" >
-                                    <StackPanel Orientation="Horizontal" >
-                                        <materialDesign:PackIcon Kind="CameraAccount" Margin="0 0 5 0"  HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                        <TextBlock Text="Селфи с ID" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding OpenDriverLicensePhotoCommand}" Width="180" Margin="0 0 0 15" >
-                                    <StackPanel Orientation="Horizontal" >
-                                        <materialDesign:PackIcon Kind="CardAccountDetailsOutline" Margin="0 0 5 0"  HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                        <TextBlock Text="Права" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <materialDesign:PackIcon Kind="FileDocumentOutline" Margin="0 0 5 0"  HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                        <TextBlock Text="Документы" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Button>
                                 <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding RefreshUsersCommand}" Width="180"  Margin="0" >

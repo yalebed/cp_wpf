@@ -34,9 +34,7 @@ namespace RentalCarApplication.ViewModel
                 UserEmail = CurrentUser.Email;
                 UserDriverLicense = CurrentUser.DriverLicense;
                 UserPassport = CurrentUser.Passport;
-                UserPassportPhotoPath = CurrentUser.PassportPhotoPath;
                 UserIdentitySelfiePhotoPath = CurrentUser.IdentitySelfiePhotoPath;
-                UserDriverLicensePhotoPath = CurrentUser.DriverLicensePhotoPath;
                 UserTelNumber = CurrentUser.TelNumber;
                 UserPassword = CurrentUser.Password;
             }
@@ -58,13 +56,10 @@ namespace RentalCarApplication.ViewModel
 
             //CabinetTab
             ChangePasswordCommand = new RelayCommand(OnChangePasswordExecuted, CanChangePasswordExecute);
-            UploadPassportPhotoCommand = new RelayCommand(OnUploadPassportPhotoExecuted, CanUploadPassportPhotoExecute);
+            DeleteAccountCommand = new RelayCommand(OnDeleteAccountExecuted, CanDeleteAccountExecute);
             UploadIdentitySelfiePhotoCommand = new RelayCommand(OnUploadIdentitySelfiePhotoExecuted, CanUploadIdentitySelfiePhotoExecute);
-            UploadDriverLicensePhotoCommand = new RelayCommand(OnUploadDriverLicensePhotoExecuted, CanUploadDriverLicensePhotoExecute);
             SaveDocumentsCommand = new RelayCommand(OnSaveDocumentsExecuted, CanSaveDocumentsExecute);
-            ClearPassportPhotoCommand = new RelayCommand(OnClearPassportPhotoExecuted, CanClearPassportPhotoExecute);
             ClearIdentitySelfiePhotoCommand = new RelayCommand(OnClearIdentitySelfiePhotoExecuted, CanClearIdentitySelfiePhotoExecute);
-            ClearDriverLicensePhotoCommand = new RelayCommand(OnClearDriverLicensePhotoExecuted, CanClearDriverLicensePhotoExecute);
             RefreshDocumentsStatus();
 
             //OrdersBasket
@@ -699,25 +694,11 @@ namespace RentalCarApplication.ViewModel
             set => Set(ref _userDriverLicense, value);
         }
 
-        private string _userPassportPhotoPath;
-        public string UserPassportPhotoPath
-        {
-            get => _userPassportPhotoPath;
-            set => Set(ref _userPassportPhotoPath, value);
-        }
-
         private string _userIdentitySelfiePhotoPath;
         public string UserIdentitySelfiePhotoPath
         {
             get => _userIdentitySelfiePhotoPath;
             set => Set(ref _userIdentitySelfiePhotoPath, value);
-        }
-
-        private string _userDriverLicensePhotoPath;
-        public string UserDriverLicensePhotoPath
-        {
-            get => _userDriverLicensePhotoPath;
-            set => Set(ref _userDriverLicensePhotoPath, value);
         }
 
         private string _documentsStatusText;
@@ -780,13 +761,10 @@ namespace RentalCarApplication.ViewModel
         #endregion
 
         public ICommand ChangePasswordCommand { get; }
-        public ICommand UploadPassportPhotoCommand { get; }
+        public ICommand DeleteAccountCommand { get; }
         public ICommand UploadIdentitySelfiePhotoCommand { get; }
-        public ICommand UploadDriverLicensePhotoCommand { get; }
         public ICommand SaveDocumentsCommand { get; }
-        public ICommand ClearPassportPhotoCommand { get; }
         public ICommand ClearIdentitySelfiePhotoCommand { get; }
-        public ICommand ClearDriverLicensePhotoCommand { get; }
 
         private void RefreshDocumentsStatus()
         {
@@ -853,23 +831,6 @@ namespace RentalCarApplication.ViewModel
             return dialog.ShowDialog() == true ? dialog.FileName : null;
         }
 
-        private bool CanUploadPassportPhotoExecute(object o) => true;
-        private void OnUploadPassportPhotoExecuted(object o)
-        {
-            try
-            {
-                var fileName = PickImageFile();
-                if (!string.IsNullOrWhiteSpace(fileName))
-                {
-                    UserPassportPhotoPath = fileName;
-                }
-            }
-            catch (Exception ex)
-            {
-                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
-            }
-        }
-
         private bool CanUploadIdentitySelfiePhotoExecute(object o) => true;
         private void OnUploadIdentitySelfiePhotoExecuted(object o)
         {
@@ -887,39 +848,10 @@ namespace RentalCarApplication.ViewModel
             }
         }
 
-        private bool CanUploadDriverLicensePhotoExecute(object o) => true;
-        private void OnUploadDriverLicensePhotoExecuted(object o)
-        {
-            try
-            {
-                var fileName = PickImageFile();
-                if (!string.IsNullOrWhiteSpace(fileName))
-                {
-                    UserDriverLicensePhotoPath = fileName;
-                }
-            }
-            catch (Exception ex)
-            {
-                new CustomMessageBox(ex.Message, MessageType.Error, MessageButtons.Ok).ShowDialog();
-            }
-        }
-
-        private bool CanClearPassportPhotoExecute(object o) => true;
-        private void OnClearPassportPhotoExecuted(object o)
-        {
-            UserPassportPhotoPath = string.Empty;
-        }
-
         private bool CanClearIdentitySelfiePhotoExecute(object o) => true;
         private void OnClearIdentitySelfiePhotoExecuted(object o)
         {
             UserIdentitySelfiePhotoPath = string.Empty;
-        }
-
-        private bool CanClearDriverLicensePhotoExecute(object o) => true;
-        private void OnClearDriverLicensePhotoExecuted(object o)
-        {
-            UserDriverLicensePhotoPath = string.Empty;
         }
 
         private bool CanSaveDocumentsExecute(object o) => true;
@@ -940,18 +872,14 @@ namespace RentalCarApplication.ViewModel
 
                 user.Passport = UserPassport;
                 user.DriverLicense = UserDriverLicense;
-                user.PassportPhotoPath = UserPassportPhotoPath;
                 user.IdentitySelfiePhotoPath = UserIdentitySelfiePhotoPath;
-                user.DriverLicensePhotoPath = UserDriverLicensePhotoPath;
 
                 ValidateDocuments();
 
                 bool isVerifiedBeforeUpdate = CurrentUser.IsDocumentsVerified;
                 bool documentsChanged = CurrentUser.Passport != user.Passport ||
                                         CurrentUser.DriverLicense != user.DriverLicense ||
-                                        CurrentUser.PassportPhotoPath != user.PassportPhotoPath ||
-                                        CurrentUser.IdentitySelfiePhotoPath != user.IdentitySelfiePhotoPath ||
-                                        CurrentUser.DriverLicensePhotoPath != user.DriverLicensePhotoPath;
+                                        CurrentUser.IdentitySelfiePhotoPath != user.IdentitySelfiePhotoPath;
 
                 user.IsDocumentsVerified = documentsChanged ? false : isVerifiedBeforeUpdate;
 
@@ -962,9 +890,7 @@ namespace RentalCarApplication.ViewModel
                 LoginWindowViewModel.CurrentUser = user;
                 UserPassport = user.Passport;
                 UserDriverLicense = user.DriverLicense;
-                UserPassportPhotoPath = user.PassportPhotoPath;
                 UserIdentitySelfiePhotoPath = user.IdentitySelfiePhotoPath;
-                UserDriverLicensePhotoPath = user.DriverLicensePhotoPath;
                 RefreshDocumentsStatus();
 
                 new CustomMessageBox("Документы сохранены", MessageType.Success, MessageButtons.Ok).ShowDialog();
@@ -1007,6 +933,70 @@ namespace RentalCarApplication.ViewModel
                 var result = new CustomMessageBox(ex.Message,
                                     MessageType.Error,
                                     MessageButtons.Ok).ShowDialog();
+            }
+        }
+
+        private bool CanDeleteAccountExecute(object o) => true;
+        private void OnDeleteAccountExecuted(object o)
+        {
+            try
+            {
+                if (CurrentUser == null)
+                {
+                    throw new Exception("Пользователь не найден");
+                }
+
+                var userOrders = unitOfWork.OrderRepository
+                    .FindAll()
+                    .Where(x => x.Email == CurrentUser.Email)
+                    .ToList();
+
+                bool hasUnfinishedOrders = userOrders.Any(x => x.Status == null || (x.Status == true && x.CompletedAt == null));
+                if (hasUnfinishedOrders)
+                {
+                    throw new Exception("Нельзя удалить аккаунт, пока у вас есть незавершённые заказы");
+                }
+
+                var result = new CustomMessageBox("Вы уверены, что хотите удалить свой аккаунт? История завершённых и отменённых заказов будет удалена.",
+                    MessageType.Confirmation,
+                    MessageButtons.YesNo).ShowDialog();
+
+                if (result != true)
+                {
+                    return;
+                }
+
+                var userReviews = unitOfWork.ReviewRepository
+                    .FindAll()
+                    .Where(x => x.Email == CurrentUser.Email)
+                    .ToList();
+
+                foreach (var review in userReviews)
+                {
+                    unitOfWork.ReviewRepository.Delete(review.ReviewId);
+                }
+
+                foreach (var order in userOrders)
+                {
+                    unitOfWork.OrderRepository.Delete(order.OrderId);
+                }
+
+                unitOfWork.UserRepository.Delete(CurrentUser.Email);
+                unitOfWork.Save();
+
+                LoginWindowViewModel.CurrentUser = null;
+
+                new CustomMessageBox("Аккаунт успешно удалён",
+                    MessageType.Success,
+                    MessageButtons.Ok).ShowDialog();
+
+                LogoutCommand.Execute(null);
+            }
+            catch (Exception ex)
+            {
+                new CustomMessageBox(ex.Message,
+                    MessageType.Error,
+                    MessageButtons.Ok).ShowDialog();
             }
         }
 
