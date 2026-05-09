@@ -566,7 +566,7 @@
                                                 <TextBlock Text="Еще не начались" Foreground="White" FontSize="14" />
                                             </StackPanel>
                                         </TabItem.Header>
-                                        <DockPanel LastChildFill="True" Background="#1AA79E">
+                                            <DockPanel LastChildFill="True" Background="{DynamicResource PrimaryHueMidBrush}">
                                             <StackPanel DockPanel.Dock="Right" Width="150">
                                                 <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding RefreshOrdersCommand}" Width="120" materialDesign:ButtonAssist.CornerRadius="10" Margin="15" >
                                                     <StackPanel Orientation="Horizontal" >
@@ -593,7 +593,7 @@
                                                 <TextBlock Text="Активные" Foreground="White" FontSize="14" />
                                             </StackPanel>
                                         </TabItem.Header>
-                                        <DockPanel LastChildFill="True" Background="#1AA79E">
+                                            <DockPanel LastChildFill="True" Background="{DynamicResource PrimaryHueMidBrush}">
                                             <StackPanel DockPanel.Dock="Right" Width="150">
                                                 <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding RefreshOrdersCommand}" Width="120" materialDesign:ButtonAssist.CornerRadius="10" Margin="15" >
                                                     <StackPanel Orientation="Horizontal" >
@@ -639,7 +639,7 @@
                                                 <TextBlock Text="Завершенные" Foreground="White" FontSize="14" />
                                             </StackPanel>
                                         </TabItem.Header>
-                                        <DockPanel LastChildFill="True" Background="#1AA79E">
+                                            <DockPanel LastChildFill="True" Background="{DynamicResource PrimaryHueMidBrush}">
                                             <StackPanel DockPanel.Dock="Right" Width="150">
                                                 <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding RefreshOrdersCommand}" Width="120" materialDesign:ButtonAssist.CornerRadius="10" Margin="15" >
                                                     <StackPanel Orientation="Horizontal" >

@@ -12,7 +12,7 @@ namespace RentalCarApplication.Core.Model
         public int CarId { get; set; }
 
         [Required(ErrorMessage = "Введите марку и модель автомобиля")]
-        [RegularExpression(@"^([а-яА-Яa-zA-Z]{2,30})$", ErrorMessage = "Неверный формат марки автомобиля")]
+        [RegularExpression(@"^[а-яА-Яa-zA-Z0-9]{2,20}([ -][а-яА-Яa-zA-Z0-9]{1,20})*$", ErrorMessage = "Неверный формат марки автомобиля")]
         public string Brand { get; set; }
 
         [Required(ErrorMessage = "Введите объем двигателя автомобиля")]

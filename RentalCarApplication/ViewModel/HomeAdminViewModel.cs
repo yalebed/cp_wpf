@@ -943,7 +943,10 @@ namespace RentalCarApplication.ViewModel
                 if (result == true)
                 {
                     
-                    List<Order> orders = AllOrders.Where(x => x.Email == SelectedUser.Email).ToList();
+                    List<Order> orders = unitOfWork.OrderRepository
+                        .FindAll()
+                        .Where(x => x.Email == SelectedUser.Email)
+                        .ToList();
                     foreach(var n in orders)
                     {
                         unitOfWork.OrderRepository.Delete(n.OrderId);
