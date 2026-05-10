@@ -11,10 +11,21 @@
   <ItemGroup>
     <None Remove="Resources\AudiA6.jpg" />
     <None Remove="Resources\Icon.ico" />
+    <None Remove="Resources\ph.jpg" />
+    <None Remove="Resources\ph2.jpg" />
+    <None Remove="Resources\ph3.jpg" />
+    <None Remove="Resources\ph4.jpg" />
+    <None Remove="Resources\ph5.jpg" />
+    <None Remove="Resources\ph6.jpg" />
+    <None Remove="Resources\ph7.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <Page Remove="Styles\DataGrid.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\ph4.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +50,12 @@
     <Resource Include="Resources\Icon.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\ph.jpg" />
+    <Resource Include="Resources\ph2.jpg" />
+    <Resource Include="Resources\ph3.jpg" />
+    <Resource Include="Resources\ph5.jpg" />
+    <Resource Include="Resources\ph6.jpg" />
+    <Resource Include="Resources\ph7.jpg" />
     <Resource Include="Styles\DataGrid.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Resource>

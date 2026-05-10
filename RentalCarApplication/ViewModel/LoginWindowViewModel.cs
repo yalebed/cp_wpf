@@ -20,17 +20,18 @@ namespace RentalCarApplication.ViewModel
         public LoginWindowViewModel(Navigator navigator)
         {
             unitOfWork = new UnitOfWork();
-            AdminSignInCommand = new RelayCommand(OnAdminSignIn, CanAdminSignIn);
-            UserSignInCommand = new RelayCommand(OnUserSignIn, CanUserSignIn);
+            SignInCommand = new RelayCommand(OnSignIn, CanSignIn);
             NavigateToHomeAdminCommand = new NavigationCommand<HomeAdminViewModel>(navigator, () => new HomeAdminViewModel(navigator));
             NavigateToRegisterCommand = new NavigationCommand<RegisterWindowViewModel>(navigator, () => new RegisterWindowViewModel(navigator));
             NavigateToHomeUserCommand = new NavigationCommand<HomeUserViewModel>(navigator, () => new HomeUserViewModel(navigator));
+            NavigateToGuestCatalogCommand = new NavigationCommand<GuestCatalogViewModel>(navigator, () => new GuestCatalogViewModel(navigator));
         }
 
         #region Navigation
         public ICommand NavigateToRegisterCommand { get; }
         public ICommand NavigateToHomeAdminCommand { get; }
         public ICommand NavigateToHomeUserCommand { get; }
+        public ICommand NavigateToGuestCatalogCommand { get; }
 
         #endregion
 
@@ -48,50 +49,11 @@ namespace RentalCarApplication.ViewModel
             set => Set(ref _password, value);
         }
 
-        #region AdminSignIn
-        public ICommand AdminSignInCommand { get; }
+        #region SignIn
+        public ICommand SignInCommand { get; }
 
-        private bool CanAdminSignIn(object o) => true;
-        private void OnAdminSignIn(object o)
-        {
-            try
-            {
-                User user = new User();
-                user = unitOfWork.UserRepository.Find(Email);
-
-                if(user == null)
-                {
-                    throw new Exception("Неверный логин");
-                }
-
-                if (Encryption.Dencrypt(user.Password) != Password)
-                {
-                    throw new Exception("Неверный пароль");
-                }
-                if(user.IsAdmin!=true)
-                {
-                    throw new Exception("Вы не являетесь администратором");
-                }
-                CurrentUser = user;
-                NavigateToHomeAdminCommand.Execute(user);
-
-            }
-            catch(Exception ex)
-            {
-                var result = new CustomMessageBox(ex.Message,
-                                    MessageType.Error,
-                                    MessageButtons.Ok).ShowDialog();
-            }
-           
-        }
-
-        #endregion
-
-        #region UserSignIn
-        public ICommand UserSignInCommand { get; }
-
-        private bool CanUserSignIn(object o) => true;
-        private void OnUserSignIn(object o)
+        private bool CanSignIn(object o) => true;
+        private void OnSignIn(object o)
         {
             try
             {
@@ -100,16 +62,23 @@ namespace RentalCarApplication.ViewModel
 
                 if (user == null)
                 {
-                    throw new Exception("Неверный логин");
+                    throw new Exception("Неверный логин или пароль");
                 }
 
                 if (Encryption.Dencrypt(user.Password) != Password)
                 {
-                    throw new Exception("Неверный пароль");
+                    throw new Exception("Неверный логин или пароль");
                 }
-                
+
                 CurrentUser = user;
-                NavigateToHomeUserCommand.Execute(user);
+                if (user.IsAdmin)
+                {
+                    NavigateToHomeAdminCommand.Execute(user);
+                }
+                else
+                {
+                    NavigateToHomeUserCommand.Execute(user);
+                }
 
             }
             catch (Exception ex)
