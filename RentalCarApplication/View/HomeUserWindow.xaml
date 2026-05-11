@@ -147,62 +147,134 @@
                                 
                             </StackPanel>
 
-                            <Border Grid.Column="1"  Margin="0 5 0 5" Padding="3 10 3 10" BorderBrush="Gainsboro" Background="WhiteSmoke" BorderThickness="1" >
+                            <Border Grid.Column="1"  Margin="0 5 0 5" Padding="6 10 6 10" BorderBrush="Gainsboro" Background="WhiteSmoke" BorderThickness="1" >
                                 <ListBox ItemsSource="{Binding CarList}"
                                          SelectedItem="{Binding SelectedCar, Mode=TwoWay}"
-                                         HorizontalContentAlignment="Stretch"
-                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                         HorizontalContentAlignment="Left"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                                          ScrollViewer.CanContentScroll="False">
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                            <Setter Property="Padding" Value="0"/>
+                                            <Setter Property="Margin" Value="0"/>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal"
+                                                       HorizontalAlignment="Center"/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Height="170" Width="670" Margin="0 0 10 10" Background="#D8D8D8" Padding="10">
+                                            <Border Width="285"
+                                                    Margin="4"
+                                                    Background="#D8D8D8"
+                                                    Padding="20"
+                                                    CornerRadius="12">
                                                 <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="220"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Image Source="{Binding PhotoPath}" Width="200" Height="150" Stretch="UniformToFill"/>
-                                                    <Grid Grid.Column="1" Margin="18 0 12 0">
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="*"/>
-                                                            <RowDefinition Height="*"/>
-                                                            <RowDefinition Height="*"/>
-                                                            <RowDefinition Height="*"/>
-                                                        </Grid.RowDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Image Source="{Binding PhotoPath}"
+                                                           Width="170"
+                                                           Height="112"
+                                                           HorizontalAlignment="Center"
+                                                           Stretch="UniformToFill"
+                                                           Margin="0 0 0 12"/>
+                                                    <Grid Grid.Row="1" Margin="0 4 0 0">
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="1.1*"/>
+                                                            <ColumnDefinition Width="8"/>
                                                             <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock FontSize="16" Grid.Row="0" Grid.Column="0" Text="Номер:" Margin="0 5 10 0" />
-                                                        <TextBlock FontSize="16" Grid.Row="1" Grid.Column="0" Text="Марка:" Margin="0 5 10 0" />
-                                                        <TextBlock FontSize="16" Grid.Row="2" Grid.Column="0" Text="Кузов:" Margin="0 5 10 0" />
-                                                        <TextBlock FontSize="16" Grid.Row="3" Grid.Column="0" Text="Сидения:" Margin="0 5 10 0" />
-                                                        <TextBlock FontSize="15" Grid.Row="0" Grid.Column="1" Text="{Binding CarId}" FontWeight="Medium" Margin="0 7 0 0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
-                                                        <TextBlock FontSize="15" Grid.Row="1" Grid.Column="1" Text="{Binding Brand}" FontWeight="Medium" Margin="0 7 0 0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
-                                                        <TextBlock FontSize="15" Grid.Row="2" Grid.Column="1" Text="{Binding BodyType}" FontWeight="Medium" Margin="0 7 0 0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
-                                                        <TextBlock FontSize="15" Grid.Row="3" Grid.Column="1" Text="{Binding Seats}" FontWeight="Medium" Margin="0 7 0 0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
-                                                    </Grid>
-                                                    <Grid Grid.Column="2" Margin="12 0 0 0">
                                                         <Grid.RowDefinitions>
-                                                            <RowDefinition Height="*"/>
-                                                            <RowDefinition Height="*"/>
-                                                            <RowDefinition Height="*"/>
-                                                            <RowDefinition Height="*"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
                                                         </Grid.RowDefinitions>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                            <ColumnDefinition Width="*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <TextBlock FontSize="16" Grid.Row="0" Grid.Column="0" Text="КПП:" Margin="0 5 10 0" />
-                                                        <TextBlock FontSize="16" Grid.Row="1" Grid.Column="0" Text="Объем:" Margin="0 5 10 0" />
-                                                        <TextBlock FontSize="16" Grid.Row="2" Grid.Column="0" Text="Расход:" Margin="0 5 10 0" />
-                                                        <TextBlock FontSize="16" Grid.Row="3" Grid.Column="0" Text="Цена(BYN):" Margin="0 5 10 0" FontWeight="Bold"/>
-                                                        <TextBlock FontSize="15" Grid.Row="0" Grid.Column="1" Text="{Binding GearBox}" FontWeight="Medium" Margin="0 7 0 0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
-                                                        <TextBlock FontSize="15" Grid.Row="1" Grid.Column="1" Text="{Binding EngineCapacity}" FontWeight="Medium" Margin="0 7 0 0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
-                                                        <TextBlock FontSize="15" Grid.Row="2" Grid.Column="1" Text="{Binding Consumption}" FontWeight="Medium" Margin="0 7 0 0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
-                                                        <TextBlock FontSize="15" Grid.Row="3" Grid.Column="1" Text="{Binding Price}" FontWeight="Bold" Margin="0 7 0 0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+
+                                                        <Grid Grid.Column="0" Grid.Row="0" Margin="0 0 0 10">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Text="Номер:" FontSize="12" VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding CarId}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                        </Grid>
+                                                        <Grid Grid.Column="2" Grid.Row="0" Margin="0 0 0 10">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Text="КПП:" FontSize="12" VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding GearBox}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                        </Grid>
+
+                                                        <Grid Grid.Column="0" Grid.Row="1" Margin="0 0 0 10">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Text="Марка:" FontSize="12" VerticalAlignment="Top"/>
+                                                            <TextBlock Grid.Column="1"
+                                                                       Text="{Binding Brand}"
+                                                                       FontSize="12"
+                                                                       FontWeight="SemiBold"
+                                                                       VerticalAlignment="Top"
+                                                                       TextWrapping="Wrap"/>
+                                                        </Grid>
+                                                        <Grid Grid.Column="2" Grid.Row="1" Margin="0 0 0 10">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Text="Объем:" FontSize="12" VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding EngineCapacity}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                        </Grid>
+
+                                                        <Grid Grid.Column="0" Grid.Row="2" Margin="0 0 0 10">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Text="Кузов:" FontSize="12" VerticalAlignment="Top"/>
+                                                            <TextBlock Grid.Column="1"
+                                                                       Text="{Binding BodyType}"
+                                                                       FontSize="12"
+                                                                       FontWeight="SemiBold"
+                                                                       VerticalAlignment="Top"
+                                                                       TextWrapping="Wrap"/>
+                                                        </Grid>
+                                                        <Grid Grid.Column="2" Grid.Row="2" Margin="0 0 0 10">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Text="Расход:" FontSize="12" VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding Consumption}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                        </Grid>
+
+                                                        <Grid Grid.Column="0" Grid.Row="3">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Text="Сидения:" FontSize="12" VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding Seats}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                        </Grid>
+                                                        <Grid Grid.Column="2" Grid.Row="3">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Text="Цена(BYN):" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding Price}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        </Grid>
                                                     </Grid>
                                                 </Grid>
                                             </Border>
