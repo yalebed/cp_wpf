@@ -206,19 +206,20 @@
                                 <Border Width="320"
                                         Margin="4"
                                         Background="#D8D8D8"
-                                        Padding="10"
+                                         Padding="35" 
                                         CornerRadius="12">
                                     <Grid>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="145"/>
+                                            <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
 
                                         <Image Source="{Binding PhotoPath}"
-                                               Width="165"
-                                               Height="112"
-                                               HorizontalAlignment="Center"
-                                               Stretch="UniformToFill"/>
+                                           Width="200"
+                                           Height="130"
+                                           HorizontalAlignment="Center"
+                                           Stretch="UniformToFill"
+                                           Margin="0 0 0 16"/>
 
                                         <Grid Grid.Row="1" Margin="2 8 2 0">
                                             <Grid.ColumnDefinitions>
