@@ -39,7 +39,7 @@
                         Height="38"
                         Margin="0 0 10 0"
                         Padding="10 0"
-                        Background="#F4FBFA"
+                        Background="{DynamicResource AppCardBrush}"
                         Foreground="{DynamicResource PrimaryHueDarkBrush}"
                         FontWeight="SemiBold"
                         HorizontalContentAlignment="Center"
@@ -63,7 +63,7 @@
                         Width="144"
                         Height="38"
                         Padding="10 0"
-                        Background="#F4FBFA"
+                        Background="{DynamicResource AppCardBrush}"
                         Foreground="{DynamicResource PrimaryHueDarkBrush}"
                         FontWeight="SemiBold"
                         HorizontalContentAlignment="Center"
@@ -101,7 +101,7 @@
                            FontWeight="Medium"/>
 
                 <Border CornerRadius="14"
-                        Background="WhiteSmoke"
+                        Background="{DynamicResource AppCardBrush}"
                         Padding="14">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -176,8 +176,8 @@
                 <Border Margin="0 12 0 0"
                         Padding="12"
                         CornerRadius="10"
-                        Background="#12008080"
-                        BorderBrush="#33008080"
+                        Background="#14374151"
+                        BorderBrush="#33374151"
                         BorderThickness="1">
                     <TextBlock Text="Оформление заказа доступно после входа в аккаунт."
                                Foreground="WhiteSmoke"
@@ -188,8 +188,8 @@
 
             <Border Grid.Column="2"
                     Padding="4 6 4 6"
-                    Background="WhiteSmoke"
-                    BorderBrush="Gainsboro"
+                    Background="{DynamicResource AppSurfaceBrush}"
+                    BorderBrush="{DynamicResource AppCardBorderBrush}"
                     BorderThickness="1">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                               VerticalScrollBarVisibility="Auto"
@@ -205,11 +205,20 @@
                             <DataTemplate>
                                 <Border Width="320"
                                         Margin="4"
-                                        Background="#D8D8D8"
-                                         Padding="35" 
+                                        Background="{DynamicResource AppCardBrush}"
+                                        BorderBrush="{DynamicResource AppCardBorderBrush}"
+                                        BorderThickness="1"
+                                        Padding="35" 
                                         CornerRadius="12">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="16"
+                                                          ShadowDepth="3"
+                                                          Opacity="0.18"
+                                                          Color="#111827"/>
+                                    </Border.Effect>
                                     <Grid>
                                         <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
@@ -221,7 +230,15 @@
                                            Stretch="UniformToFill"
                                            Margin="0 0 0 16"/>
 
-                                        <Grid Grid.Row="1" Margin="2 8 2 0">
+                                        <TextBlock Grid.Row="1"
+                                                   Text="{Binding Brand}"
+                                                   FontSize="18"
+                                                   FontWeight="SemiBold"
+                                                   HorizontalAlignment="Center"
+                                                   TextAlignment="Center"
+                                                   Margin="0 0 0 14"/>
+
+                                        <Grid Grid.Row="2" Margin="2 8 2 0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="1.2*"/>
                                                 <ColumnDefinition Width="12"/>
@@ -258,7 +275,7 @@
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Text="Марка: " FontSize="13" VerticalAlignment="Top"/>
                                                 <TextBlock Grid.Column="1"
-                                                           Text="{Binding Brand}"
+                                                           Text="{Binding BodyType}"
                                                            FontSize="13"
                                                            FontWeight="SemiBold"
                                                            VerticalAlignment="Top"
@@ -280,11 +297,10 @@
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Text="Кузов: " FontSize="13" VerticalAlignment="Top"/>
                                                 <TextBlock Grid.Column="1"
-                                                           Text="{Binding BodyType}"
+                                                           Text="{Binding Seats}"
                                                            FontSize="13"
                                                            FontWeight="SemiBold"
-                                                           VerticalAlignment="Top"
-                                                           TextWrapping="Wrap"/>
+                                                           VerticalAlignment="Center"/>
                                             </Grid>
                                             <Grid Grid.Column="2" Grid.Row="2" Margin="0 0 0 10">
                                                 <Grid.ColumnDefinitions>

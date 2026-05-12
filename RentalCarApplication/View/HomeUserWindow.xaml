@@ -61,7 +61,7 @@
                         </StackPanel>
                     </TabItem.Header>
                     <TabItem.Content>
-                        <Grid Background="{DynamicResource PrimaryHueMidBrush}">
+                            <Grid Background="{DynamicResource PrimaryHueMidBrush}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="0.7*"></ColumnDefinition>
                                 <ColumnDefinition Width="1.5*"></ColumnDefinition>
@@ -147,7 +147,7 @@
                                 
                             </StackPanel>
 
-                            <Border Grid.Column="1"  Margin="0 5 0 5" Padding="6 10 6 10" BorderBrush="Gainsboro" Background="WhiteSmoke" BorderThickness="1" >
+                            <Border Grid.Column="1"  Margin="0 5 0 5" Padding="6 10 6 10" BorderBrush="{DynamicResource AppCardBorderBrush}" Background="{DynamicResource AppSurfaceBrush}" BorderThickness="1" >
                                 <ListBox ItemsSource="{Binding CarList}"
                                          SelectedItem="{Binding SelectedCar, Mode=TwoWay}"
                                          HorizontalContentAlignment="Left"
@@ -171,11 +171,20 @@
                                         <DataTemplate>
                                             <Border Width="285"
                                                     Margin="4"
-                                                    Background="#D8D8D8"
+                                                    Background="{DynamicResource AppCardBrush}"
+                                                    BorderBrush="{DynamicResource AppCardBorderBrush}"
+                                                    BorderThickness="1"
                                                     Padding="20"
                                                     CornerRadius="12">
+                                                <Border.Effect>
+                                                    <DropShadowEffect BlurRadius="16"
+                                                                      ShadowDepth="3"
+                                                                      Opacity="0.18"
+                                                                      Color="#111827"/>
+                                                </Border.Effect>
                                                 <Grid>
                                                     <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
                                                         <RowDefinition Height="Auto"/>
                                                         <RowDefinition Height="Auto"/>
                                                     </Grid.RowDefinitions>
@@ -185,7 +194,14 @@
                                                            HorizontalAlignment="Center"
                                                            Stretch="UniformToFill"
                                                            Margin="0 0 0 12"/>
-                                                    <Grid Grid.Row="1" Margin="0 4 0 0">
+                                                    <TextBlock Grid.Row="1"
+                                                               Text="{Binding Brand}"
+                                                               FontSize="16"
+                                                               FontWeight="SemiBold"
+                                                               HorizontalAlignment="Center"
+                                                               TextAlignment="Center"
+                                                               Margin="0 0 0 12"/>
+                                                    <Grid Grid.Row="2" Margin="0 4 0 0">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="1.1*"/>
                                                             <ColumnDefinition Width="8"/>
@@ -220,9 +236,9 @@
                                                                 <ColumnDefinition Width="Auto"/>
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <TextBlock Text="Марка:" FontSize="12" VerticalAlignment="Top"/>
+                                                            <TextBlock Text="Кузов:" FontSize="12" VerticalAlignment="Top"/>
                                                             <TextBlock Grid.Column="1"
-                                                                       Text="{Binding Brand}"
+                                                                       Text="{Binding BodyType}"
                                                                        FontSize="12"
                                                                        FontWeight="SemiBold"
                                                                        VerticalAlignment="Top"
@@ -242,13 +258,8 @@
                                                                 <ColumnDefinition Width="Auto"/>
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <TextBlock Text="Кузов:" FontSize="12" VerticalAlignment="Top"/>
-                                                            <TextBlock Grid.Column="1"
-                                                                       Text="{Binding BodyType}"
-                                                                       FontSize="12"
-                                                                       FontWeight="SemiBold"
-                                                                       VerticalAlignment="Top"
-                                                                       TextWrapping="Wrap"/>
+                                                            <TextBlock Text="Сидения:" FontSize="12" VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding Seats}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
                                                         </Grid>
                                                         <Grid Grid.Column="2" Grid.Row="2" Margin="0 0 0 10">
                                                             <Grid.ColumnDefinitions>
@@ -259,21 +270,12 @@
                                                             <TextBlock Grid.Column="1" Text="{Binding Consumption}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
                                                         </Grid>
 
-                                                        <Grid Grid.Column="0" Grid.Row="3">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="Auto"/>
-                                                                <ColumnDefinition Width="*"/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <TextBlock Text="Сидения:" FontSize="12" VerticalAlignment="Center"/>
-                                                            <TextBlock Grid.Column="1" Text="{Binding Seats}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                                        </Grid>
-                                                        <Grid Grid.Column="2" Grid.Row="3">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="Auto"/>
-                                                                <ColumnDefinition Width="*"/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <TextBlock Text="Цена(BYN):" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                            <TextBlock Grid.Column="1" Text="{Binding Price}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" Margin="0 4 0 0">
+                                                            <TextBlock Text="{Binding Price, StringFormat={}{0} BYN}"
+                                                                       FontSize="13"
+                                                                       FontWeight="Bold"
+                                                                       HorizontalAlignment="Center"
+                                                                       TextAlignment="Center"/>
                                                         </Grid>
                                                     </Grid>
                                                 </Grid>
@@ -381,7 +383,7 @@
                                             <TextBox Width="100" FontSize="17" TextAlignment="Center" IsReadOnly="True" Text="{Binding OrderPrice}" />
                                             <TextBlock Text="BYN" Margin="0 5 5 0" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </StackPanel>
-                                        <Button Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="5" Command="{Binding PlaceOrderCommand}" Width="250" Style="{StaticResource MaterialDesignRaisedDarkButton}"   materialDesign:ButtonAssist.CornerRadius="10" Margin="0 15 0 0" >
+                                        <Button Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="5" Command="{Binding PlaceOrderCommand}" Width="250" Style="{StaticResource MaterialDesignRaisedSuccessButton}" materialDesign:ButtonAssist.CornerRadius="10" Margin="0 15 0 0" >
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="BorderColor" Margin="0 5 5 0" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                 <TextBlock Text="Оформить заказ" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -541,7 +543,7 @@
                                                             <TextBlock Text="Прикрепить фото"/>
                                                         </StackPanel>
                                                     </Button>
-                                                    <Button Grid.Column="1" Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding ClearIdentitySelfiePhotoCommand}" materialDesign:ButtonAssist.CornerRadius="10" Padding="12 6">
+                                            <Button Grid.Column="1" Style="{StaticResource MaterialDesignRaisedDangerButton}" Command="{Binding ClearIdentitySelfiePhotoCommand}" materialDesign:ButtonAssist.CornerRadius="10" Padding="12 6">
                                                         <StackPanel Orientation="Horizontal">
                                                             <materialDesign:PackIcon Kind="Close" Margin="0 0 5 0"/>
                                                             <TextBlock Text="Убрать"/>
@@ -571,7 +573,7 @@
                                                 <Border Background="#08000000" CornerRadius="12" Padding="14" Margin="0 32 0 0">
                                                     <TextBlock Text="Для оформления заказа нужны номера документов и селфи с удостоверением личности." TextWrapping="Wrap" Foreground="DimGray" FontSize="14"/>
                                                 </Border>
-                                                <Button Margin="0 18 0 0" Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding SaveDocumentsCommand}" materialDesign:ButtonAssist.CornerRadius="10" Height="42">
+                                                <Button Margin="0 18 0 0" Style="{StaticResource MaterialDesignRaisedSuccessButton}" Command="{Binding SaveDocumentsCommand}" materialDesign:ButtonAssist.CornerRadius="10" Height="42">
                                                     <StackPanel Orientation="Horizontal">
                                                         <materialDesign:PackIcon Kind="ContentSave" Margin="0 0 5 0"/>
                                                         <TextBlock Text="Сохранить документы"/>
@@ -641,7 +643,7 @@
                                         <TextBlock Text="Подтвержденные" Foreground="White" FontSize="15" />
                                     </StackPanel>
                                 </TabItem.Header>
-                                <TabControl Style="{StaticResource MaterialDesignAppBarTabControl}" Background="#1AA79E">
+                                <TabControl Style="{StaticResource MaterialDesignAppBarTabControl}" Background="{DynamicResource PrimaryHueLightBrush}">
                                     <TabItem>
                                         <TabItem.Header>
                                             <StackPanel Orientation="Horizontal" Width="235" HorizontalAlignment="Center">
@@ -784,7 +786,7 @@
                         </StackPanel>
                     </TabItem.Header>
                     <TabItem.Content>
-                        <Grid Background="{DynamicResource PrimaryHueMidBrush}" Margin="10">
+                        <Grid Background="{DynamicResource PrimaryHueMidBrush}" Margin="0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1.1*"/>
                                 <ColumnDefinition Width="1.6*"/>
@@ -884,7 +886,7 @@
                                                     <TextBlock Text="Прикрепить фото" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                 </StackPanel>
                                             </Button>
-                                            <Button Grid.Column="1" Style="{StaticResource MaterialDesignRaisedDarkButton}" Command="{Binding RemoveReviewPhotoCommand}" materialDesign:ButtonAssist.CornerRadius="10" Padding="14 6">
+                                            <Button Grid.Column="1" Style="{StaticResource MaterialDesignRaisedDangerButton}" Command="{Binding RemoveReviewPhotoCommand}" materialDesign:ButtonAssist.CornerRadius="10" Padding="14 6">
                                                 <StackPanel Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="ImageRemove" Margin="0 0 5 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
                                                     <TextBlock Text="Открепить" HorizontalAlignment="Center" VerticalAlignment="Center"/>

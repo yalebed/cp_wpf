@@ -13,8 +13,79 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Teal.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Cyan.xaml" />
-                <!--<ResourceDictionary />-->
             </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#111827"/>
+            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#243244"/>
+            <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#314155"/>
+            <SolidColorBrush x:Key="SecondaryAccentBrush" Color="#425268"/>
+            <SolidColorBrush x:Key="AppSecondaryTextBrush" Color="#667280"/>
+            <SolidColorBrush x:Key="AppSurfaceBrush" Color="#F8FAFC"/>
+            <SolidColorBrush x:Key="AppCardBrush" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="AppCardBorderBrush" Color="#E5E7EB"/>
+            <SolidColorBrush x:Key="AppButtonBrush" Color="#425268"/>
+            <SolidColorBrush x:Key="AppButtonHoverBrush" Color="#51647C"/>
+            <SolidColorBrush x:Key="AppButtonPressedBrush" Color="#344559"/>
+            <SolidColorBrush x:Key="AppSuccessButtonBrush" Color="#0F766E"/>
+            <SolidColorBrush x:Key="AppSuccessButtonHoverBrush" Color="#129287"/>
+            <SolidColorBrush x:Key="AppSuccessButtonPressedBrush" Color="#0C5F59"/>
+            <SolidColorBrush x:Key="AppDangerButtonBrush" Color="#B04747"/>
+            <SolidColorBrush x:Key="AppDangerButtonHoverBrush" Color="#C65656"/>
+            <SolidColorBrush x:Key="AppDangerButtonPressedBrush" Color="#983C3C"/>
+            <SolidColorBrush x:Key="ValidationErrorBrush" Color="#EF4444"/>
+            <Style x:Key="MaterialDesignRaisedDarkButton"
+                   TargetType="Button"
+                   BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{DynamicResource AppButtonBrush}"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource AppButtonBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource AppButtonHoverBrush}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource AppButtonHoverBrush}"/>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource AppButtonPressedBrush}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource AppButtonPressedBrush}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="MaterialDesignRaisedSuccessButton"
+                   TargetType="Button"
+                   BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{DynamicResource AppSuccessButtonBrush}"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource AppSuccessButtonBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource AppSuccessButtonHoverBrush}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource AppSuccessButtonHoverBrush}"/>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource AppSuccessButtonPressedBrush}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource AppSuccessButtonPressedBrush}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="MaterialDesignRaisedDangerButton"
+                   TargetType="Button"
+                   BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{DynamicResource AppDangerButtonBrush}"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource AppDangerButtonBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource AppDangerButtonHoverBrush}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource AppDangerButtonHoverBrush}"/>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource AppDangerButtonPressedBrush}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource AppDangerButtonPressedBrush}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
             <Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" />
         </ResourceDictionary>
     </Application.Resources>

@@ -14,7 +14,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Background" Value="#00695c" />
+            <Setter Property="Background" Value="#425268" />
             <Setter Property="Foreground" Value="WhiteSmoke" />
         </Style.Setters>
     <Style.Triggers>
@@ -23,7 +23,7 @@
                 <BeginStoryboard>
                     <Storyboard>
                         <ColorAnimation To="White" Duration="0:0:0.3" Storyboard.TargetProperty="Background.Color"/>
-                         <ColorAnimation To="#00695c" Duration="0:0:0.3" Storyboard.TargetProperty="Foreground.Color"/>
+                         <ColorAnimation To="#243244" Duration="0:0:0.3" Storyboard.TargetProperty="Foreground.Color"/>
                         <DoubleAnimation To="15" Duration="0:0:0.3" Storyboard.TargetProperty="FontSize"/>
                     </Storyboard>
                 </BeginStoryboard>
@@ -33,7 +33,7 @@
                 <EventTrigger.Actions>
                     <BeginStoryboard>
                         <Storyboard>
-                            <ColorAnimation To="#00695c" Duration="0:0:0.3" Storyboard.TargetProperty="Background.Color"/>
+                            <ColorAnimation To="#425268" Duration="0:0:0.3" Storyboard.TargetProperty="Background.Color"/>
                             <ColorAnimation To="White" Duration="0:0:0.3" Storyboard.TargetProperty="Foreground.Color"/>
                             <DoubleAnimation To="14" Duration="0:0:0.3" Storyboard.TargetProperty="FontSize"/>
                         </Storyboard>

@@ -19,7 +19,7 @@
         <Grid HorizontalAlignment="Center">
         <Border MinWidth="500" Margin="15" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="25" CornerRadius="20" Background="White">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="20" Color="Teal" ShadowDepth="5"/>
+                <DropShadowEffect BlurRadius="20" Color="#111827" ShadowDepth="5"/>
             </Border.Effect>
             <StackPanel>
                 <Grid>

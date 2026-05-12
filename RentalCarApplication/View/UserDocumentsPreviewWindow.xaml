@@ -154,7 +154,7 @@
 
                         <Button x:Name="btnVerify"
                                 Grid.Column="2"
-                                Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                Style="{StaticResource MaterialDesignRaisedSuccessButton}"
                                 materialDesign:ButtonAssist.CornerRadius="12"
                                 Width="220"
                                 Height="46"
