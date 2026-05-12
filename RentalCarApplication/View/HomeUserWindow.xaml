@@ -174,7 +174,7 @@
                                                     Background="{DynamicResource AppCardBrush}"
                                                     BorderBrush="{DynamicResource AppCardBorderBrush}"
                                                     BorderThickness="1"
-                                                    Padding="20"
+                                                    Padding="35 25"
                                                     CornerRadius="12">
                                                 <Border.Effect>
                                                     <DropShadowEffect BlurRadius="16"
@@ -189,14 +189,14 @@
                                                         <RowDefinition Height="Auto"/>
                                                     </Grid.RowDefinitions>
                                                     <Image Source="{Binding PhotoPath}"
-                                                           Width="170"
-                                                           Height="112"
+                                                           Width="200"
+                                                           Height="130"
                                                            HorizontalAlignment="Center"
                                                            Stretch="UniformToFill"
                                                            Margin="0 0 0 12"/>
                                                     <TextBlock Grid.Row="1"
                                                                Text="{Binding Brand}"
-                                                               FontSize="16"
+                                                               FontSize="18"
                                                                FontWeight="SemiBold"
                                                                HorizontalAlignment="Center"
                                                                TextAlignment="Center"
@@ -219,16 +219,16 @@
                                                                 <ColumnDefinition Width="Auto"/>
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <TextBlock Text="Номер:" FontSize="12" VerticalAlignment="Center"/>
-                                                            <TextBlock Grid.Column="1" Text="{Binding CarId}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                            <TextBlock Text="Номер: " FontSize="13" VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding CarId}" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
                                                         </Grid>
-                                                        <Grid Grid.Column="2" Grid.Row="0" Margin="0 0 0 10">
+                                                        <Grid Grid.Column="2" Grid.Row="0" Margin="20 0 0 10">
                                                             <Grid.ColumnDefinitions>
                                                                 <ColumnDefinition Width="Auto"/>
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <TextBlock Text="КПП:" FontSize="12" VerticalAlignment="Center"/>
-                                                            <TextBlock Grid.Column="1" Text="{Binding GearBox}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                            <TextBlock Text="КПП: " FontSize="13" VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding GearBox}" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
                                                         </Grid>
 
                                                         <Grid Grid.Column="0" Grid.Row="1" Margin="0 0 0 10">
@@ -236,21 +236,21 @@
                                                                 <ColumnDefinition Width="Auto"/>
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <TextBlock Text="Кузов:" FontSize="12" VerticalAlignment="Top"/>
+                                                            <TextBlock Text="Кузов: " FontSize="13" VerticalAlignment="Top"/>
                                                             <TextBlock Grid.Column="1"
                                                                        Text="{Binding BodyType}"
-                                                                       FontSize="12"
+                                                                       FontSize="13"
                                                                        FontWeight="SemiBold"
                                                                        VerticalAlignment="Top"
                                                                        TextWrapping="Wrap"/>
                                                         </Grid>
-                                                        <Grid Grid.Column="2" Grid.Row="1" Margin="0 0 0 10">
+                                                        <Grid Grid.Column="2" Grid.Row="1" Margin="20 0 0 10">
                                                             <Grid.ColumnDefinitions>
                                                                 <ColumnDefinition Width="Auto"/>
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <TextBlock Text="Объем:" FontSize="12" VerticalAlignment="Center"/>
-                                                            <TextBlock Grid.Column="1" Text="{Binding EngineCapacity}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                            <TextBlock Text="Объем: " FontSize="13" VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding EngineCapacity}" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
                                                         </Grid>
 
                                                         <Grid Grid.Column="0" Grid.Row="2" Margin="0 0 0 10">
@@ -258,21 +258,21 @@
                                                                 <ColumnDefinition Width="Auto"/>
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <TextBlock Text="Сидения:" FontSize="12" VerticalAlignment="Center"/>
-                                                            <TextBlock Grid.Column="1" Text="{Binding Seats}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                            <TextBlock Text="Сидения: " FontSize="13" VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding Seats}" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
                                                         </Grid>
-                                                        <Grid Grid.Column="2" Grid.Row="2" Margin="0 0 0 10">
+                                                        <Grid Grid.Column="2" Grid.Row="2" Margin="20 0 0 10">
                                                             <Grid.ColumnDefinitions>
                                                                 <ColumnDefinition Width="Auto"/>
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <TextBlock Text="Расход:" FontSize="12" VerticalAlignment="Center"/>
-                                                            <TextBlock Grid.Column="1" Text="{Binding Consumption}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                            <TextBlock Text="Расход: " FontSize="13" VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding Consumption}" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
                                                         </Grid>
 
                                                         <Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" Margin="0 4 0 0">
                                                             <TextBlock Text="{Binding Price, StringFormat={}{0} BYN}"
-                                                                       FontSize="13"
+                                                                       FontSize="16"
                                                                        FontWeight="Bold"
                                                                        HorizontalAlignment="Center"
                                                                        TextAlignment="Center"/>
