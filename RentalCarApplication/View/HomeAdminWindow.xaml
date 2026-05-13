@@ -347,7 +347,7 @@
                                             <DataGridTemplateColumn>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <Button Content="{materialDesign:PackIcon Kind=CheckBold,Size=20}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.ConfirmOrderCommand}" Foreground="{StaticResource PrimaryHueDarkBrush}" Style="{StaticResource MaterialDesignIconForegroundButton}"/>
+                                                        <Button Content="{materialDesign:PackIcon Kind=CheckBold,Size=20}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.ConfirmOrderCommand}" Foreground="{StaticResource AppSuccessButtonBrush}" Style="{StaticResource MaterialDesignIconForegroundButton}"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -455,7 +455,7 @@
                                                             <DataTemplate>
                                                                 <Button Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.OpenCompletedOrderPhotosCommand}"
                                                                         CommandParameter="{Binding}"
-                                                                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                                        Style="{StaticResource MaterialDesignRaisedSuccessButton}"
                                                                         materialDesign:ButtonAssist.CornerRadius="8"
                                                                         Width="44"
                                                                         Height="26"
@@ -658,7 +658,7 @@
                                             <DataTemplate>
                                                 <Button Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.OpenReviewPhotoCommand}"
                                                         CommandParameter="{Binding}"
-                                                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                        Style="{StaticResource MaterialDesignRaisedSuccessButton}"
                                                         materialDesign:ButtonAssist.CornerRadius="8"
                                                         Width="44"
                                                         Height="26"
@@ -675,7 +675,7 @@
                                             <DataTemplate>
                                                 <Button Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.DeleteReviewCommand}"
                                                         CommandParameter="{Binding}"
-                                                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                        Style="{StaticResource MaterialDesignRaisedDangerButton}"
                                                         materialDesign:ButtonAssist.CornerRadius="8"
                                                         Width="44"
                                                         Height="26"

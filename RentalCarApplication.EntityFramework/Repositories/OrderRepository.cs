@@ -63,7 +63,6 @@ VALUES
             return FindAll().Any(e =>
                 e.CarId == carId &&
                 e.Status != false &&
-                e.CompletedAt == null &&
                 (!excludeOrderId.HasValue || e.OrderId != excludeOrderId.Value) &&
                 rentDate < GetBusyUntil(e) &&
                 returnDate > e.RentDate);

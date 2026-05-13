@@ -27,7 +27,8 @@
                 <Grid>
                     <TextBlock Text="Карточка отзыва"
                                Foreground="White"
-                               FontSize="18"
+                               FontSize="20"
+                               FontWeight="Medium"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
                     <Button Width="44"
@@ -45,7 +46,7 @@
                 </Grid>
             </Border>
 
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="20 18 20 10">
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="20 18 20 20">
                 <Border Padding="18" CornerRadius="18" BorderBrush="Gainsboro" BorderThickness="1" Background="White">
                     <StackPanel>
                         <DockPanel>
@@ -94,15 +95,7 @@
                 </Border>
             </ScrollViewer>
 
-            <Button Grid.Row="2"
-                    Width="160"
-                    Height="42"
-                    Margin="0 0 0 18"
-                    HorizontalAlignment="Center"
-                    Click="CloseButton_Click"
-                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                    materialDesign:ButtonAssist.CornerRadius="10"
-                    Content="Закрыть"/>
+            
         </Grid>
     </Border>
 </Window>

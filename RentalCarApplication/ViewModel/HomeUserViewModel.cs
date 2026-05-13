@@ -463,7 +463,7 @@ namespace RentalCarApplication.ViewModel
                     .Select(x => new CarAvailabilityPeriod
                     {
                         RentDate = x.RentDate,
-                        ReturnDate = GetOrderBusyUntil(x),
+                        ReturnDate = x.ReturnDate,
                         StatusText = x.IsCompleted ? "Завершен" : x.Status == true ? "Подтвержден" : "Ожидает подтверждения"
                     })
                     .ToList();
@@ -1486,7 +1486,7 @@ namespace RentalCarApplication.ViewModel
 
         private DateTime GetOrderBusyUntil(Order order)
         {
-            return order.CompletedAt ?? order.ReturnDate;
+            return  order.ReturnDate;
         }
 
     }

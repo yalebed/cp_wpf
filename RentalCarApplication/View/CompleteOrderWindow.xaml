@@ -30,12 +30,18 @@
                                FontSize="22"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"/>
-                    <Button Width="48"
-                            Height="48"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Click="CloseButton_Click"
-                            Style="{StaticResource MaterialDesignFloatingActionDarkButton}">
+
+                    <Button Width="40"
+                                Height="40"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Margin="0,0,20,0"
+                                Background="White"
+                                Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Click="CloseButton_Click"
+                                Style="{StaticResource MaterialDesignFloatingActionDarkButton}">
                         <materialDesign:PackIcon Kind="Close" Width="20" Height="20"/>
                     </Button>
                 </Grid>
@@ -116,7 +122,7 @@
                     <Button Width="180"
                             Margin="0,0,12,0"
                             Click="CompleteButton_Click"
-                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                            Style="{StaticResource MaterialDesignRaisedSuccessButton}"
                             materialDesign:ButtonAssist.CornerRadius="10">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="CheckBold" Margin="0,0,6,0" VerticalAlignment="Center"/>
@@ -125,7 +131,7 @@
                     </Button>
                     <Button Width="140"
                             Click="CloseButton_Click"
-                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                            Style="{StaticResource MaterialDesignRaisedDangerButton}"
                             materialDesign:ButtonAssist.CornerRadius="10">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Close" Margin="0,0,6,0" VerticalAlignment="Center"/>

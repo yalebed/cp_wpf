@@ -62,7 +62,7 @@
                     <PasswordBox x:Name="regPassword" PasswordChanged="regPassword_PasswordChanged"           Grid.Column="1" Grid.Row="4" materialDesign:HintAssist.Hint="Введите пароль"  Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"  FontSize="18"/>
                     <PasswordBox x:Name="regPasswordCheck" PasswordChanged="regPasswordCheck_PasswordChanged" Grid.Column="1" Grid.Row="5" materialDesign:HintAssist.Hint="Подтвердите пароль"  Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"  FontSize="18"/>
                     <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" Text="Документы можно добавить позже в личном кабинете." Foreground="DimGray" Margin="0 5 0 0" HorizontalAlignment="Center"/>
-                    <Button Command="{Binding RegistrationUserCommand}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="Зарегистрироваться" FontSize="18" Margin="15 15 0 10" />
+                    <Button Command="{Binding RegistrationUserCommand}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="Зарегистрироваться" FontSize="18" Margin="15 15 0 10"/>
                 </Grid>
             </StackPanel>
         </Border>

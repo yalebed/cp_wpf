@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="&#x041A;&#x0430;&#x043B;&#x0435;&#x043D;&#x0434;&#x0430;&#x0440;&#x044C; &#x0437;&#x0430;&#x043D;&#x044F;&#x0442;&#x043E;&#x0441;&#x0442;&#x0438;"
         Width="800"
-        Height="580"
+        Height="560"
         MinWidth="720"
         MinHeight="500"
         WindowStartupLocation="CenterScreen"
@@ -148,17 +148,7 @@
                         </Grid>
                     </Border>
 
-                    <Button Grid.Row="1"
-                            Grid.ColumnSpan="2"
-                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                            materialDesign:ButtonAssist.CornerRadius="12"
-                            Width="150"
-                            Height="44"
-                            HorizontalAlignment="Center"
-                            Margin="0,16,0,0"
-                            Click="CloseButton_Click">
-                        <TextBlock Text="&#x0417;&#x0430;&#x043A;&#x0440;&#x044B;&#x0442;&#x044C;" FontSize="15"/>
-                    </Button>
+                    
                 </Grid>
             </Grid>
         </Border>
