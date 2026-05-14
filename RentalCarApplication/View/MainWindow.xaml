@@ -6,7 +6,8 @@
         xmlns:vm="clr-namespace:RentalCarApplication.ViewModel"
         xmlns:v="clr-namespace:RentalCarApplication.View"
         xmlns:l="clr-namespace:RentalCarApplication"
-        Title="Rental Car" Icon="/Resources/Icon.ico" Height="700" Width="1200" BorderBrush="{DynamicResource PrimaryHueDarkBrush}" WindowStartupLocation="CenterScreen">
+        Title="Rental Car" Icon="/Resources/Icon.ico"  WindowState="Maximized"
+        BorderBrush="{DynamicResource PrimaryHueDarkBrush}" WindowStartupLocation="CenterScreen">
 
     <ContentControl Content="{Binding CurrentViewModel}">
         <ContentControl.Resources>

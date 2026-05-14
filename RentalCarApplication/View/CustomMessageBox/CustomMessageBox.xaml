@@ -56,7 +56,7 @@
             </Grid>
         </materialDesign:Card>
 
-        <Border Grid.Row="1" Background="Honeydew">
+        <Border Grid.Row="1" Background="White">
             <Grid Margin="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
