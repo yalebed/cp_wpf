@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using RentalCarApplication.Core.Model;
 using RentalCarApplication.EntityFramework.Configurations;
-
+using System;
+using System.IO;
+using System.Text.Json;
 namespace RentalCarApplication.EntityFramework
 {
     public class ApplicationContext : DbContext
@@ -10,17 +13,29 @@ namespace RentalCarApplication.EntityFramework
         public DbSet<Car> Cars { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Review> Reviews { get; set; }
-
-        public ApplicationContext()
-        {
-            EnsureOrderStatusCompatibility();
-            EnsureOrderCompletionCompatibility();
-            EnsureOrderCityCompatibility();
-            EnsureUserOptionalDocumentPhotoCompatibility();
-        }
+        public ApplicationContext() { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost; Database=RentalCarDB; Trusted_Connection=True; TrustServerCertificate=True;");
+            if (!optionsBuilder.IsConfigured)
+            {
+                var connStr = "Server=localhost; Database=RentalCarDB; Trusted_Connection=True; TrustServerCertificate=True;";
+                var jsonPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+                if (File.Exists(jsonPath))
+                {
+                    try
+                    {
+                        using var doc = JsonDocument.Parse(File.ReadAllBytes(jsonPath));
+                        var root = doc.RootElement;
+                        if (root.TryGetProperty("ConnectionStrings", out var cs)
+                            && cs.TryGetProperty("DefaultConnection", out var val))
+                        {
+                            connStr = val.GetString() ?? connStr;
+                        }
+                    }
+                    catch { }
+                }
+                optionsBuilder.UseSqlServer(connStr);
+            }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,9 +43,15 @@ namespace RentalCarApplication.EntityFramework
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new ReviewConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-
         }
-
+        public void InitializeDatabase()
+        {
+            Database.EnsureCreated();
+            EnsureOrderStatusCompatibility();
+            EnsureOrderCompletionCompatibility();
+            EnsureOrderCityCompatibility();
+            EnsureUserOptionalDocumentPhotoCompatibility();
+        }
         private void EnsureOrderStatusCompatibility()
         {
             try
@@ -53,7 +74,6 @@ namespace RentalCarApplication.EntityFramework
                         begin
                             alter table Orders add StatusBit bit null
                         end
-
                         update Orders
                         set StatusBit =
                             case
@@ -63,7 +83,6 @@ namespace RentalCarApplication.EntityFramework
                                 when cast(Status as nvarchar(50)) = 'Canceled' then 0
                                 else null
                             end
-
                         alter table Orders drop column Status
                         exec sp_rename 'Orders.StatusBit', 'Status', 'COLUMN'
                     end
@@ -74,7 +93,6 @@ namespace RentalCarApplication.EntityFramework
                 // Best-effort compatibility patch for local existing databases.
             }
         }
-
         private void EnsureOrderCompletionCompatibility()
         {
             try
@@ -89,7 +107,6 @@ namespace RentalCarApplication.EntityFramework
                     begin
                         alter table Orders add FrontPhotoPath nvarchar(max) null
                     end
-
                     if not exists (
                         select 1
                         from sys.columns
@@ -99,7 +116,6 @@ namespace RentalCarApplication.EntityFramework
                     begin
                         alter table Orders add RearPhotoPath nvarchar(max) null
                     end
-
                     if not exists (
                         select 1
                         from sys.columns
@@ -109,7 +125,6 @@ namespace RentalCarApplication.EntityFramework
                     begin
                         alter table Orders add SidePhotoPath nvarchar(max) null
                     end
-
                     if not exists (
                         select 1
                         from sys.columns
@@ -125,7 +140,6 @@ namespace RentalCarApplication.EntityFramework
             {
             }
         }
-
         private void EnsureOrderCityCompatibility()
         {
             try
@@ -147,7 +161,6 @@ namespace RentalCarApplication.EntityFramework
                 // Best-effort compatibility patch for local existing databases.
             }
         }
-
         private void EnsureUserOptionalDocumentPhotoCompatibility()
         {
             try
@@ -162,7 +175,6 @@ namespace RentalCarApplication.EntityFramework
                     begin
                         alter table Users drop column PassportPhotoPath
                     end
-
                     if exists (
                         select 1
                         from sys.columns

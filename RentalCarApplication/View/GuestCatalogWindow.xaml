@@ -187,7 +187,7 @@
             </StackPanel>
 
             <Border Grid.Column="2"
-                    Padding="4 6 4 6"
+                    Padding="40 6 4 6"
                     Background="{DynamicResource AppSurfaceBrush}"
                     BorderBrush="{DynamicResource AppCardBorderBrush}"
                     BorderThickness="1">
@@ -198,13 +198,13 @@
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal"
-                                           HorizontalAlignment="Center"/>
+                                           HorizontalAlignment="Left"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Width="320"
-                                        Margin="4"
+                                        Margin="6"
                                         Background="{DynamicResource AppCardBrush}"
                                         BorderBrush="{DynamicResource AppCardBorderBrush}"
                                         BorderThickness="1"

@@ -47,6 +47,9 @@
     <None Update="emailsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>CopyAlways</CopyToOutputDirectory>
+    </None>
     <Resource Include="Resources\Icon.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
