@@ -699,7 +699,7 @@
                                                             <DataTemplate>
                                                                 <Button Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.CompleteOrderCommand}"
                                                                         CommandParameter="{Binding}"
-                                                                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                                        Style="{StaticResource MaterialDesignRaisedSuccessButton}"
                                                                         materialDesign:ButtonAssist.CornerRadius="8"
                                                                         HorizontalAlignment="Stretch"
                                                                         Height="34"

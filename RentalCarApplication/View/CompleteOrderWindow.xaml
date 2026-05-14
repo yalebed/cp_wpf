@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Завершение заказа"
         Width="860"
-        Height="640"
+        Height="560"
         MinWidth="760"
         MinHeight="560"
         WindowStartupLocation="CenterOwner"
@@ -19,7 +19,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="86"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
@@ -27,6 +27,7 @@
                 <Grid Margin="24,0,24,0">
                     <TextBlock Text="Завершение заказа"
                                Foreground="White"
+                               FontWeight="Medium"
                                FontSize="22"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"/>
@@ -48,7 +49,7 @@
             </Border>
 
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                <StackPanel Margin="26,18,26,16">
+                <StackPanel Margin="26,18,26,18">
                     <TextBlock Text="{Binding OrderSummary}"
                                FontSize="17"
                                Foreground="DarkSlateGray"
