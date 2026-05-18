@@ -46,7 +46,7 @@ Source: "DBFiles\setup-database.ps1"; DestDir: "{app}\DBFiles"; Flags: ignorever
 Source: "DBFiles\remove-database.ps1"; DestDir: "{app}\DBFiles"; Flags: ignoreversion
 
 ; Файл бекапа базы данных
-Source: "DBFiles\dbfull.bak"; DestDir: "{app}\DBFiles"; Flags: ignoreversion
+Source: "DBFiles\db2.bak"; DestDir: "{app}\DBFiles"; Flags: ignoreversion
 
 ; Установщик SQL Server 2025 Express (содержит LocalDB)
 Source: "redist\SQL2025-SSEI-Expr.exe"; DestDir: "{tmp}"; Flags: deleteafterinstall; Check: not IsLocalDBInstalled

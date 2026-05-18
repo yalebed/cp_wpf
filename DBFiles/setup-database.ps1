@@ -26,7 +26,7 @@ try {
     Write-Log "System.Data loaded successfully"
     
     $databaseName = "RentalCarDB"
-    $backupPath = Join-Path $AppPath "DBFiles\dbfull.bak"
+    $backupPath = Join-Path $AppPath "DBFiles\db2.bak"
     Write-Log "Backup path: $backupPath"
     
     # Находим правильный путь для LocalDB файлов
