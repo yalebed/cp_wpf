@@ -14,7 +14,7 @@ namespace RentalCarApplication.EntityFramework.Configurations
             builder.Property(x => x.Text).IsRequired().HasMaxLength(1000);
             builder.Property(x => x.Rating).IsRequired();
             builder.Property(x => x.CreatedAt).IsRequired();
-            builder.Property(x => x.PhotoPath).IsRequired(false);
+            builder.Property(x => x.PhotoData).HasColumnType("varbinary(max)").IsRequired(false);
 
             builder.HasIndex(x => x.OrderId).IsUnique();
 

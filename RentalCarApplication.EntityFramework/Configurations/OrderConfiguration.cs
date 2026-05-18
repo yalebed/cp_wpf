@@ -14,6 +14,9 @@ namespace RentalCarApplication.EntityFramework.Configurations
             builder.Property(x => x.RentDate).IsRequired();
             builder.Property(x => x.ReturnDate).IsRequired();
             builder.Property(x => x.Status).HasDefaultValue(null);
+            builder.Property(x => x.FrontPhotoData).HasColumnType("varbinary(max)").IsRequired(false);
+            builder.Property(x => x.RearPhotoData).HasColumnType("varbinary(max)").IsRequired(false);
+            builder.Property(x => x.SidePhotoData).HasColumnType("varbinary(max)").IsRequired(false);
 
             builder.HasOne(x => x.Car).WithMany(x => x.Orders).HasForeignKey(x => x.CarId);
             builder.HasOne(x => x.User).WithMany(x => x.Orders).HasForeignKey(x => x.Email);

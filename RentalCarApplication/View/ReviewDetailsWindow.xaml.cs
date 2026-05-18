@@ -29,11 +29,19 @@ namespace RentalCarApplication.View
             txtEmail.Text = review.Email;
             txtReviewText.Text = review.Text;
 
-            if (!string.IsNullOrWhiteSpace(review.PhotoPath))
+            if (review.PhotoData != null)
             {
                 try
                 {
-                    imgPhoto.Source = new BitmapImage(new Uri(review.PhotoPath, UriKind.Absolute));
+                    using (var ms = new System.IO.MemoryStream(review.PhotoData))
+                    {
+                        var image = new BitmapImage();
+                        image.BeginInit();
+                        image.CacheOption = BitmapCacheOption.OnLoad;
+                        image.StreamSource = ms;
+                        image.EndInit();
+                        imgPhoto.Source = image;
+                    }
                     imgPhoto.Visibility = Visibility.Visible;
                 }
                 catch

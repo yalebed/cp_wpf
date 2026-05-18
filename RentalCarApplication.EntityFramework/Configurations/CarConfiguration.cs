@@ -13,6 +13,7 @@ namespace RentalCarApplication.EntityFramework.Configurations
             builder.Property(x => x.Brand).IsRequired().HasMaxLength(50);
             builder.Property(x => x.BodyType).IsRequired();
             builder.Property(x => x.GearBox).IsRequired();
+            builder.Property(x => x.PhotoData).HasColumnType("varbinary(max)").IsRequired(false);
 
         }
     }

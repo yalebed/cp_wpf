@@ -27,14 +27,14 @@ namespace RentalCarApplication.EntityFramework.Repositories
                 command.CommandText = statusIsString
                     ? @"
                         INSERT INTO Orders
-                            (RentDate, ReturnDate, Status, Price, FrontPhotoPath, RearPhotoPath, SidePhotoPath, CompletedAt, CarId, Email)
+                            (RentDate, ReturnDate, Status, Price, FrontPhotoData, RearPhotoData, SidePhotoData, CompletedAt, CarId, Email)
                         VALUES
-                            (@RentDate, @ReturnDate, @StatusText, @Price, @FrontPhotoPath, @RearPhotoPath, @SidePhotoPath, @CompletedAt, @CarId, @Email)"
+                            (@RentDate, @ReturnDate, @StatusText, @Price, @FrontPhotoData, @RearPhotoData, @SidePhotoData, @CompletedAt, @CarId, @Email)"
                                             : @"
                         INSERT INTO Orders
-                            (RentDate, ReturnDate, Status, Price, FrontPhotoPath, RearPhotoPath, SidePhotoPath, CompletedAt, CarId, Email)
+                            (RentDate, ReturnDate, Status, Price, FrontPhotoData, RearPhotoData, SidePhotoData, CompletedAt, CarId, Email)
                         VALUES
-                            (@RentDate, @ReturnDate, @StatusBit, @Price, @FrontPhotoPath, @RearPhotoPath, @SidePhotoPath, @CompletedAt, @CarId, @Email)";
+                            (@RentDate, @ReturnDate, @StatusBit, @Price, @FrontPhotoData, @RearPhotoData, @SidePhotoData, @CompletedAt, @CarId, @Email)";
 
                 AddCommonOrderParameters(command, entity, statusIsString);
                 command.ExecuteNonQuery();
@@ -96,9 +96,9 @@ SELECT
     Price,
     CarId,
     Email,
-    FrontPhotoPath,
-    RearPhotoPath,
-    SidePhotoPath,
+    FrontPhotoData,
+    RearPhotoData,
+    SidePhotoData,
     CompletedAt
 FROM Orders";
 
@@ -114,9 +114,9 @@ FROM Orders";
                         Price = reader.GetDouble(reader.GetOrdinal("Price")),
                         CarId = reader.GetInt32(reader.GetOrdinal("CarId")),
                         Email = reader.IsDBNull(reader.GetOrdinal("Email")) ? null : reader.GetString(reader.GetOrdinal("Email")),
-                        FrontPhotoPath = reader.IsDBNull(reader.GetOrdinal("FrontPhotoPath")) ? null : reader.GetString(reader.GetOrdinal("FrontPhotoPath")),
-                        RearPhotoPath = reader.IsDBNull(reader.GetOrdinal("RearPhotoPath")) ? null : reader.GetString(reader.GetOrdinal("RearPhotoPath")),
-                        SidePhotoPath = reader.IsDBNull(reader.GetOrdinal("SidePhotoPath")) ? null : reader.GetString(reader.GetOrdinal("SidePhotoPath")),
+                        FrontPhotoData = reader["FrontPhotoData"] as byte[],
+                        RearPhotoData = reader["RearPhotoData"] as byte[],
+                        SidePhotoData = reader["SidePhotoData"] as byte[],
                         CompletedAt = reader.IsDBNull(reader.GetOrdinal("CompletedAt")) ? null : reader.GetDateTime(reader.GetOrdinal("CompletedAt"))
                     });
                 }
@@ -154,9 +154,9 @@ UPDATE Orders SET
     ReturnDate = @ReturnDate,
     Status = @StatusText,
     Price = @Price,
-    FrontPhotoPath = @FrontPhotoPath,
-    RearPhotoPath = @RearPhotoPath,
-    SidePhotoPath = @SidePhotoPath,
+    FrontPhotoData = @FrontPhotoData,
+    RearPhotoData = @RearPhotoData,
+    SidePhotoData = @SidePhotoData,
     CompletedAt = @CompletedAt,
     CarId = @CarId,
     Email = @Email
@@ -167,9 +167,9 @@ UPDATE Orders SET
     ReturnDate = @ReturnDate,
     Status = @StatusBit,
     Price = @Price,
-    FrontPhotoPath = @FrontPhotoPath,
-    RearPhotoPath = @RearPhotoPath,
-    SidePhotoPath = @SidePhotoPath,
+    FrontPhotoData = @FrontPhotoData,
+    RearPhotoData = @RearPhotoData,
+    SidePhotoData = @SidePhotoData,
     CompletedAt = @CompletedAt,
     CarId = @CarId,
     Email = @Email
@@ -196,9 +196,9 @@ WHERE OrderId = @OrderId";
                 AddParameter(command, "@StatusBit", entity.Status.HasValue ? entity.Status.Value : DBNull.Value);
             }
             AddParameter(command, "@Price", entity.Price);
-            AddParameter(command, "@FrontPhotoPath", string.IsNullOrWhiteSpace(entity.FrontPhotoPath) ? DBNull.Value : entity.FrontPhotoPath);
-            AddParameter(command, "@RearPhotoPath", string.IsNullOrWhiteSpace(entity.RearPhotoPath) ? DBNull.Value : entity.RearPhotoPath);
-            AddParameter(command, "@SidePhotoPath", string.IsNullOrWhiteSpace(entity.SidePhotoPath) ? DBNull.Value : entity.SidePhotoPath);
+            AddParameter(command, "@FrontPhotoData", entity.FrontPhotoData ?? (object)DBNull.Value);
+            AddParameter(command, "@RearPhotoData", entity.RearPhotoData ?? (object)DBNull.Value);
+            AddParameter(command, "@SidePhotoData", entity.SidePhotoData ?? (object)DBNull.Value);
             AddParameter(command, "@CompletedAt", entity.CompletedAt.HasValue ? entity.CompletedAt.Value : DBNull.Value);
             AddParameter(command, "@CarId", entity.CarId);
             AddParameter(command, "@Email", string.IsNullOrWhiteSpace(entity.Email) ? DBNull.Value : entity.Email);

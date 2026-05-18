@@ -190,7 +190,7 @@ namespace RentalCarApplication.ViewModel
             car.Brand = CarModel;
             car.BodyType = CarBody;
             car.GearBox = CarGearBox;
-            car.PhotoPath = CarPhoto;
+            car.PhotoData = CarPhotoData;
             Validation.CheckValid(car);
             
         }
@@ -257,11 +257,11 @@ namespace RentalCarApplication.ViewModel
             set => Set(ref _carPrice, value);
         }
 
-        private string _carPhoto;
-        public string CarPhoto
+        private byte[] _carPhotoData;
+        public byte[] CarPhotoData
         {
-            get => _carPhoto;
-            set => Set(ref _carPhoto, value);
+            get => _carPhotoData;
+            set => Set(ref _carPhotoData, value);
         }
 
         #endregion
@@ -306,7 +306,7 @@ namespace RentalCarApplication.ViewModel
                 CarConsumption = SelectedCar.Consumption.ToString();
                 CarModel = SelectedCar.Brand;
                 CarSeats = SelectedCar.Seats.ToString();
-                CarPhoto = SelectedCar.PhotoPath;
+                CarPhotoData = SelectedCar.PhotoData;
                 CarPrice = SelectedCar.Price.ToString();
             }
             
@@ -323,7 +323,7 @@ namespace RentalCarApplication.ViewModel
             CarEngine = "";
             CarConsumption = "";
             CarGearBox = "";
-            CarPhoto = "";
+            CarPhotoData = null;
             CarSeats = "";
             CarPrice = "";
             SelectedCar = null;
@@ -378,7 +378,7 @@ namespace RentalCarApplication.ViewModel
 
                 if (ofdPicture.ShowDialog() == true)
                 {
-                    CarPhoto = ofdPicture.FileName;
+                    CarPhotoData = File.ReadAllBytes(ofdPicture.FileName);
 
                 }
             }
@@ -700,9 +700,9 @@ namespace RentalCarApplication.ViewModel
                     throw new Exception("Выберите завершенный заказ");
                 }
 
-                if (string.IsNullOrWhiteSpace(order.FrontPhotoPath) &&
-                    string.IsNullOrWhiteSpace(order.RearPhotoPath) &&
-                    string.IsNullOrWhiteSpace(order.SidePhotoPath))
+                if (order.FrontPhotoData == null &&
+                    order.RearPhotoData == null &&
+                    order.SidePhotoData == null)
                 {
                     throw new Exception("К этому заказу не прикреплены фотографии завершения");
                 }
@@ -1159,18 +1159,15 @@ namespace RentalCarApplication.ViewModel
                     throw new Exception("Выберите отзыв");
                 }
 
-                if (string.IsNullOrWhiteSpace(review.PhotoPath))
+                if (review.PhotoData == null)
                 {
                     throw new Exception("К этому отзыву не прикреплено фото");
                 }
 
-                if (!File.Exists(review.PhotoPath))
-                {
-                    throw new Exception($"Файл не найден: {review.PhotoPath}");
-                }
-
+                var tempFile = System.IO.Path.GetTempFileName() + ".jpg";
+                System.IO.File.WriteAllBytes(tempFile, review.PhotoData);
                 var process = new Process();
-                process.StartInfo = new ProcessStartInfo(review.PhotoPath)
+                process.StartInfo = new ProcessStartInfo(tempFile)
                 {
                     UseShellExecute = true
                 };

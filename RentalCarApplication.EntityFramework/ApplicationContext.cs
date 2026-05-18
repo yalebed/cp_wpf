@@ -51,6 +51,7 @@ namespace RentalCarApplication.EntityFramework
             EnsureOrderCompletionCompatibility();
             EnsureOrderCityCompatibility();
             EnsureUserOptionalDocumentPhotoCompatibility();
+            EnsurePhotoBinaryColumns();
         }
         private void EnsureOrderStatusCompatibility()
         {
@@ -102,28 +103,28 @@ namespace RentalCarApplication.EntityFramework
                         select 1
                         from sys.columns
                         where object_id = object_id('Orders')
-                          and name = 'FrontPhotoPath'
+                          and name = 'FrontPhotoData'
                     )
                     begin
-                        alter table Orders add FrontPhotoPath nvarchar(max) null
+                        alter table Orders add FrontPhotoData varbinary(max) null
                     end
                     if not exists (
                         select 1
                         from sys.columns
                         where object_id = object_id('Orders')
-                          and name = 'RearPhotoPath'
+                          and name = 'RearPhotoData'
                     )
                     begin
-                        alter table Orders add RearPhotoPath nvarchar(max) null
+                        alter table Orders add RearPhotoData varbinary(max) null
                     end
                     if not exists (
                         select 1
                         from sys.columns
                         where object_id = object_id('Orders')
-                          and name = 'SidePhotoPath'
+                          and name = 'SidePhotoData'
                     )
                     begin
-                        alter table Orders add SidePhotoPath nvarchar(max) null
+                        alter table Orders add SidePhotoData varbinary(max) null
                     end
                     if not exists (
                         select 1
@@ -185,6 +186,26 @@ namespace RentalCarApplication.EntityFramework
                         alter table Users drop column DriverLicensePhotoPath
                     end
                  ");
+            }
+            catch
+            {
+                // Best-effort compatibility patch for local existing databases.
+            }
+        }
+        private void EnsurePhotoBinaryColumns()
+        {
+            try
+            {
+                Database.ExecuteSqlRaw(@"
+                    if not exists (select 1 from sys.columns where object_id = object_id('Cars') and name = 'PhotoData')
+                        alter table Cars add PhotoData varbinary(max) null
+
+                    if not exists (select 1 from sys.columns where object_id = object_id('Users') and name = 'IdentitySelfiePhotoData')
+                        alter table Users add IdentitySelfiePhotoData varbinary(max) null
+
+                    if not exists (select 1 from sys.columns where object_id = object_id('Reviews') and name = 'PhotoData')
+                        alter table Reviews add PhotoData varbinary(max) null
+                ");
             }
             catch
             {

@@ -223,7 +223,7 @@
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
 
-                                        <Image Source="{Binding PhotoPath}"
+                                        <Image Source="{Binding PhotoData, Converter={StaticResource BytesToImage}}"
                                            Width="250"
                                            Height="150"
                                            HorizontalAlignment="Center"

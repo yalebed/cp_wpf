@@ -37,7 +37,7 @@ namespace RentalCarApplication.Core.Model
         [RegularExpression(@"^([1-9](\d{1,4})?(\,\d{1,2})?)$", ErrorMessage = "Неверный формат цены")]
         public double Price { get; set; }
         [Required(ErrorMessage = "Загрузите фото автомобиля")]
-        public string PhotoPath { get; set; }
+        public byte[] PhotoData { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }

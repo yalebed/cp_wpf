@@ -17,9 +17,9 @@ namespace RentalCarApplication.Core.Model
 
         public bool? Status { get; set; }
         public double Price { get; set; }
-        public string FrontPhotoPath { get; set; }
-        public string RearPhotoPath { get; set; }
-        public string SidePhotoPath { get; set; }
+        public byte[] FrontPhotoData { get; set; }
+        public byte[] RearPhotoData { get; set; }
+        public byte[] SidePhotoData { get; set; }
         public DateTime? CompletedAt { get; set; }
         public int CarId { get; set; }
         public Car Car { get; set; }
@@ -40,9 +40,9 @@ namespace RentalCarApplication.Core.Model
 
         [NotMapped]
         public bool HasCompletionPhotos =>
-            !string.IsNullOrWhiteSpace(FrontPhotoPath) &&
-            !string.IsNullOrWhiteSpace(RearPhotoPath) &&
-            !string.IsNullOrWhiteSpace(SidePhotoPath);
+            FrontPhotoData != null && FrontPhotoData.Length > 0 &&
+            RearPhotoData != null && RearPhotoData.Length > 0 &&
+            SidePhotoData != null && SidePhotoData.Length > 0;
 
         [NotMapped]
         public DateTime CompletionDate => CompletedAt ?? ReturnDate;

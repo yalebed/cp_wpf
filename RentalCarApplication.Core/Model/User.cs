@@ -31,7 +31,7 @@ namespace RentalCarApplication.Core.Model
         [RegularExpression(@"^([A-Z][A-Z]([0-9]){7})$", ErrorMessage = "Водительское удостоверение | Формат неверный.\n")]
         public string DriverLicense { get; set; }
 
-        public string IdentitySelfiePhotoPath { get; set; }
+        public byte[] IdentitySelfiePhotoData { get; set; }
 
         [Required(ErrorMessage = "Телефон | Введите номер телефона \n")]
         [RegularExpression(@"^\+375(29|33|44|25|17)[0-9]{7}$", ErrorMessage = "Телефон | Формат неверный.\n")]
@@ -46,7 +46,7 @@ namespace RentalCarApplication.Core.Model
         public bool HasRequiredDocuments =>
             !string.IsNullOrWhiteSpace(Passport) &&
             !string.IsNullOrWhiteSpace(DriverLicense) &&
-            !string.IsNullOrWhiteSpace(IdentitySelfiePhotoPath);
+            IdentitySelfiePhotoData != null && IdentitySelfiePhotoData.Length > 0;
 
     }
 }

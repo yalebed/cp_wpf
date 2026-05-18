@@ -34,7 +34,7 @@ namespace RentalCarApplication.ViewModel
                 UserEmail = CurrentUser.Email;
                 UserDriverLicense = CurrentUser.DriverLicense;
                 UserPassport = CurrentUser.Passport;
-                UserIdentitySelfiePhotoPath = CurrentUser.IdentitySelfiePhotoPath;
+                UserIdentitySelfiePhotoData = CurrentUser.IdentitySelfiePhotoData;
                 UserTelNumber = CurrentUser.TelNumber;
                 UserPassword = CurrentUser.Password;
             }
@@ -694,11 +694,11 @@ namespace RentalCarApplication.ViewModel
             set => Set(ref _userDriverLicense, value);
         }
 
-        private string _userIdentitySelfiePhotoPath;
-        public string UserIdentitySelfiePhotoPath
+        private byte[] _userIdentitySelfiePhotoData;
+        public byte[] UserIdentitySelfiePhotoData
         {
-            get => _userIdentitySelfiePhotoPath;
-            set => Set(ref _userIdentitySelfiePhotoPath, value);
+            get => _userIdentitySelfiePhotoData;
+            set => Set(ref _userIdentitySelfiePhotoData, value);
         }
 
         private string _documentsStatusText;
@@ -789,7 +789,7 @@ namespace RentalCarApplication.ViewModel
         {
             return !string.IsNullOrWhiteSpace(UserPassport) &&
                    !string.IsNullOrWhiteSpace(UserDriverLicense) &&
-                   !string.IsNullOrWhiteSpace(UserIdentitySelfiePhotoPath);
+                   UserIdentitySelfiePhotoData != null;
         }
 
         private void ValidateDocuments()
@@ -814,7 +814,7 @@ namespace RentalCarApplication.ViewModel
                 throw new Exception("Водительское удостоверение | Формат неверный.");
             }
 
-            if (string.IsNullOrWhiteSpace(UserIdentitySelfiePhotoPath))
+            if (UserIdentitySelfiePhotoData == null)
             {
                 throw new Exception("Добавьте селфи с удостоверением личности");
             }
@@ -839,7 +839,7 @@ namespace RentalCarApplication.ViewModel
                 var fileName = PickImageFile();
                 if (!string.IsNullOrWhiteSpace(fileName))
                 {
-                    UserIdentitySelfiePhotoPath = fileName;
+                    UserIdentitySelfiePhotoData = File.ReadAllBytes(fileName);
                 }
             }
             catch (Exception ex)
@@ -851,7 +851,7 @@ namespace RentalCarApplication.ViewModel
         private bool CanClearIdentitySelfiePhotoExecute(object o) => true;
         private void OnClearIdentitySelfiePhotoExecuted(object o)
         {
-            UserIdentitySelfiePhotoPath = string.Empty;
+            UserIdentitySelfiePhotoData = null;
         }
 
         private bool CanSaveDocumentsExecute(object o) => true;
@@ -872,14 +872,14 @@ namespace RentalCarApplication.ViewModel
 
                 user.Passport = UserPassport;
                 user.DriverLicense = UserDriverLicense;
-                user.IdentitySelfiePhotoPath = UserIdentitySelfiePhotoPath;
+                user.IdentitySelfiePhotoData = UserIdentitySelfiePhotoData;
 
                 ValidateDocuments();
 
                 bool isVerifiedBeforeUpdate = CurrentUser.IsDocumentsVerified;
                 bool documentsChanged = CurrentUser.Passport != user.Passport ||
                                         CurrentUser.DriverLicense != user.DriverLicense ||
-                                        CurrentUser.IdentitySelfiePhotoPath != user.IdentitySelfiePhotoPath;
+                                        CurrentUser.IdentitySelfiePhotoData != user.IdentitySelfiePhotoData;
 
                 user.IsDocumentsVerified = documentsChanged ? false : isVerifiedBeforeUpdate;
 
@@ -890,7 +890,7 @@ namespace RentalCarApplication.ViewModel
                 LoginWindowViewModel.CurrentUser = user;
                 UserPassport = user.Passport;
                 UserDriverLicense = user.DriverLicense;
-                UserIdentitySelfiePhotoPath = user.IdentitySelfiePhotoPath;
+                UserIdentitySelfiePhotoData = user.IdentitySelfiePhotoData;
                 RefreshDocumentsStatus();
 
                 new CustomMessageBox("Документы сохранены", MessageType.Success, MessageButtons.Ok).ShowDialog();
@@ -1138,9 +1138,9 @@ namespace RentalCarApplication.ViewModel
                     return;
                 }
 
-                order.FrontPhotoPath = completionWindow.FrontPhotoPath;
-                order.RearPhotoPath = completionWindow.RearPhotoPath;
-                order.SidePhotoPath = completionWindow.SidePhotoPath;
+                order.FrontPhotoData = completionWindow.FrontPhotoData;
+                order.RearPhotoData = completionWindow.RearPhotoData;
+                order.SidePhotoData = completionWindow.SidePhotoData;
                 order.CompletedAt = DateTime.Now;
 
                 unitOfWork.OrderRepository.Update(order.OrderId, order);
@@ -1271,11 +1271,11 @@ namespace RentalCarApplication.ViewModel
             set => Set(ref _reviewText, value);
         }
 
-        private string _reviewPhotoPath;
-        public string ReviewPhotoPath
+        private byte[] _reviewPhotoData;
+        public byte[] ReviewPhotoData
         {
-            get => _reviewPhotoPath;
-            set => Set(ref _reviewPhotoPath, value);
+            get => _reviewPhotoData;
+            set => Set(ref _reviewPhotoData, value);
         }
 
         private int _reviewRating;
@@ -1387,7 +1387,7 @@ namespace RentalCarApplication.ViewModel
 
                 if (dialog.ShowDialog() == true)
                 {
-                    ReviewPhotoPath = dialog.FileName;
+                    ReviewPhotoData = File.ReadAllBytes(dialog.FileName);
                 }
             }
             catch (Exception ex)
@@ -1401,7 +1401,7 @@ namespace RentalCarApplication.ViewModel
         private bool CanRemoveReviewPhotoExecute(object o) => true;
         private void OnRemoveReviewPhotoExecuted(object o)
         {
-            ReviewPhotoPath = string.Empty;
+            ReviewPhotoData = null;
         }
 
         private bool CanSetReviewRatingExecute(object o) => true;
@@ -1445,7 +1445,7 @@ namespace RentalCarApplication.ViewModel
                     Email = CurrentUser.Email,
                     Text = ReviewText,
                     Rating = ReviewRating,
-                    PhotoPath = ReviewPhotoPath,
+                    PhotoData = ReviewPhotoData,
                     CreatedAt = DateTime.Now
                 };
 
@@ -1455,7 +1455,7 @@ namespace RentalCarApplication.ViewModel
                     unitOfWork.Save();
                     ReviewText = string.Empty;
                     ReviewRating = 5;
-                    ReviewPhotoPath = string.Empty;
+            ReviewPhotoData = null;
                     SelectedReviewOrder = null;
                     RefreshReviewsData();
                     var result = new CustomMessageBox("Отзыв успешно опубликован",

@@ -79,7 +79,7 @@
                                         <TextBlock Text="Прикрепить"/>
                                     </StackPanel>
                                 </Button>
-                                <Image Source="{Binding FrontPhotoPath}" Height="170" Stretch="Uniform" Margin="0,14,0,0"/>
+                                <Image Source="{Binding FrontPhotoData, Converter={StaticResource BytesToImage}}" Height="170" Stretch="Uniform" Margin="0,14,0,0"/>
                             </StackPanel>
                         </Border>
 
@@ -95,7 +95,7 @@
                                         <TextBlock Text="Прикрепить"/>
                                     </StackPanel>
                                 </Button>
-                                <Image Source="{Binding RearPhotoPath}" Height="170" Stretch="Uniform" Margin="0,14,0,0"/>
+                                <Image Source="{Binding RearPhotoData, Converter={StaticResource BytesToImage}}" Height="170" Stretch="Uniform" Margin="0,14,0,0"/>
                             </StackPanel>
                         </Border>
 
@@ -111,7 +111,7 @@
                                         <TextBlock Text="Прикрепить"/>
                                     </StackPanel>
                                 </Button>
-                                <Image Source="{Binding SidePhotoPath}" Height="170" Stretch="Uniform" Margin="0,14,0,0"/>
+                                <Image Source="{Binding SidePhotoData, Converter={StaticResource BytesToImage}}" Height="170" Stretch="Uniform" Margin="0,14,0,0"/>
                             </StackPanel>
                         </Border>
                     </Grid>

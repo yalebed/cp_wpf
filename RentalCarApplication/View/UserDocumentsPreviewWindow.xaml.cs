@@ -21,11 +21,19 @@ namespace RentalCarApplication.View
                 ? "\u041F\u043E\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043D\u044B"
                 : "\u041D\u0435 \u043F\u043E\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043D\u044B";
 
-            if (!string.IsNullOrWhiteSpace(user?.IdentitySelfiePhotoPath))
+            if (user?.IdentitySelfiePhotoData != null)
             {
                 try
                 {
-                    imgSelfie.Source = new BitmapImage(new Uri(user.IdentitySelfiePhotoPath));
+                    using (var ms = new System.IO.MemoryStream(user.IdentitySelfiePhotoData))
+                    {
+                        var image = new BitmapImage();
+                        image.BeginInit();
+                        image.CacheOption = BitmapCacheOption.OnLoad;
+                        image.StreamSource = ms;
+                        image.EndInit();
+                        imgSelfie.Source = image;
+                    }
                 }
                 catch
                 {

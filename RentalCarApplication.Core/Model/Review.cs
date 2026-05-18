@@ -15,7 +15,7 @@ namespace RentalCarApplication.Core.Model
         [Range(1, 5, ErrorMessage = "Rating must be between 1 and 5")]
         public int Rating { get; set; }
 
-        public string PhotoPath { get; set; }
+        public byte[] PhotoData { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

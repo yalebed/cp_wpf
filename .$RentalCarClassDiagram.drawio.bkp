@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="Electron" agent="Mozilla/5.0" version="29.3.6">
+  <diagram id="class-diagram-clean" name="Class Diagram">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- Заголовок -->
+        <mxCell id="title" value="Диаграмма классов - Система аренды автомобилей" style="text;html=1;strokeColor=none;fillColor=none;fontSize=22;fontStyle=1;fontColor=#1a1a1a;" vertex="1" parent="1">
+          <mxGeometry x="550" y="20" width="500" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== LAYER 1: БАЗОВЫЕ КЛАССЫ ==================== -->
+        
+        <!-- ViewModelBase -->
+        <mxCell id="vmbase" value="&lt;b&gt;ViewModelBase&lt;/b&gt;&lt;hr&gt;&lt;i&gt;&lt;font color=&quot;#666666&quot;&gt;&amp;lt;&amp;lt;abstract&amp;gt;&amp;gt;&lt;/font&gt;&lt;/i&gt;&lt;hr&gt;- PropertyChanged : event&lt;br&gt;+ Set(ref T, T) : bool" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=32;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1A73E8;strokeWidth=2;fontSize=12;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="80" y="100" width="200" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- CommandBase -->
+        <mxCell id="cmdbase" value="&lt;b&gt;CommandBase&lt;/b&gt;&lt;hr&gt;&lt;i&gt;&lt;font color=&quot;#666666&quot;&gt;&amp;lt;&amp;lt;abstract&amp;gt;&amp;gt;&lt;/font&gt;&lt;/i&gt;&lt;hr&gt;+ CanExecute(object) : bool&lt;br&gt;+ Execute(object) : void" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=32;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1A73E8;strokeWidth=2;fontSize=12;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="450" y="100" width="200" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Entity -->
+        <mxCell id="entity" value="&lt;b&gt;Entity&lt;/b&gt;&amp;lt;TKey&amp;gt;&lt;hr&gt;&lt;i&gt;&lt;font color=&quot;#666666&quot;&gt;&amp;lt;&amp;lt;abstract&amp;gt;&amp;gt;&lt;/font&gt;&lt;/i&gt;&lt;hr&gt;+ Id : TKey" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=32;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1A73E8;strokeWidth=2;fontSize=12;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="900" y="100" width="200" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- IRepository -->
+        <mxCell id="irepo" value="&lt;b&gt;&amp;lt;&amp;lt;interface&amp;gt;&amp;gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;IRepository&lt;/b&gt;&amp;lt;TKey,TEntity&amp;gt;&lt;hr&gt;+ Create(TEntity) : void&lt;br&gt;+ Find(TKey) : TEntity?&lt;br&gt;+ FindAll() : List&amp;lt;TEntity&amp;gt;&lt;br&gt;+ Update(TEntity) : void&lt;br&gt;+ Delete(TKey) : void" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=36;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E65100;strokeWidth=2;fontSize=11;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="90" width="240" height="140" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== LAYER 2: КОМАНДЫ ==================== -->
+        
+        <!-- RelayCommand -->
+        <mxCell id="relaycmd" value="&lt;b&gt;RelayCommand&lt;/b&gt;&lt;hr&gt;+ Execute(object) : void&lt;br&gt;+ CanExecute(object) : bool" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1A73E8;strokeWidth=1.5;fontSize=12;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="450" y="260" width="200" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- NavigationCommand -->
+        <mxCell id="navcmd" value="&lt;b&gt;NavigationCommand&lt;/b&gt;&lt;hr&gt;+ Execute(object) : void" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1A73E8;strokeWidth=1.5;fontSize=12;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="450" y="380" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== LAYER 2: МОДЕЛИ ДАННЫХ ==================== -->
+        
+        <!-- User -->
+        <mxCell id="user" value="&lt;b&gt;User&lt;/b&gt;&lt;hr&gt;+ Email : string&lt;br&gt;+ Password : string&lt;br&gt;+ Name : string&lt;br&gt;+ Surname : string&lt;br&gt;+ Passport : string&lt;br&gt;+ DriverLicense : string&lt;br&gt;+ TelNumber : string&lt;br&gt;+ IsAdmin : bool&lt;br&gt;+ IsDocumentsVerified : bool&lt;br&gt;+ IdentitySelfiePhotoPath : string" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2E7D32;strokeWidth=1.5;fontSize=11;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="850" y="280" width="230" height="220" as="geometry"/>
+        </mxCell>
+
+        <!-- Car -->
+        <mxCell id="car" value="&lt;b&gt;Car&lt;/b&gt;&lt;hr&gt;+ Brand : string&lt;br&gt;+ Model : string&lt;br&gt;+ EngineCapacity : double&lt;br&gt;+ GearBox : string&lt;br&gt;+ BodyType : string&lt;br&gt;+ Seats : int&lt;br&gt;+ Consumption : double&lt;br&gt;+ PricePerDay : double&lt;br&gt;+ IsAvailable : bool&lt;br&gt;+ PhotoPath : string" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2E7D32;strokeWidth=1.5;fontSize=11;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="280" width="220" height="210" as="geometry"/>
+        </mxCell>
+
+        <!-- Order -->
+        <mxCell id="order" value="&lt;b&gt;Order&lt;/b&gt;&lt;hr&gt;+ RentDate : DateTime&lt;br&gt;+ ReturnDate : DateTime&lt;br&gt;+ Status : bool?&lt;br&gt;+ TotalPrice : double&lt;br&gt;+ CompletedAt : DateTime?&lt;br&gt;+ CarId : int&lt;br&gt;+ UserEmail : string&lt;br&gt;+ FrontPhotoPath : string&lt;br&gt;+ RearPhotoPath : string" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2E7D32;strokeWidth=1.5;fontSize=11;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="850" y="640" width="230" height="210" as="geometry"/>
+        </mxCell>
+
+        <!-- Review -->
+        <mxCell id="review" value="&lt;b&gt;Review&lt;/b&gt;&lt;hr&gt;+ Text : string&lt;br&gt;+ Rating : int&lt;br&gt;+ PhotoPath : string&lt;br&gt;+ CreatedAt : DateTime&lt;br&gt;+ CarId : int&lt;br&gt;+ UserEmail : string&lt;br&gt;+ OrderId : int" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2E7D32;strokeWidth=1.5;fontSize=11;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="640" width="220" height="190" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== LAYER 3: VIEWMODELS ==================== -->
+        
+        <!-- LoginWindowViewModel -->
+        <mxCell id="loginvm" value="&lt;b&gt;LoginWindowViewModel&lt;/b&gt;&lt;hr&gt;+ Email : string&lt;br&gt;+ Password : string&lt;br&gt;+ SignInCommand : ICommand&lt;hr&gt;- OnSignIn(object) : void" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=32;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#7B1FA2;strokeWidth=1.5;fontSize=12;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="80" y="260" width="220" height="110" as="geometry"/>
+        </mxCell>
+
+        <!-- RegisterWindowViewModel -->
+        <mxCell id="regvm" value="&lt;b&gt;RegisterWindowViewModel&lt;/b&gt;&lt;hr&gt;+ Email : string&lt;br&gt;+ Password : string&lt;br&gt;+ Name : string&lt;br&gt;+ Surname : string&lt;br&gt;+ RegistrationCommand : ICommand&lt;hr&gt;- OnRegister(object) : void" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=32;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#7B1FA2;strokeWidth=1.5;fontSize=12;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="80" y="440" width="220" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- HomeUserViewModel -->
+        <mxCell id="uservm" value="&lt;b&gt;HomeUserViewModel&lt;/b&gt;&lt;hr&gt;+ Cars : ObservableCollection&amp;lt;Car&amp;gt;&lt;br&gt;+ SelectedCar : Car&lt;br&gt;+ RentDate : DateTime&lt;br&gt;+ ReturnDate : DateTime&lt;br&gt;+ PlaceOrderCommand : ICommand&lt;br&gt;+ SubmitReviewCommand : ICommand" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=32;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#7B1FA2;strokeWidth=1.5;fontSize=12;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="80" y="650" width="240" height="150" as="geometry"/>
+        </mxCell>
+
+        <!-- HomeAdminViewModel -->
+        <mxCell id="adminvm" value="&lt;b&gt;HomeAdminViewModel&lt;/b&gt;&lt;hr&gt;+ Cars : ObservableCollection&amp;lt;Car&amp;gt;&lt;br&gt;+ Orders : ObservableCollection&amp;lt;Order&amp;gt;&lt;br&gt;+ SelectedCar : Car&lt;br&gt;+ AddCarCommand : ICommand&lt;br&gt;+ UpdateCarCommand : ICommand&lt;br&gt;+ DeleteCarCommand : ICommand&lt;br&gt;+ ApproveOrderCommand : ICommand" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=32;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#7B1FA2;strokeWidth=1.5;fontSize=12;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="80" y="870" width="250" height="170" as="geometry"/>
+        </mxCell>
+
+        <!-- GuestCatalogViewModel -->
+        <mxCell id="guestvm" value="&lt;b&gt;GuestCatalogViewModel&lt;/b&gt;&lt;hr&gt;+ Cars : ObservableCollection&amp;lt;Car&amp;gt;&lt;br&gt;+ SearchCommand : ICommand" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=32;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#7B1FA2;strokeWidth=1.5;fontSize=12;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="400" y="650" width="220" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== LAYER 4: ИНФРАСТРУКТУРА ==================== -->
+        
+        <!-- Navigator -->
+        <mxCell id="navigator" value="&lt;b&gt;Navigator&lt;/b&gt;&lt;hr&gt;+ CurrentViewModel : ViewModelBase&lt;br&gt;+ Navigate(ViewModelBase) : void" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E65100;strokeWidth=1.5;fontSize=12;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="450" y="530" width="220" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- Validation -->
+        <mxCell id="validation" value="&lt;b&gt;Validation&lt;/b&gt;&lt;hr&gt;+ IsValidEmail(string) : bool&lt;br&gt;+ IsValidPhone(string) : bool&lt;br&gt;+ IsValidPassport(string) : bool" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E65100;strokeWidth=1.5;fontSize=12;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="450" y="870" width="220" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- Encryption -->
+        <mxCell id="encryption" value="&lt;b&gt;Encryption&lt;/b&gt;&lt;hr&gt;+ Encrypt(string) : string&lt;br&gt;+ Decrypt(string) : string" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E65100;strokeWidth=1.5;fontSize=12;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="450" y="1030" width="220" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== LAYER 5: DATA LAYER ==================== -->
+        
+        <!-- ApplicationContext -->
+        <mxCell id="appctx" value="&lt;b&gt;ApplicationContext&lt;/b&gt; : DbContext&lt;hr&gt;+ Users : DbSet&amp;lt;User&amp;gt;&lt;br&gt;+ Cars : DbSet&amp;lt;Car&amp;gt;&lt;br&gt;+ Orders : DbSet&amp;lt;Order&amp;gt;&lt;br&gt;+ Reviews : DbSet&amp;lt;Review&amp;gt;&lt;hr&gt;# OnConfiguring(...) : void&lt;br&gt;# OnModelCreating(...) : void&lt;br&gt;+ InitializeDatabase() : void" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=32;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#F9A825;strokeWidth=1.5;fontSize=11;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="320" width="250" height="180" as="geometry"/>
+        </mxCell>
+
+        <!-- Specific Interfaces -->
+        <mxCell id="specifaces" value="&lt;b&gt;&amp;lt;&amp;lt;interface&amp;gt;&amp;gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;IUserRepository / ICarRepository&lt;/b&gt;&lt;br&gt;&lt;b&gt;IOrderRepository / IReviewRepository&lt;/b&gt;&lt;hr&gt;+ GetByEmail(string) : User?&lt;br&gt;+ GetAvailableCars() : List&amp;lt;Car&amp;gt;&lt;br&gt;+ GetOrdersByUser(string) : List&amp;lt;Order&amp;gt;&lt;br&gt;+ HasOverlappingOrder(int, DateTime, DateTime) : bool" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E65100;strokeWidth=2;fontSize=10;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="570" width="250" height="140" as="geometry"/>
+        </mxCell>
+
+        <!-- Repositories -->
+        <mxCell id="repos" value="&lt;b&gt;UserRepository / CarRepository&lt;/b&gt;&lt;br&gt;&lt;b&gt;OrderRepository / ReviewRepository&lt;/b&gt;&lt;hr&gt;&lt;i&gt;Implement specific interfaces&lt;/i&gt;" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=32;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#F9A825;strokeWidth=1.5;fontSize=12;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="780" width="250" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- UnitOfWork -->
+        <mxCell id="unit" value="&lt;b&gt;UnitOfWork&lt;/b&gt;&lt;hr&gt;+ UserRepository : IUserRepository&lt;br&gt;+ CarRepository : ICarRepository&lt;br&gt;+ OrderRepository : IOrderRepository&lt;br&gt;+ ReviewRepository : IReviewRepository&lt;hr&gt;+ Save() : void&lt;br&gt;+ Dispose() : void" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#F9A825;strokeWidth=1.5;fontSize=12;fontFamily=Segoe UI;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="900" width="250" height="130" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== СВЯЗИ (НАСЛЕДОВАНИЕ) ==================== -->
+        
+        <!-- VMBase inheritance -->
+        <mxCell id="e_login_vmbase" value="" style="endArrow=block;endFill=0;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#1A73E8;strokeWidth=2;" edge="1" parent="1" source="loginvm" target="vmbase">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="e_reg_vmbase" value="" style="endArrow=block;endFill=0;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#1A73E8;strokeWidth=2;" edge="1" parent="1" source="regvm" target="vmbase">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="500"/>
+              <mxPoint x="50" y="140"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="e_user_vmbase" value="" style="endArrow=block;endFill=0;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#1A73E8;strokeWidth=2;" edge="1" parent="1" source="uservm" target="vmbase">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="725"/>
+              <mxPoint x="50" y="140"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="e_admin_vmbase" value="" style="endArrow=block;endFill=0;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#1A73E8;strokeWidth=2;" edge="1" parent="1" source="adminvm" target="vmbase">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="955"/>
+              <mxPoint x="50" y="140"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Command inheritance -->
+        <mxCell id="e_relay_cmd" value="" style="endArrow=block;endFill=0;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#1A73E8;strokeWidth=2;" edge="1" parent="1" source="relaycmd" target="cmdbase">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="e_nav_cmd" value="" style="endArrow=block;endFill=0;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#1A73E8;strokeWidth=2;" edge="1" parent="1" source="navcmd" target="cmdbase">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="550" y="370"/>
+              <mxPoint x="550" y="180"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Entity inheritance -->
+        <mxCell id="e_user_entity" value="" style="endArrow=block;endFill=0;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#2E7D32;strokeWidth=2;" edge="1" parent="1" source="user" target="entity">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="965" y="270"/>
+              <mxPoint x="1000" y="170"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="e_car_entity" value="" style="endArrow=block;endFill=0;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#2E7D32;strokeWidth=2;" edge="1" parent="1" source="car" target="entity">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1260" y="270"/>
+              <mxPoint x="1100" y="170"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== СВЯЗИ (АССОЦИАЦИИ МЕЖДУ МОДЕЛЯМИ) ==================== -->
+        
+        <!-- User to Order -->
+        <mxCell id="e_user_order" value="1                     0..*" style="endArrow=none;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#2E7D32;strokeWidth=1.5;fontSize=11;fontColor=#2E7D32;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="user" target="order">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="500" as="sourcePoint"/>
+            <mxPoint x="965" y="640" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Car to Order -->
+        <mxCell id="e_car_order" value="1                     0..*" style="endArrow=none;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#2E7D32;strokeWidth=1.5;fontSize=11;fontColor=#2E7D32;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="car" target="order">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1260" y="550"/>
+              <mxPoint x="1080" y="550"/>
+              <mxPoint x="1080" y="640"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Car to Review -->
+        <mxCell id="e_car_review" value="1                     0..*" style="endArrow=none;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#2E7D32;strokeWidth=1.5;fontSize=11;fontColor=#2E7D32;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="car" target="review">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Order to Review -->
+        <mxCell id="e_order_review" value="1                     0..1" style="endArrow=none;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#2E7D32;strokeWidth=1.5;fontSize=11;fontColor=#2E7D32;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="order" target="review">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1080" y="735" as="sourcePoint"/>
+            <mxPoint x="1150" y="735" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== СВЯЗИ (РЕАЛИЗАЦИЯ ИНТЕРФЕЙСОВ) ==================== -->
+        
+        <!-- Repositories implement IRepository -->
+        <mxCell id="e_repos_irepo" value="&lt;&lt;implements&gt;&gt;" style="endArrow=block;endFill=0;dashed=1;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#E65100;strokeWidth=1.5;fontSize=10;fontColor=#E65100;" edge="1" parent="1" source="repos" target="irepo">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1480" y="780"/>
+              <mxPoint x="1480" y="230"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Repositories implement Specific Interfaces -->
+        <mxCell id="e_repos_spec" value="&lt;&lt;implements&gt;&gt;" style="endArrow=block;endFill=0;dashed=1;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#E65100;strokeWidth=1.5;fontSize=10;fontColor=#E65100;" edge="1" parent="1" source="repos" target="specifaces">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== СВЯЗИ (КОМПОЗИЦИЯ) ==================== -->
+        
+        <!-- UnitOfWork contains ApplicationContext -->
+        <mxCell id="e_unit_ctx" value="&lt;&lt;uses&gt;&gt;" style="endArrow=diamondThin;startFill=1;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#F9A825;strokeWidth=1.5;" edge="1" parent="1" source="unit" target="appctx">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1480" y="900"/>
+              <mxPoint x="1480" y="500"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- UnitOfWork contains Repositories -->
+        <mxCell id="e_unit_repos" value="&lt;&lt;contains&gt;&gt;" style="endArrow=diamondThin;startFill=1;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#F9A825;strokeWidth=1.5;" edge="1" parent="1" source="unit" target="repos">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== СВЯЗИ (ЗАВИСИМОСТИ) ==================== -->
+        
+        <!-- LoginVM uses Command -->
+        <mxCell id="e_vm_cmd" value="&lt;&lt;uses&gt;&gt;" style="endArrow=open;dashed=1;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#7B1FA2;strokeWidth=1.2;fontSize=10;fontColor=#7B1FA2;" edge="1" parent="1" source="loginvm" target="relaycmd">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="380" y="315"/>
+              <mxPoint x="380" y="295"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- LoginVM uses Navigator -->
+        <mxCell id="e_vm_nav" value="&lt;&lt;uses&gt;&gt;" style="endArrow=open;dashed=1;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#7B1FA2;strokeWidth=1.2;fontSize=10;fontColor=#7B1FA2;" edge="1" parent="1" source="loginvm" target="navigator">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="380" y="370"/>
+              <mxPoint x="380" y="565"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- RegisterVM uses Validation -->
+        <mxCell id="e_reg_val" value="&lt;&lt;uses&gt;&gt;" style="endArrow=open;dashed=1;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#7B1FA2;strokeWidth=1.2;fontSize=10;fontColor=#7B1FA2;" edge="1" parent="1" source="regvm" target="validation">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="380" y="500"/>
+              <mxPoint x="380" y="920"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- UserVM uses UnitOfWork -->
+        <mxCell id="e_user_unit" value="&lt;&lt;uses&gt;&gt;" style="endArrow=open;dashed=1;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#7B1FA2;strokeWidth=1.2;fontSize=10;fontColor=#7B1FA2;" edge="1" parent="1" source="uservm" target="unit">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="400" y="1130"/>
+              <mxPoint x="1480" y="1130"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- GuestVM uses UnitOfWork -->
+        <mxCell id="e_guest_unit" value="&lt;&lt;uses&gt;&gt;" style="endArrow=open;dashed=1;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#7B1FA2;strokeWidth=1.2;fontSize=10;fontColor=#7B1FA2;" edge="1" parent="1" source="guestvm" target="unit">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="510" y="1130"/>
+              <mxPoint x="1480" y="1130"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== ЛЕГЕНДА ==================== -->
+        <mxCell id="legend" value="&lt;b&gt;Условные обозначения:&lt;/b&gt;&lt;hr&gt;🔹 &lt;b&gt;──────►&lt;/b&gt; Наследование (пустой треугольник)&lt;br&gt;🔹 &lt;b&gt;- - - -►&lt;/b&gt; Реализация интерфейса&lt;br&gt;🔹 &lt;b&gt;──────&lt;►&lt;/b&gt; Ассоциация (1, 0..*)&lt;br&gt;🔹 &lt;b&gt;──────◆&lt;/b&gt; Композиция (содержит)&lt;br&gt;🔹 &lt;b&gt;- - -→&lt;/b&gt; Зависимость (использует)" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#FAFAFA;strokeColor=#666666;fontSize=11;fontFamily=Segoe UI;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="1070" width="280" height="130" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

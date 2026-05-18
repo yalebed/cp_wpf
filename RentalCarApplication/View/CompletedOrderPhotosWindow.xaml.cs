@@ -7,18 +7,18 @@ namespace RentalCarApplication.View
     public partial class CompletedOrderPhotosWindow : Window
     {
         public string HeaderText { get; }
-        public string FrontPhotoPath { get; }
-        public string RearPhotoPath { get; }
-        public string SidePhotoPath { get; }
+        public byte[] FrontPhotoData { get; }
+        public byte[] RearPhotoData { get; }
+        public byte[] SidePhotoData { get; }
 
         public CompletedOrderPhotosWindow(Order order)
         {
             InitializeComponent();
             Owner = Application.Current.Windows.OfType<Window>().FirstOrDefault(x => x.IsActive);
             HeaderText = $"Заказ №{order.OrderId}, автомобиль #{order.CarId}";
-            FrontPhotoPath = order.FrontPhotoPath;
-            RearPhotoPath = order.RearPhotoPath;
-            SidePhotoPath = order.SidePhotoPath;
+            FrontPhotoData = order.FrontPhotoData;
+            RearPhotoData = order.RearPhotoData;
+            SidePhotoData = order.SidePhotoData;
             DataContext = this;
         }
 

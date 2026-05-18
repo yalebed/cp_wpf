@@ -188,7 +188,7 @@
                                                         <RowDefinition Height="Auto"/>
                                                         <RowDefinition Height="Auto"/>
                                                     </Grid.RowDefinitions>
-                                                    <Image Source="{Binding PhotoPath}"
+                                                    <Image Source="{Binding PhotoData, Converter={StaticResource BytesToImage}}"
                                                            Width="200"
                                                            Height="130"
                                                            HorizontalAlignment="Center"
@@ -550,15 +550,12 @@
                                                         </StackPanel>
                                                     </Button>
                                                 </Grid>
-                                                <Image Source="{Binding UserIdentitySelfiePhotoPath}" Height="150" Stretch="Uniform" Margin="0 0 0 10">
+                                                <Image Source="{Binding UserIdentitySelfiePhotoData, Converter={StaticResource BytesToImage}}" Height="150" Stretch="Uniform" Margin="0 0 0 10">
                                                     <Image.Style>
                                                         <Style TargetType="Image">
                                                             <Setter Property="Visibility" Value="Visible"/>
                                                             <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding UserIdentitySelfiePhotoPath}" Value="">
-                                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding UserIdentitySelfiePhotoPath}" Value="{x:Null}">
+                                                                <DataTrigger Binding="{Binding UserIdentitySelfiePhotoData}" Value="{x:Null}">
                                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                                 </DataTrigger>
                                                             </Style.Triggers>
@@ -894,15 +891,12 @@
                                             </Button>
                                         </Grid>
 
-                                        <Image Source="{Binding ReviewPhotoPath}" Height="170" Stretch="Uniform" Margin="0 10 0 0">
+                                        <Image Source="{Binding ReviewPhotoData, Converter={StaticResource BytesToImage}}" Height="170" Stretch="Uniform" Margin="0 10 0 0">
                                             <Image.Style>
                                                 <Style TargetType="Image">
                                                     <Setter Property="Visibility" Value="Visible"/>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ReviewPhotoPath}" Value="">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding ReviewPhotoPath}" Value="{x:Null}">
+                                                        <DataTrigger Binding="{Binding ReviewPhotoData}" Value="{x:Null}">
                                                             <Setter Property="Visibility" Value="Collapsed"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
@@ -955,15 +949,12 @@
                                                                 <TextBlock Text="{Binding RatingStars}" FontSize="20" Foreground="Goldenrod" Margin="0 8 0 0"/>
                                                                 <TextBlock Text="{Binding User.Email}" FontSize="13" Foreground="DimGray" Margin="0 4 0 0"/>
                                                                 <TextBlock Text="{Binding Text}" FontSize="16" TextWrapping="Wrap" Margin="0 10 0 0"/>
-                                                                <Image Source="{Binding PhotoPath}" Height="180" Stretch="Uniform" Margin="0 12 0 0">
+                                                                <Image Source="{Binding PhotoData, Converter={StaticResource BytesToImage}}" Height="180" Stretch="Uniform" Margin="0 12 0 0">
                                                                     <Image.Style>
                                                                         <Style TargetType="Image">
                                                                             <Setter Property="Visibility" Value="Visible"/>
                                                                             <Style.Triggers>
-                                                                                <DataTrigger Binding="{Binding PhotoPath}" Value="">
-                                                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                                                </DataTrigger>
-                                                                                <DataTrigger Binding="{Binding PhotoPath}" Value="{x:Null}">
+                                                                                <DataTrigger Binding="{Binding PhotoData}" Value="{x:Null}">
                                                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                                                 </DataTrigger>
                                                                             </Style.Triggers>

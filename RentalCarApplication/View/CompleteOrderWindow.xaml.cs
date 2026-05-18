@@ -2,7 +2,9 @@ using Microsoft.Win32;
 using RentalCarApplication.Commands;
 using RentalCarApplication.Core.Model;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -34,25 +36,25 @@ namespace RentalCarApplication.View
 
         public string OrderSummary { get; }
 
-        private string _frontPhotoPath;
-        public string FrontPhotoPath
+        private byte[] _frontPhotoData;
+        public byte[] FrontPhotoData
         {
-            get => _frontPhotoPath;
-            set => SetProperty(ref _frontPhotoPath, value);
+            get => _frontPhotoData;
+            set => SetProperty(ref _frontPhotoData, value);
         }
 
-        private string _rearPhotoPath;
-        public string RearPhotoPath
+        private byte[] _rearPhotoData;
+        public byte[] RearPhotoData
         {
-            get => _rearPhotoPath;
-            set => SetProperty(ref _rearPhotoPath, value);
+            get => _rearPhotoData;
+            set => SetProperty(ref _rearPhotoData, value);
         }
 
-        private string _sidePhotoPath;
-        public string SidePhotoPath
+        private byte[] _sidePhotoData;
+        public byte[] SidePhotoData
         {
-            get => _sidePhotoPath;
-            set => SetProperty(ref _sidePhotoPath, value);
+            get => _sidePhotoData;
+            set => SetProperty(ref _sidePhotoData, value);
         }
 
         private void UploadPhoto(PhotoTarget target)
@@ -71,22 +73,22 @@ namespace RentalCarApplication.View
             switch (target)
             {
                 case PhotoTarget.Front:
-                    FrontPhotoPath = dialog.FileName;
+                    FrontPhotoData = File.ReadAllBytes(dialog.FileName);
                     break;
                 case PhotoTarget.Rear:
-                    RearPhotoPath = dialog.FileName;
+                    RearPhotoData = File.ReadAllBytes(dialog.FileName);
                     break;
                 case PhotoTarget.Side:
-                    SidePhotoPath = dialog.FileName;
+                    SidePhotoData = File.ReadAllBytes(dialog.FileName);
                     break;
             }
         }
 
         private void CompleteButton_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(FrontPhotoPath) ||
-                string.IsNullOrWhiteSpace(RearPhotoPath) ||
-                string.IsNullOrWhiteSpace(SidePhotoPath))
+            if (FrontPhotoData == null ||
+                RearPhotoData == null ||
+                SidePhotoData == null)
             {
                 new CustomMessageBoxWindow("Прикрепите фото автомобиля спереди, сзади и сбоку.",
                     MessageType.Error,
@@ -104,9 +106,9 @@ namespace RentalCarApplication.View
             Close();
         }
 
-        private void SetProperty(ref string field, string value, [CallerMemberName] string propertyName = null)
+        private void SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
         {
-            if (field == value)
+            if (EqualityComparer<T>.Default.Equals(field, value))
             {
                 return;
             }
