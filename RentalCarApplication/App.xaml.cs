@@ -12,6 +12,20 @@ namespace RentalCarApplication
     /// Логика взаимодействия для App.xaml
     /// </summary>
     public partial class App : Application
+{
+    public App()
     {
+        DispatcherUnhandledException += (s, e) =>
+        {
+            System.IO.File.WriteAllText("crash.log",
+                $"{DateTime.Now}: {e.Exception}");
+            e.Handled = true;
+        };
+        AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+        {
+            System.IO.File.WriteAllText("crash.log",
+                $"{DateTime.Now}: {e.ExceptionObject}");
+        };
     }
+}
 }

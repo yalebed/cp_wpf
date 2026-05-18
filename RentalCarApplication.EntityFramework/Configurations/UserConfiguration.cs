@@ -18,7 +18,7 @@ namespace RentalCarApplication.EntityFramework.Configurations
             builder.Property(x => x.TelNumber).IsRequired();
             builder.Property(x => x.IsAdmin).HasDefaultValue(false);
             builder.Property(x => x.IsDocumentsVerified).HasDefaultValue(false);
-            builder.HasData(new User { Email = "andrey.pisaryk@gmail.com", Password = "GvHfmqcWyFo=", Name = "Андрей", Surname = "Писарик", Passport = "AB1234567", DriverLicense = "AA5678934", TelNumber = "+375297294012", IsAdmin = true, IsDocumentsVerified = true });
+            builder.HasData(new User { Email = "lebedzpolina@gmail.com", Password = "I+gmYGS1kGlpneQFKUzyXQ==", Name = "Polina", Surname = "Lebed", Passport = "AB1234567", DriverLicense = "AA5678934", TelNumber = "+375297294012", IsAdmin = true, IsDocumentsVerified = true });
 
         }
     }

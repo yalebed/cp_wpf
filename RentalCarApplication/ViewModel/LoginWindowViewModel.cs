@@ -19,7 +19,7 @@ namespace RentalCarApplication.ViewModel
         public static User CurrentUser;
         public LoginWindowViewModel(Navigator navigator)
         {
-            unitOfWork = new UnitOfWork();
+            
             SignInCommand = new RelayCommand(OnSignIn, CanSignIn);
             NavigateToHomeAdminCommand = new NavigationCommand<HomeAdminViewModel>(navigator, () => new HomeAdminViewModel(navigator));
             NavigateToRegisterCommand = new NavigationCommand<RegisterWindowViewModel>(navigator, () => new RegisterWindowViewModel(navigator));
@@ -55,6 +55,8 @@ namespace RentalCarApplication.ViewModel
         private bool CanSignIn(object o) => true;
         private void OnSignIn(object o)
         {
+            if (unitOfWork == null)
+                unitOfWork = new UnitOfWork();
             try
             {
                 User user = new User();

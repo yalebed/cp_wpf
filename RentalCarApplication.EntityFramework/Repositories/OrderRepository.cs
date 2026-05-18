@@ -26,15 +26,15 @@ namespace RentalCarApplication.EntityFramework.Repositories
                 bool statusIsString = IsStatusStringColumn(command.Connection);
                 command.CommandText = statusIsString
                     ? @"
-INSERT INTO Orders
-    (RentDate, ReturnDate, Status, Price, FrontPhotoPath, RearPhotoPath, SidePhotoPath, CompletedAt, CarId, Email)
-VALUES
-    (@RentDate, @ReturnDate, @StatusText, @Price, @FrontPhotoPath, @RearPhotoPath, @SidePhotoPath, @CompletedAt, @CarId, @Email)"
-                    : @"
-INSERT INTO Orders
-    (RentDate, ReturnDate, Status, Price, FrontPhotoPath, RearPhotoPath, SidePhotoPath, CompletedAt, CarId, Email)
-VALUES
-    (@RentDate, @ReturnDate, @StatusBit, @Price, @FrontPhotoPath, @RearPhotoPath, @SidePhotoPath, @CompletedAt, @CarId, @Email)";
+                        INSERT INTO Orders
+                            (RentDate, ReturnDate, Status, Price, FrontPhotoPath, RearPhotoPath, SidePhotoPath, CompletedAt, CarId, Email)
+                        VALUES
+                            (@RentDate, @ReturnDate, @StatusText, @Price, @FrontPhotoPath, @RearPhotoPath, @SidePhotoPath, @CompletedAt, @CarId, @Email)"
+                                            : @"
+                        INSERT INTO Orders
+                            (RentDate, ReturnDate, Status, Price, FrontPhotoPath, RearPhotoPath, SidePhotoPath, CompletedAt, CarId, Email)
+                        VALUES
+                            (@RentDate, @ReturnDate, @StatusBit, @Price, @FrontPhotoPath, @RearPhotoPath, @SidePhotoPath, @CompletedAt, @CarId, @Email)";
 
                 AddCommonOrderParameters(command, entity, statusIsString);
                 command.ExecuteNonQuery();

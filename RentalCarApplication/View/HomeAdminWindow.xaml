@@ -206,32 +206,64 @@
                                                 </DockPanel>
                                                 <DockPanel LastChildFill="true" Margin="0 7 10 5">
                                                     <materialDesign:PackIcon Kind="CarSide" Width="30" Height="30" Margin="0 10 0 0" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                    <ComboBox x:Name="BodyCB" Style="{StaticResource MaterialDesignOutlinedComboBox}" Foreground="White" BorderBrush="White" Text="{Binding CarBody}" Margin="0 0 10 0" Width="150" VerticalAlignment="Top" FontSize="12" materialDesign:HintAssist.Hint="Кузов">
-                                                        <ComboBoxItem Content="Седан"/>
+                                                    <ComboBox x:Name="BodyCB"
+          Style="{StaticResource MaterialDesignOutlinedComboBox}"
+          Background="{DynamicResource PrimaryHueMidBrush}"
+          Foreground="White"
+          BorderBrush="White"
+          Text="{Binding CarBody}"
+          Margin="0 0 10 0"
+          Width="150"
+          VerticalAlignment="Top"
+          FontSize="12"
+          materialDesign:HintAssist.Hint="Кузов"
+          materialDesign:HintAssist.Foreground="White"
+          materialDesign:HintAssist.Background="{DynamicResource PrimaryHueMidBrush}">
                                                         <ComboBoxItem Content="Универсал"/>
                                                         <ComboBoxItem Content="Купе"/>
                                                         <ComboBoxItem Content="Бус"/>
+                                                        <ComboBoxItem Content="Седан"/>
                                                         <ComboBoxItem Content="Спорт"/>
                                                         <ComboBoxItem Content="Вен"/>
                                                         <ComboBoxItem Content="Джип"/>
+                                                        <ComboBox.ItemContainerStyle>
+                                                            <Style TargetType="ComboBoxItem">
+                                                                <Setter Property="Foreground" Value="Black"/>
+                                                                <Setter Property="Background" Value="White"/>
+                                                            </Style>
+                                                        </ComboBox.ItemContainerStyle>
                                                     </ComboBox>
                                                 </DockPanel>
                                                 <DockPanel LastChildFill="true" Margin="0 5 10 5">
                                                     <materialDesign:PackIcon Kind="Seatbelt" Width="30" Height="30" Margin="0 10 0 0" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                    <ComboBox x:Name="SeatsCB" Style="{StaticResource MaterialDesignOutlinedComboBox}" Foreground="White" BorderBrush="White" Text="{Binding CarSeats}" Margin="0 0 10 0" Width="150" VerticalAlignment="Top" FontSize="12" materialDesign:HintAssist.Hint="Сидения">
+                                                    <ComboBox x:Name="SeatsCB" Style="{StaticResource MaterialDesignOutlinedComboBox}" Background="{DynamicResource PrimaryHueMidBrush}" Foreground="White" BorderBrush="White" Text="{Binding CarSeats}" Margin="0 0 10 0" Width="150" VerticalAlignment="Top" FontSize="12" materialDesign:HintAssist.Hint="Сидения" materialDesign:HintAssist.Foreground="White"
+          materialDesign:HintAssist.Background="{DynamicResource PrimaryHueMidBrush}">
                                                         <ComboBoxItem Content="2"/>
                                                         <ComboBoxItem Content="4"/>
                                                         <ComboBoxItem Content="5"/>
                                                         <ComboBoxItem Content="7"/>
                                                         <ComboBoxItem Content="8"/>
                                                         <ComboBoxItem Content="9"/>
+                                                        <ComboBox.ItemContainerStyle>
+                                                            <Style TargetType="ComboBoxItem">
+                                                                <Setter Property="Foreground" Value="Black"/>
+                                                                <Setter Property="Background" Value="White"/>
+                                                            </Style>
+                                                        </ComboBox.ItemContainerStyle>
                                                     </ComboBox>
                                                 </DockPanel>
                                                 <DockPanel LastChildFill="true" Margin="0 5 10 0">
                                                     <materialDesign:PackIcon Kind="GearBox" Width="30" Height="30" Margin="0 10 0 0" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                    <ComboBox x:Name="GearBoxCB" Style="{StaticResource MaterialDesignOutlinedComboBox}" Foreground="White" BorderBrush="White" Text="{Binding CarGearBox}" Margin="0 0 10 0" Width="150" VerticalAlignment="Top" FontSize="12" materialDesign:HintAssist.Hint="КПП">
+                                                    <ComboBox x:Name="GearBoxCB" Style="{StaticResource MaterialDesignOutlinedComboBox}" Background="{DynamicResource PrimaryHueMidBrush}" Foreground="White" BorderBrush="White" Text="{Binding CarGearBox}" Margin="0 0 10 0" Width="150" VerticalAlignment="Top" FontSize="12" materialDesign:HintAssist.Hint="КПП" materialDesign:HintAssist.Foreground="White"
+          materialDesign:HintAssist.Background="{DynamicResource PrimaryHueMidBrush}">
                                                         <ComboBoxItem Content="АКПП"/>
                                                         <ComboBoxItem Content="МКПП"/>
+                                                        <ComboBox.ItemContainerStyle>
+                                                            <Style TargetType="ComboBoxItem">
+                                                                <Setter Property="Foreground" Value="Black"/>
+                                                                <Setter Property="Background" Value="White"/>
+                                                            </Style>
+                                                        </ComboBox.ItemContainerStyle>
                                                     </ComboBox>
                                                 </DockPanel>
                                                 <DockPanel LastChildFill="true" Margin="0 0 10 14">
